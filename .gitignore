@@ -1,0 +1,20 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sublime-*
+
+# Build & Archives
+*.zip
+*.tar.gz
+
+# Local testing
+node_modules/
+vendor/

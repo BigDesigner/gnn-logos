@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.1.0",
+  "session_id": "a9103c80-55e1-4560-9289-53b49e1e9120",
+  "status": "ACTIVE",
+  "mode": "Interactive",
+  "preferred_language": "Turkish",
+  "timestamp": "2026-09-30T23:56:00Z",
+  "active_branch": "main",
+  "last_commit": null,
+  "git_history_available": true,
+  "git_remote_url": "https://github.com/BigDesigner/gnn-logos.git",
+  "worktree_status": "clean",
+  "current_sprint": {
+    "sprint_id": "v1.0.0-mvp",
+    "active_tasks": [
+      "TASK-001: Bootstrap GNN Logos plugin core file and registration hooks",
+      "TASK-002: Implement CPT, Taxonomies, and Custom Meta Boxes with Media Uploader",
+      "TASK-003: Build ultra-lightweight frontend assets (CSS Scroll-Snap, Pure CSS Marquee, Vanilla JS)",
+      "TASK-004: Develop Shortcode engine [gnn_logos] with certificate card rendering",
+      "TASK-005: Build Admin Shortcode Generator UI",
+      "TASK-006: Documentation and Validation"
+    ]
+  },
+  "tracked_memory_areas": {
+    "adr": ".memory-bank/adr/",
+    "changelog": ".memory-bank/changelog/",
+    "audits": ".memory-bank/audits/",
+    "bugs": ".memory-bank/bugs/",
+    "tasks": ".tasks/",
+    "archive": ".archive/docs-migration/"
+  },
+  "governance_baseline_hashes": {
+    "constitution": null,
+    "boundary_conditions": null,
+    "agents_rules": null
+  }
+}
