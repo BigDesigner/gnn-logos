@@ -2,7 +2,7 @@
  * GNN Logos - Admin Styles
  *
  * @package GNN_Logos
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 /* ==========================================================================
@@ -81,6 +81,74 @@
     display: flex;
     gap: 10px;
     align-items: center;
+}
+
+/* Standards Tag Manager */
+.gnn-standards-manager {
+    max-width: 600px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 14px;
+}
+
+.gnn-standards-tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+    min-height: 28px;
+}
+
+.gnn-tag-chip {
+    display: inline-flex;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #0f172a;
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    transition: all 0.15s ease;
+}
+
+.gnn-tag-chip:hover {
+    border-color: #94a3b8;
+    background: #f1f5f9;
+}
+
+.gnn-tag-remove {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 6px;
+    padding: 0 4px;
+    line-height: 1;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gnn-tag-remove:hover {
+    color: #dc2626;
+    background: #fee2e2;
+}
+
+.gnn-standards-input-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.gnn-standards-input-group input {
+    flex: 1;
 }
 
 /* ==========================================================================

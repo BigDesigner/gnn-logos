@@ -1,9 +1,15 @@
 # Verified Worklog
 
 - **Project**: GNN Logos
-- **Sprint**: v1.0.0-mvp
+- **Sprint**: v1.0.1
 
 ## Completed Work
+- **2026-10-01** (v1.0.1):
+  - **Multi-Standard Badges**: Replaced single-block standard code rendering with `.gnn-cert-badges-wrap` and `.gnn-cert-badge` chips. Allows 3-5 standards per certificate (TS EN 12201-2, TS EN ISO 1452-2, etc.) to wrap gracefully into separate, beautiful monospace pills rather than clumping into one overflowing box.
+  - **Dynamic Admin Tag Manager**: Added interactive tag chips builder in `class-gnn-logos-cpt.php` with Enter key and bulk comma/newline paste support (`gnn_cert_codes[]`).
+  - **Admin Table Columns**: Upgraded `gnn_code` column in post list to display clean flex-wrap badges.
+  - **Backward Compatibility**: Automatically detects and splits legacy comma-separated or newline-separated strings in `_gnn_cert_code`.
+  - **Version Bump**: Bumped plugin version and asset tags to `1.0.1`.
 - **2026-09-30**: Initialized Git repository tracking.
 - **2026-09-30**: Bootstrapped Sentinel Memory Bank governance structure (`.memory-bank/`, `.specs/`, `.agents/`, `.tasks/`).
 - **2026-09-30**: Recorded ADR-0001 (Tech Stack), ADR-0002 (Lightweight Frontend Engine), ADR-0003 (Certificate Card Layout), and ADR-0004 (GNN Ecosystem Standards & Auto-Updater).

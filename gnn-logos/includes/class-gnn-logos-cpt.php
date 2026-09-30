@@ -181,13 +181,51 @@ class GNN_Logos_CPT
                 </div>
             </div>
 
-            <!-- 2. Sertifika / Standart Kodu -->
+            <!-- 2. Sertifika / Standart Kodları (Çoklu Standart Desteği) -->
             <div class="gnn-meta-row">
-                <label for="gnn_cert_code" class="gnn-meta-label">
-                    <strong><?php esc_html_e('Sertifika / Standart Kodu (Rozet):', 'gnn-logos'); ?></strong>
-                    <span class="description"><?php esc_html_e('Görselin altında şık bir rozet/metin olarak gösterilir. Örn: TS EN 12201-2, TS EN ISO 1452-2, TS EN 1555-2', 'gnn-logos'); ?></span>
+                <label class="gnn-meta-label">
+                    <strong><?php esc_html_e('Sertifika / Standart Kodları (Rozetler):', 'gnn-logos'); ?></strong>
+                    <span class="description"><?php esc_html_e('Bu sertifika/logo için 1 veya birden fazla standart kodu ekleyebilirsiniz (Örn: TS EN 12201-2, TS EN ISO 1452-2, TS EN 1555-2). Her biri frontend\'de ayrı ve şık bir rozet olarak gösterilir.', 'gnn-logos'); ?></span>
                 </label>
-                <input type="text" name="gnn_cert_code" id="gnn_cert_code" class="widefat" value="<?php echo esc_attr($cert_code); ?>" placeholder="Örn: TS EN 12201-2">
+
+                <?php
+                // Fetch existing codes (array or split legacy string)
+                $cert_codes = get_post_meta($post->ID, '_gnn_cert_codes', true);
+                if (!is_array($cert_codes) || empty($cert_codes)) {
+                    $legacy_code = get_post_meta($post->ID, '_gnn_cert_code', true);
+                    if (!empty($legacy_code)) {
+                        $parts = preg_split('/[\r\n,]+/', $legacy_code);
+                        $cert_codes = array_filter(array_map('trim', $parts));
+                    } else {
+                        $cert_codes = array();
+                    }
+                }
+                ?>
+
+                <div class="gnn-standards-manager">
+                    <div id="gnn-standards-tags-list" class="gnn-standards-tags-list">
+                        <?php if (!empty($cert_codes)) : ?>
+                            <?php foreach ($cert_codes as $code_item) : ?>
+                                <span class="gnn-tag-chip">
+                                    <span class="gnn-tag-text"><?php echo esc_html($code_item); ?></span>
+                                    <input type="hidden" name="gnn_cert_codes[]" value="<?php echo esc_attr($code_item); ?>">
+                                    <button type="button" class="gnn-tag-remove" title="<?php esc_attr_e('Kaldır', 'gnn-logos'); ?>" aria-label="<?php esc_attr_e('Kaldır', 'gnn-logos'); ?>">&times;</button>
+                                </span>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="gnn-standards-input-group">
+                        <input type="text" id="gnn-new-standard-input" class="regular-text" placeholder="<?php esc_attr_e('Örn: TS EN 12201-2', 'gnn-logos'); ?>">
+                        <button type="button" class="button button-secondary" id="gnn-add-standard-btn">
+                            <span class="dashicons dashicons-plus-alt2" style="vertical-align:middle; margin-top:-2px;"></span>
+                            <?php esc_html_e('Standart Ekle', 'gnn-logos'); ?>
+                        </button>
+                    </div>
+                    <span class="description" style="margin-top:6px; display:block;">
+                        <?php esc_html_e('İpucu: Teker teker yazıp Enter tuşuna basabilir veya birden fazla kodu virgülle ayırarak (örn: TS EN 12201-2, TS EN ISO 1452-2) tek seferde ekleyebilirsiniz.', 'gnn-logos'); ?>
+                    </span>
+                </div>
             </div>
 
             <!-- 3. Ek Açıklama / Kurum Adı -->
@@ -267,10 +305,27 @@ class GNN_Logos_CPT
             update_post_meta($post_id, '_gnn_logo_id', $logo_id);
         }
 
-        // 5. Sanitize and save _gnn_cert_code
-        if (isset($_POST['gnn_cert_code'])) {
+        // 5. Sanitize and save _gnn_cert_codes and legacy _gnn_cert_code
+        if (isset($_POST['gnn_cert_codes']) && is_array($_POST['gnn_cert_codes'])) {
+            $clean_codes = array();
+            foreach ($_POST['gnn_cert_codes'] as $raw_code) {
+                $c = sanitize_text_field(wp_unslash($raw_code));
+                if ('' !== $c) {
+                    $clean_codes[] = $c;
+                }
+            }
+            update_post_meta($post_id, '_gnn_cert_codes', $clean_codes);
+            update_post_meta($post_id, '_gnn_cert_code', implode(', ', $clean_codes));
+        } elseif (isset($_POST['gnn_cert_code'])) {
             $cert_code = sanitize_text_field(wp_unslash($_POST['gnn_cert_code']));
             update_post_meta($post_id, '_gnn_cert_code', $cert_code);
+            $parts = preg_split('/[\r\n,]+/', $cert_code);
+            $clean_codes = array_filter(array_map('trim', $parts));
+            update_post_meta($post_id, '_gnn_cert_codes', array_values($clean_codes));
+        } else {
+            // Field was cleared
+            delete_post_meta($post_id, '_gnn_cert_codes');
+            delete_post_meta($post_id, '_gnn_cert_code');
         }
 
         // 6. Sanitize and save _gnn_description
@@ -342,9 +397,20 @@ class GNN_Logos_CPT
                 break;
 
             case 'gnn_code':
-                $code = get_post_meta($post_id, '_gnn_cert_code', true);
-                if (!empty($code)) {
-                    echo '<span style="display:inline-block; padding:2px 8px; font-weight:600; font-size:12px; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:4px; color:#0f172a;">' . esc_html($code) . '</span>';
+                $codes = get_post_meta($post_id, '_gnn_cert_codes', true);
+                if (!is_array($codes) || empty($codes)) {
+                    $legacy = get_post_meta($post_id, '_gnn_cert_code', true);
+                    if (!empty($legacy)) {
+                        $parts = preg_split('/[\r\n,]+/', $legacy);
+                        $codes = array_filter(array_map('trim', $parts));
+                    }
+                }
+                if (!empty($codes)) {
+                    echo '<div style="display:flex; flex-wrap:wrap; gap:4px;">';
+                    foreach ($codes as $c) {
+                        echo '<span style="display:inline-block; padding:2px 7px; font-weight:600; font-size:11px; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:4px; color:#0f172a; white-space:nowrap;">' . esc_html($c) . '</span>';
+                    }
+                    echo '</div>';
                 } else {
                     echo '<span style="color:#94a3b8;">&mdash;</span>';
                 }

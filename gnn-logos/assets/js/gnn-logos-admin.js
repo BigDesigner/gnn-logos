@@ -3,7 +3,7 @@
  * Handles WordPress Media Uploader and Interactive Shortcode Generator.
  *
  * @package GNN_Logos
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 jQuery(document).ready(function ($) {
@@ -61,6 +61,70 @@ jQuery(document).ready(function ($) {
             $logoIdInput.val('');
             $previewBox.removeClass('has-image').html('<span class="gnn-no-image-text">Görsel seçilmedi</span>');
             $removeBtn.hide();
+        });
+    }
+
+    /* ==========================================================================
+       1.1 Standards / Certificate Tag Chips Manager
+       ========================================================================== */
+    var $tagsList = $('#gnn-standards-tags-list');
+    var $newStdInput = $('#gnn-new-standard-input');
+    var $addStdBtn = $('#gnn-add-standard-btn');
+
+    function addStandardsFromInput() {
+        var rawVal = $newStdInput.val().trim();
+        if (!rawVal) return;
+
+        // Split by comma or newline for bulk pasting
+        var items = rawVal.split(/[,\n]+/);
+        items.forEach(function (item) {
+            var clean = item.trim();
+            if (!clean) return;
+
+            // Check if already in list
+            var exists = false;
+            $tagsList.find('.gnn-tag-text').each(function () {
+                if ($(this).text().trim().toUpperCase() === clean.toUpperCase()) {
+                    exists = true;
+                    return false;
+                }
+            });
+
+            if (!exists) {
+                var $chip = $(
+                    '<span class="gnn-tag-chip">' +
+                        '<span class="gnn-tag-text"></span>' +
+                        '<input type="hidden" name="gnn_cert_codes[]">' +
+                        '<button type="button" class="gnn-tag-remove" aria-label="Kaldır">&times;</button>' +
+                    '</span>'
+                );
+                $chip.find('.gnn-tag-text').text(clean);
+                $chip.find('input').val(clean);
+                $tagsList.append($chip);
+            }
+        });
+
+        $newStdInput.val('').focus();
+    }
+
+    if ($addStdBtn.length) {
+        $addStdBtn.on('click', function (e) {
+            e.preventDefault();
+            addStandardsFromInput();
+        });
+
+        $newStdInput.on('keydown', function (e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                addStandardsFromInput();
+            }
+        });
+
+        $tagsList.on('click', '.gnn-tag-remove', function (e) {
+            e.preventDefault();
+            $(this).closest('.gnn-tag-chip').fadeOut(150, function () {
+                $(this).remove();
+            });
         });
     }
 

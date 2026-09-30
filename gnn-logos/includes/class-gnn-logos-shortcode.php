@@ -156,11 +156,22 @@ class GNN_Logos_Shortcode
             $query->the_post();
             $post_id      = get_the_ID();
             $logo_id      = absint(get_post_meta($post_id, '_gnn_logo_id', true));
-            $cert_code    = get_post_meta($post_id, '_gnn_cert_code', true);
             $description  = get_post_meta($post_id, '_gnn_description', true);
             $link_url     = get_post_meta($post_id, '_gnn_link_url', true);
             $link_target  = get_post_meta($post_id, '_gnn_link_target', true) ?: '_blank';
             $item_ratio   = get_post_meta($post_id, '_gnn_aspect_ratio', true) ?: 'auto';
+
+            // Support multi-standard codes and split legacy comma/newline strings
+            $cert_codes = get_post_meta($post_id, '_gnn_cert_codes', true);
+            if (!is_array($cert_codes) || empty($cert_codes)) {
+                $legacy_code = get_post_meta($post_id, '_gnn_cert_code', true);
+                if (!empty($legacy_code)) {
+                    $parts = preg_split('/[\r\n,]+/', $legacy_code);
+                    $cert_codes = array_filter(array_map('trim', $parts));
+                } else {
+                    $cert_codes = array();
+                }
+            }
 
             if ('auto' !== $item_ratio) {
                 $item_ratio = str_replace(':', '/', $item_ratio);
@@ -170,7 +181,7 @@ class GNN_Logos_Shortcode
                 'id'           => $post_id,
                 'title'        => get_the_title(),
                 'logo_id'      => $logo_id,
-                'cert_code'    => $cert_code,
+                'cert_codes'   => array_values($cert_codes),
                 'description'  => $description,
                 'link_url'     => $link_url,
                 'link_target'  => $link_target,
@@ -334,8 +345,12 @@ class GNN_Logos_Shortcode
                     <?php echo $image_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                 </div>
 
-                <?php if ($show_code && !empty($item['cert_code'])) : ?>
-                    <span class="gnn-cert-code"><?php echo esc_html($item['cert_code']); ?></span>
+                <?php if ($show_code && !empty($item['cert_codes'])) : ?>
+                    <div class="gnn-cert-badges-wrap">
+                        <?php foreach ($item['cert_codes'] as $code) : ?>
+                            <span class="gnn-cert-badge"><?php echo esc_html($code); ?></span>
+                        <?php endforeach; ?>
+                    </div>
                 <?php endif; ?>
 
                 <?php if ($show_title && !empty($item['title'])) : ?>

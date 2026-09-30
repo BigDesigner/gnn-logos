@@ -5,7 +5,7 @@ Tags: logos, logo showcase, carousel, marquee, certificates, partners, reference
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 8.0
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,6 +49,11 @@ Sonsuz Kayan Logo Şeridi (Marquee):
 `[gnn_logos layout="marquee" speed="25s" grayscale="true"]`
 
 == Changelog ==
+
+= 1.0.1 =
+* Geliştirme: Çoklu sertifika ve standart kodları (TS EN 12201-2, TS EN ISO 1452-2 vb.) için ayrı rozet/badge sistemi eklendi.
+* Geliştirme: Admin paneline dinamik etiket/çip yöneticisi ve toplu standart ekleme desteği getirildi.
+* Geliştirme: Frontend'de çoklu sertifika kodlarının şık, hizalı ve taşmayan rozetler halinde sarılması (wrap) sağlandı.
 
 = 1.0.0 =
 * İlk kararlı sürüm yayınlandı.

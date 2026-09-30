@@ -3,7 +3,7 @@
  * Ultra-lightweight, zero-dependency, GPU-accelerated.
  *
  * @package GNN_Logos
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 /* ==========================================================================
@@ -125,6 +125,44 @@ a.gnn-logo-item {
 }
 
 /* Typography & Badges */
+.gnn-cert-badges-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 12px;
+    width: 100%;
+}
+
+.gnn-cert-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 8px;
+    background: #f8fafc;
+    color: #0f172a;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    line-height: 1.35;
+    text-align: center;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.gnn-style-card .gnn-logo-item:hover .gnn-cert-badge,
+.gnn-style-bordered .gnn-logo-item:hover .gnn-cert-badge {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #0284c7;
+}
+
 .gnn-cert-code {
     display: inline-block;
     margin-top: 10px;
@@ -132,7 +170,7 @@ a.gnn-logo-item {
     background: #f1f5f9;
     color: #0f172a;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.5px;
     text-transform: uppercase;
