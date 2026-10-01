@@ -82,6 +82,7 @@ class GNN_Logos_Shortcode
                 'show_code'      => 'true',
                 'badges_layout'  => 'wrap',     // 'wrap' (yan yana), 'stacked' (alt alta)
                 'badges_align'   => 'center',   // 'center' (ortalı), 'left' (sola), 'right' (sağa)
+                'badges_valign'  => 'bottom',   // 'bottom' (altta), 'top' (üstte), 'center' (ortada)
                 'show_title'     => 'false',
                 'show_desc'      => 'false',
                 'limit'          => -1,
@@ -107,6 +108,7 @@ class GNN_Logos_Shortcode
         $show_code      = filter_var($atts['show_code'], FILTER_VALIDATE_BOOLEAN);
         $badges_layout  = in_array($atts['badges_layout'], array('wrap', 'stacked'), true) ? $atts['badges_layout'] : 'wrap';
         $badges_align   = in_array($atts['badges_align'], array('center', 'left', 'right'), true) ? $atts['badges_align'] : 'center';
+        $badges_valign  = in_array($atts['badges_valign'], array('top', 'center', 'bottom'), true) ? $atts['badges_valign'] : 'bottom';
         $show_title     = filter_var($atts['show_title'], FILTER_VALIDATE_BOOLEAN);
         $show_desc      = filter_var($atts['show_desc'], FILTER_VALIDATE_BOOLEAN);
         $direction      = in_array($atts['direction'], array('left', 'right'), true) ? $atts['direction'] : 'left';
@@ -242,7 +244,7 @@ class GNN_Logos_Shortcode
                 <!-- GRID LAYOUT -->
                 <div class="gnn-logos-grid-container">
                     <?php foreach ($items as $item) : ?>
-                        <?php echo $this->render_item_html($item, $show_code, $show_title, $show_desc, $badges_layout, $badges_align); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                        <?php echo $this->render_item_html($item, $show_code, $show_title, $show_desc, $badges_layout, $badges_align, $badges_valign); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                     <?php endforeach; ?>
                 </div>
 
@@ -257,7 +259,7 @@ class GNN_Logos_Shortcode
                 <div class="gnn-carousel-viewport">
                     <?php foreach ($items as $item) : ?>
                         <div class="gnn-carousel-slide">
-                            <?php echo $this->render_item_html($item, $show_code, $show_title, $show_desc, $badges_layout, $badges_align); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                            <?php echo $this->render_item_html($item, $show_code, $show_title, $show_desc, $badges_layout, $badges_align, $badges_valign); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -282,13 +284,13 @@ class GNN_Logos_Shortcode
                     <!-- Primary set -->
                     <?php foreach ($items as $item) : ?>
                         <div class="gnn-marquee-item">
-                            <?php echo $this->render_item_html($item, $show_code, $show_title, $show_desc, $badges_layout, $badges_align); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                            <?php echo $this->render_item_html($item, $show_code, $show_title, $show_desc, $badges_layout, $badges_align, $badges_valign); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                         </div>
                     <?php endforeach; ?>
                     <!-- Duplicate set for seamless continuous loop -->
                     <?php foreach ($items as $item) : ?>
                         <div class="gnn-marquee-item" aria-hidden="true">
-                            <?php echo $this->render_item_html($item, $show_code, $show_title, $show_desc, $badges_layout, $badges_align); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                            <?php echo $this->render_item_html($item, $show_code, $show_title, $show_desc, $badges_layout, $badges_align, $badges_valign); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -307,9 +309,10 @@ class GNN_Logos_Shortcode
      * @param bool   $show_desc     Show description.
      * @param string $badges_layout Badges layout ('wrap' or 'stacked').
      * @param string $badges_align  Badges alignment ('center', 'left', 'right').
+     * @param string $badges_valign Badges vertical alignment ('bottom', 'top', 'center').
      * @return string HTML output.
      */
-    private function render_item_html($item, $show_code, $show_title, $show_desc, $badges_layout = 'wrap', $badges_align = 'center')
+    private function render_item_html($item, $show_code, $show_title, $show_desc, $badges_layout = 'wrap', $badges_align = 'center', $badges_valign = 'bottom')
     {
         $has_link = !empty($item['link_url']);
         $tag = $has_link ? 'a' : 'div';
@@ -346,13 +349,13 @@ class GNN_Logos_Shortcode
         ob_start();
         ?>
         <<?php echo esc_attr($tag); ?> class="gnn-logo-item" <?php echo $link_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-            <div class="gnn-logo-item-inner">
+            <div class="gnn-logo-item-inner gnn-valign-<?php echo esc_attr($badges_valign); ?>">
                 <div class="gnn-logo-box" <?php echo $box_style; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
                     <?php echo $image_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                 </div>
 
                 <?php if ($show_code && !empty($item['cert_codes'])) : ?>
-                    <div class="gnn-cert-badges-wrap gnn-badges-layout-<?php echo esc_attr($badges_layout); ?> gnn-badges-align-<?php echo esc_attr($badges_align); ?>">
+                    <div class="gnn-cert-badges-wrap gnn-badges-layout-<?php echo esc_attr($badges_layout); ?> gnn-badges-align-<?php echo esc_attr($badges_align); ?> gnn-badges-valign-<?php echo esc_attr($badges_valign); ?>">
                         <?php foreach ($item['cert_codes'] as $code) : ?>
                             <span class="gnn-cert-badge"><?php echo esc_html($code); ?></span>
                         <?php endforeach; ?>

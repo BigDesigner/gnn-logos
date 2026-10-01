@@ -1,9 +1,14 @@
 # Verified Worklog
 
 - **Project**: GNN Logos
-- **Sprint**: v1.1.0
+- **Sprint**: v1.1.1
 
 ## Completed Work
+- **2026-10-01** (v1.1.1):
+  - **Badges Vertical Alignment (`badges_valign`)**: Added `badges_valign` parameter with options `bottom` (fixed to bottom of card), `top` (starts directly 14px beneath the logo, eliminating giant gaps in cards with fewer badges), and `center` (centered vertically with logo).
+  - **Admin Generator Dikey Hizalama**: Integrated "Dikey Hizalama" dropdown into the Shortcode Builder form with real-time shortcode generation.
+  - **CSS Card Flexbox Alignment**: Implemented `.gnn-valign-top`, `.gnn-valign-center`, and `.gnn-valign-bottom` rules in `gnn-logos-frontend.css`.
+  - **Version Bump**: Bumped version to `1.1.1` across all manifests and assets.
 - **2026-10-01** (v1.1.0):
   - **Button Icon Vertical Centering**: Added universal CSS flexbox centering for all admin buttons and Dashicons (`.gnn-admin-wrap .button`, `.gnn-meta-box-wrap .button`, `.gnn-preset-buttons .button`, `#gnn-copy-shortcode-btn`). Completely eliminated bottom-heavy icon misalignment, aligning icons and button text strictly on the mathematical vertical center.
   - **Explicit Wizard Attributes**: Modified `updateShortcode` in `gnn-logos-admin.js` to unconditionally output `badges_align="center"` and `badges_layout="wrap"` when selected, eliminating confusing omissions.

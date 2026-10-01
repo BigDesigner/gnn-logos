@@ -3,7 +3,7 @@
  * Handles WordPress Media Uploader and Interactive Shortcode Generator.
  *
  * @package GNN_Logos
- * @version 1.1.0
+ * @version 1.1.1
  */
 
 jQuery(document).ready(function ($) {
@@ -151,6 +151,7 @@ jQuery(document).ready(function ($) {
         var showCode = $('#sc_show_code').is(':checked');
         var badgesLayout = $('#sc_badges_layout').val();
         var badgesAlign = $('#sc_badges_align').val();
+        var badgesValign = $('#sc_badges_valign').val();
         var showTitle = $('#sc_show_title').is(':checked');
         var showDesc = $('#sc_show_desc').is(':checked');
         var grayscale = $('#sc_grayscale').is(':checked');
@@ -192,6 +193,7 @@ jQuery(document).ready(function ($) {
             parts.push('show_code="true"');
             if (badgesLayout) parts.push('badges_layout="' + badgesLayout + '"');
             if (badgesAlign) parts.push('badges_align="' + badgesAlign + '"');
+            if (badgesValign) parts.push('badges_valign="' + badgesValign + '"');
         }
         if (showTitle) parts.push('show_title="true"');
         if (showDesc) parts.push('show_desc="true"');
@@ -223,6 +225,7 @@ jQuery(document).ready(function ($) {
             $('#sc_show_code').prop('checked', true);
             $('#sc_badges_layout').val('wrap');
             $('#sc_badges_align').val('center');
+            $('#sc_badges_valign').val('bottom');
             $('#sc_show_title').prop('checked', false);
             $('#sc_grayscale').prop('checked', false);
             updateShortcode();

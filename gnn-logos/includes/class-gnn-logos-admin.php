@@ -297,7 +297,7 @@ class GNN_Logos_Admin
                             </div>
                         </div>
 
-                        <!-- 7.1 Rozet Dizilimi ve Hizalama (v1.0.2) -->
+                        <!-- 7.1 Rozet Dizilimi, Yatay ve Dikey Hizalama -->
                         <div class="gnn-form-row gnn-form-group" id="gnn-badges-options-box">
                             <div class="gnn-form-col">
                                 <label for="sc_badges_layout"><strong><?php esc_html_e('Rozet Dizilimi:', 'gnn-logos'); ?></strong></label>
@@ -307,11 +307,19 @@ class GNN_Logos_Admin
                                 </select>
                             </div>
                             <div class="gnn-form-col">
-                                <label for="sc_badges_align"><strong><?php esc_html_e('Rozet Hizalama:', 'gnn-logos'); ?></strong></label>
+                                <label for="sc_badges_align"><strong><?php esc_html_e('Yatay Hizalama:', 'gnn-logos'); ?></strong></label>
                                 <select id="sc_badges_align" class="widefat">
                                     <option value="center"><?php esc_html_e('Ortalı (Center)', 'gnn-logos'); ?></option>
                                     <option value="left"><?php esc_html_e('Sola Hizalı (Left)', 'gnn-logos'); ?></option>
                                     <option value="right"><?php esc_html_e('Sağa Hizalı (Right)', 'gnn-logos'); ?></option>
+                                </select>
+                            </div>
+                            <div class="gnn-form-col">
+                                <label for="sc_badges_valign"><strong><?php esc_html_e('Dikey Hizalama:', 'gnn-logos'); ?></strong></label>
+                                <select id="sc_badges_valign" class="widefat">
+                                    <option value="bottom"><?php esc_html_e('Altta (Kart Altına Sabitli - Bottom)', 'gnn-logos'); ?></option>
+                                    <option value="top"><?php esc_html_e('Üstte (Logonun Hemen Altında - Top)', 'gnn-logos'); ?></option>
+                                    <option value="center"><?php esc_html_e('Ortada (Dikey Ortalı - Center)', 'gnn-logos'); ?></option>
                                 </select>
                             </div>
                         </div>

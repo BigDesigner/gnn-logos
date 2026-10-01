@@ -5,7 +5,7 @@ Tags: logos, logo showcase, carousel, marquee, certificates, partners, reference
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 8.0
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,6 +49,10 @@ Sonsuz Kayan Logo Şeridi (Marquee):
 `[gnn_logos layout="marquee" speed="25s" grayscale="true"]`
 
 == Changelog ==
+
+= 1.1.1 =
+* Geliştirme: Rozetler için dikey hizalama parametresi (badges_valign="bottom|top|center") eklendi. Rozetlerin kartın en altına sabitlenmesi (bottom), logonun hemen altında başlaması (top) veya kart içinde ortalanması (center) seçilebilir.
+* Geliştirme: Shortcode Sihirbazı'na "Dikey Hizalama" seçim kutusu eklendi ve anlık kod çıktısına bağlandı.
 
 = 1.1.0 =
 * Geliştirme: Admin paneli butonlarındaki (Şablonlar, Kopyala, Logo Seç, Ekle) Dashicon ikonlarının dikeyde metin ile kusursuz ortalanması sağlandı.

@@ -85,3 +85,9 @@
 - Forced explicit inclusion of `badges_align="center"` and `badges_layout="wrap"` in shortcode generator.
 - Fixed admin button Dashicon vertical centering with unified flexbox alignment rules.
 - Bumped version to 1.1.0 across all files.
+
+### [x] TASK-011: Badges Vertical Alignment Controls (v1.1.1)
+- Added `badges_valign` ('bottom' | 'top' | 'center') to `[gnn_logos]` shortcode.
+- Created flexbox rules `.gnn-valign-top`, `.gnn-valign-center`, and `.gnn-valign-bottom` in `gnn-logos-frontend.css`.
+- Added "Dikey Hizalama" dropdown in Shortcode Builder admin UI.
+- Bumped version to 1.1.1 across all files.

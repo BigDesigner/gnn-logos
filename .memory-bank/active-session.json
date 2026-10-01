@@ -11,9 +11,9 @@
   "git_remote_url": "https://github.com/BigDesigner/gnn-logos.git",
   "worktree_status": "clean",
   "current_sprint": {
-    "sprint_id": "v1.1.0",
+    "sprint_id": "v1.1.1",
     "active_tasks": [
-      "TASK-010: Fix updater transient desync, explicit shortcode wizard attributes, and button icon vertical alignment (v1.1.0)"
+      "TASK-011: Add badges vertical alignment controls (top, center, bottom) for certificate cards (v1.1.1)"
     ]
   },
   "tracked_memory_areas": {

@@ -19,8 +19,11 @@
    - Fixed button icon vertical alignment in Admin UI.
    - Forced explicit inclusion of `badges_align="center"` and `badges_layout="wrap"` in wizard.
    - Fixed updater transient cache desync.
-   - Bumped version to 1.1.0 in `gnn-logos.php`, `readme.txt`, and assets.
+7. Released v1.1.1:
+   - Added `badges_valign` ('bottom' | 'top' | 'center') vertical alignment controls for certificate card badges.
+   - Added "Dikey Hizalama" dropdown in Shortcode Builder admin UI.
+   - Bumped version to 1.1.1 across all files.
    - Validated syntax with `php -l` on all PHP files (0 errors).
 
 ## Next Recommended Action
-- Commit and push v1.1.0 to GitHub repository (`origin/main`).
+- Commit and push v1.1.1 to GitHub repository (`origin/main`).

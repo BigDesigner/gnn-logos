@@ -3,7 +3,7 @@
  * Ultra-lightweight, zero-dependency, GPU-accelerated.
  *
  * @package GNN_Logos
- * @version 1.1.0
+ * @version 1.1.1
  */
 
 /* ==========================================================================
@@ -172,6 +172,33 @@ a.gnn-logo-item {
 .gnn-cert-badges-wrap.gnn-badges-layout-stacked.gnn-badges-align-right .gnn-cert-badge {
     margin-left: auto;
     margin-right: 0;
+}
+
+/* Vertical Alignment: Top (Logonun hemen altında başlar, altta boşluk kalır) */
+.gnn-logo-item-inner.gnn-valign-top {
+    justify-content: flex-start !important;
+}
+.gnn-logo-item-inner.gnn-valign-top .gnn-cert-badges-wrap {
+    margin-top: 14px !important;
+    margin-bottom: 0 !important;
+}
+
+/* Vertical Alignment: Center (Kartın dikeyinde ortalanır) */
+.gnn-logo-item-inner.gnn-valign-center {
+    justify-content: center !important;
+}
+.gnn-logo-item-inner.gnn-valign-center .gnn-cert-badges-wrap {
+    margin-top: 14px !important;
+    margin-bottom: 0 !important;
+}
+
+/* Vertical Alignment: Bottom (Rozetler kartın en altına sabitlenir) */
+.gnn-logo-item-inner.gnn-valign-bottom {
+    justify-content: space-between !important;
+}
+.gnn-logo-item-inner.gnn-valign-bottom .gnn-cert-badges-wrap {
+    margin-top: auto !important;
+    margin-bottom: 0 !important;
 }
 
 .gnn-cert-badge {
