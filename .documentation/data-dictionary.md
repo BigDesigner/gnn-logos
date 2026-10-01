@@ -1,13 +1,13 @@
-# Data Dictionary & Persistence Specification
+# Veri Sözlüğü ve Kalıcılık Belirtimi
 
 <!-- Verified from: gnn-logos/includes/class-gnn-logos-cpt.php#L20-L80 -->
 <!-- Verified from: gnn-logos/includes/class-gnn-logos-cpt.php#L300-L355 -->
 <!-- Verified from: gnn-logos/inc/updater.php#L35-L45 -->
 <!-- Verified from: gnn-logos/uninstall.php#L1-L44 -->
 
-## 1. Entity Relationship Overview
+## 1. Varlık İlişkileri Genel Bakışı (ER Şeması)
 
-GNN Logos utilizes WordPress core relational tables to persist entities, taxonomies, and custom post metadata without creating proprietary SQL tables:
+GNN Logos, harici özel SQL tabloları oluşturmadan tamamen WordPress çekirdek ilişkisel tablolarını kullanır:
 
 ```mermaid
 erDiagram
@@ -42,7 +42,7 @@ erDiagram
     }
 
     WP_TERM_RELATIONSHIPS {
-        bigint object_id PK,FK "Maps to wp_posts.ID"
+        bigint object_id PK,FK "wp_posts.ID ile eşleşir"
         bigint term_taxonomy_id PK,FK
     }
 
@@ -53,72 +53,72 @@ erDiagram
         string autoload
     }
 
-    WP_POSTS ||--o{ WP_POSTMETA : "has metadata"
-    WP_POSTS ||--o{ WP_TERM_RELATIONSHIPS : "classified by"
-    WP_TERM_TAXONOMY ||--o{ WP_TERM_RELATIONSHIPS : "groups"
-    WP_TERMS ||--|| WP_TERM_TAXONOMY : "defines"
+    WP_POSTS ||--o{ WP_POSTMETA : "meta verilerine sahiptir"
+    WP_POSTS ||--o{ WP_TERM_RELATIONSHIPS : "sınıflandırılır"
+    WP_TERM_TAXONOMY ||--o{ WP_TERM_RELATIONSHIPS : "gruplar"
+    WP_TERMS ||--|| WP_TERM_TAXONOMY : "tanımlar"
 ```
 
 ---
 
-## 2. Core Entities Specification
+## 2. Temel Varlık Belirtimleri
 
-### 2.1 Custom Post Type: `gnn_logo`
-- **Registration File:** `gnn-logos/includes/class-gnn-logos-cpt.php#L20-L50`
-- **Storage Table:** `wp_posts`
-- **Filtered Columns:**
-  - `post_type`: strictly `'gnn_logo'`
+### 2.1 Özel Yazı Türü (CPT): `gnn_logo`
+- **Kayıt Dosyası:** `gnn-logos/includes/class-gnn-logos-cpt.php#L20-L50`
+- **Depolama Tablosu:** `wp_posts`
+- **Filtrelenen Alanlar:**
+  - `post_type`: Kesin olarak `'gnn_logo'`
   - `post_status`: `'publish'`, `'draft'`, `'trash'`
-  - `post_title`: Used as Logo Name / Company Title and fallback image `alt` attribute.
-  - `menu_order`: Used as primary sorting field when `orderby="menu_order"` (default).
+  - `post_title`: Logo / Firma Adı olarak kullanılır ve görsel `alt` metni için yedektir.
+  - `menu_order`: `orderby="menu_order"` varsayılan sıralamasında kullanılır.
 
-### 2.2 Taxonomy: `gnn_logo_group`
-- **Registration File:** `gnn-logos/includes/class-gnn-logos-cpt.php#L55-L85`
-- **Storage Tables:** `wp_terms`, `wp_term_taxonomy`, `wp_term_relationships`
-- **Type:** Hierarchical (category-like)
-- **Purpose:** Groups items into logical showcases (e.g., `sertifikalar`, `referanslar`, `cozum-ortaklari`).
+### 2.2 Taksonomi: `gnn_logo_group`
+- **Kayıt Dosyası:** `gnn-logos/includes/class-gnn-logos-cpt.php#L55-L85`
+- **Depolama Tabloları:** `wp_terms`, `wp_term_taxonomy`, `wp_term_relationships`
+- **Tür:** Hiyerarşik (kategori yapısında)
+- **Amaç:** Logoları mantıksal vitrin gruplarına ayırır (örn: `sertifikalar`, `referanslar`, `cozum-ortaklari`).
 
 ---
 
-## 3. Secondary & Postmeta Metadata Keys
+## 3. İkincil Nitelikler ve Postmeta Anahtarları
 
 <!-- Verified from: gnn-logos/includes/class-gnn-logos-cpt.php#L300-L355 -->
 
-All metadata attributes are attached to `wp_postmeta` via standard WordPress `get_post_meta()` and `update_post_meta()` APIs:
+Tüm özel nitelikler WordPress standart `get_post_meta()` ve `update_post_meta()` API'leri üzerinden `wp_postmeta` tablosunda saklanır:
 
-| Meta Key (`meta_key`) | Data Type | Serialization | Sanitization Function | Purpose & Default |
+| Meta Anahtarı (`meta_key`) | Veri Türü | Serileştirme | Sanitizasyon Fonksiyonu | Amaç ve Varsayılan Değer |
 |---|---|---|---|---|
-| `_gnn_logo_id` | Integer (`bigint`) | Raw Scalar | `absint($_POST['gnn_logo_id'])` | WordPress attachment ID pointing to `wp_posts` (`post_type = 'attachment'`). Required for rendering logo graphic. |
-| `_gnn_cert_codes` | Array of Strings | PHP Serialized Array | `sanitize_text_field(wp_unslash($raw_code))` | Multi-standard tags array (e.g. `['TS EN 12201-2', 'TS EN ISO 1452-2']`). Rendered as individual badge pills. |
-| `_gnn_cert_code` | String (`varchar`) | Comma-separated string | `sanitize_textarea_field(wp_unslash($_POST['gnn_cert_code']))` | Legacy single-string standard code. Kept synchronized with `_gnn_cert_codes` for backward compatibility. |
-| `_gnn_description` | String (`text`) | Raw String | `sanitize_text_field(wp_unslash($_POST['gnn_description']))` | Subtitle, company description, or accreditation body text displayed underneath title. |
-| `_gnn_link_url` | String (`url`) | Raw String | `esc_url_raw(wp_unslash($_POST['gnn_link_url']))` | Target destination hyperlink when user clicks on logo item. |
-| `_gnn_link_target` | String (`enum`) | Raw String | `in_array(..., ['_self', '_blank'])` | Hyperlink browser window target (`_blank` for external tab, `_self` for same window). Default: `'_blank'`. |
-| `_gnn_aspect_ratio` | String (`enum`) | Raw String | `in_array(..., ['auto', '16:9', '4:3', '1:1', '3:2', '2:1'])` | Item-specific aspect ratio override. Default: `'auto'`. |
+| `_gnn_logo_id` | Tamsayı (`bigint`) | Ham Skaler | `absint($_POST['gnn_logo_id'])` | `wp_posts` tablosundaki eke işaret eden WordPress ortam ID'si (`post_type = 'attachment'`). |
+| `_gnn_cert_codes` | String Dizisi | PHP Serialized Array | `sanitize_text_field(wp_unslash($raw_code))` | Çoklu standart etiket dizisi (örn: `['TS EN 12201-2', 'TS EN ISO 1452-2']`). Ayrı rozet hapları olarak basılır. |
+| `_gnn_cert_code` | Metin (`varchar`) | Virgülle ayrılmış string | `sanitize_textarea_field(wp_unslash($_POST['gnn_cert_code']))` | Geriye dönük uyumluluk için korunan tekli standart metni. |
+| `_gnn_description` | Metin (`text`) | Ham String | `sanitize_text_field(wp_unslash($_POST['gnn_description']))` | Başlığın altında gösterilen alt açıklama veya akreditasyon kurumu metni. |
+| `_gnn_link_url` | Web Adresi (`url`) | Ham String | `esc_url_raw(wp_unslash($_POST['gnn_link_url']))` | Logoya tıklandığında gidilecek hedef yönlendirme bağlantısı. |
+| `_gnn_link_target` | Seçim (`enum`) | Ham String | `in_array(..., ['_self', '_blank'])` | Bağlantının açılma hedefi (`_blank` yeni sekme, `_self` aynı sekme). Varsayılan: `'_blank'`. |
+| `_gnn_aspect_ratio` | Seçim (`enum`) | Ham String | `in_array(..., ['auto', '16:9', '4:3', '1:1', '3:2', '2:1'])` | Öğeye özel en-boy oranı geçersiz kılma ayarı. Varsayılan: `'auto'`. |
 
 ---
 
-## 4. Caching & Transient Dictionary
+## 4. Önbellekleme ve Transient Sözlüğü
 
 <!-- Verified from: gnn-logos/inc/updater.php#L35-L45 -->
 <!-- Verified from: gnn-logos/inc/updater.php#L156 -->
 <!-- Verified from: gnn-logos/uninstall.php#L37-L43 -->
 
-The plugin caches external API communication and core update statuses using the WordPress Transients API (stored in `wp_options`):
+Eklenti, dış ağ isteklerini ve güncelleme bildirimlerini WordPress Transients API (`wp_options` tablosu) üzerinden yönetir:
 
-| Transient Key | Storage Location | Time-to-Live (TTL) | Eviction Trigger | Payload Structure |
+| Transient Anahtarı | Depolama Yeri | Yaşam Süresi (TTL) | Temizleme / Geçersiz Kılma Tetikleyicisi | Saklanan Veri Yapısı |
 |---|---|---|---|---|
-| `gnn_logos_github_update_check` | `wp_options` (`_transient_...`) | `43200` seconds (12 hours) | Visiting `update-core.php`, triggering manual check, or running `uninstall.php` | `(object) ['version' => '1.2.0', 'download_url' => '...', 'changelog' => '...', 'published_at' => '...']` |
-| `_site_transient_update_plugins` | `wp_options` (WordPress Core) | Managed by WP Core (12h) | Post-install upgrade, core update check, or manual check | Injects standard plugin update object into `$transient->response['gnn-logos/gnn-logos.php']` |
+| `gnn_logos_github_update_check` | `wp_options` (`_transient_...`) | `43200` saniye (12 saat) | `update-core.php` ziyareti, manuel güncelleme kontrolü veya eklenti kaldırma (`uninstall.php`) | `(object) ['version' => '1.2.0', 'download_url' => '...', 'changelog' => '...', 'published_at' => '...']` |
+| `_site_transient_update_plugins` | `wp_options` (WP Çekirdeği) | WP Çekirdeği Yönetir (12 saat) | Güncelleme sonrası kurulum, çekirdek kontrolü veya manuel istek | `$transient->response['gnn-logos/gnn-logos.php']` içine standart güncelleme nesnesi ekler |
 
 ---
 
-## 5. Physical Storage Assets
+## 5. Fiziksel Depolama Varlıkları
 
 <!-- Verified from: gnn-logos/includes/class-gnn-logos-cpt.php#L190-L240 -->
 
-| Asset Type | Storage Location | Access Protocol | Management Interface |
+| Varlık Türü | Depolama Konumu | Erişim Protokolü | Yönetim Arayüzü |
 |---|---|---|---|
-| **Logo Images** | `/wp-content/uploads/YYYY/MM/` | Native WordPress Attachment URLs | WordPress Media Library modal (`wp.media`) via "Gözat / Logo Seç" button |
-| **Plugin Package** | `/wp-content/plugins/gnn-logos/` | Local Filesystem | WordPress Plugins Dashboard / Git |
-| **Release Archive** | `gnn-logos-1.2.0.zip` | GitHub Releases CDN | GitHub Actions Release Pipeline (`.github/workflows/release.yml`) |
+| **Logo Görselleri** | `/wp-content/uploads/YYYY/MM/` | Standart WordPress Ek URL'leri | "Gözat / Logo Seç" butonu ile WordPress Ortam Kütüphanesi modalı (`wp.media`) |
+| **Eklenti Paketi** | `/wp-content/plugins/gnn-logos/` | Yerel Sunucu Dosya Sistemi | WordPress Eklentiler Sayfası / Git |
+| **Sürüm Paketi Arşivi** | `gnn-logos-1.2.0.zip` | GitHub Releases CDN | GitHub Actions Yayınlama Hattı (`.github/workflows/release.yml`) |

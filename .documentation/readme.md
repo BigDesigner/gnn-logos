@@ -1,100 +1,100 @@
-# GNN Logos - Technical Documentation Suite
+# GNN Logos - Teknik Dokümantasyon Paketi
 
 <!-- Verified from: gnn-logos/gnn-logos.php#L1-L25 -->
 <!-- Verified from: gnn-logos/readme.txt#L1-L20 -->
 
-**Architecture Category:** WordPress Plugin (Logo, Partner & Quality Certificate Showcase)  
-**Primary Stack:** PHP 8.0+, Pure CSS (GPU Keyframes & CSS Scroll-Snap), Vanilla JavaScript (<3 KB)  
-**Current Version:** 1.2.0  
-**License:** GNU General Public License v2 (GPL-2.0)  
+**Mimari Kategori:** WordPress Eklentisi (Logo, Referans ve Kalite Sertifikası Vitrini)  
+**Temel Teknoloji Yığını:** PHP 8.0+, Saf CSS (GPU Keyframe Animasyonları ve CSS Scroll-Snap), Vanilla JavaScript (<3 KB)  
+**Mevcut Sürüm:** 1.2.0  
+**Lisans:** GNU General Public License v2 (GPL-2.0)  
 
 ---
 
-## 1. Executive Summary
+## 1. Yönetici Özeti
 
-GNN Logos is an ultra-lightweight, zero-dependency WordPress showcase plugin engineered for presenting logos, reference partners, sponsors, and multi-standard quality certificates (e.g. `TS EN 12201-2`, `TS EN ISO 1452-2`, `TS EN 1555-2`) without third-party page builders or heavy JavaScript slider libraries (such as Slick, Owl Carousel, or Swiper). 
+GNN Logos; WordPress sitelerinde logoları, referans çözüm ortaklarını, sponsorları ve çoklu kalite belgelerini (`TS EN 12201-2`, `TS EN ISO 1452-2`, `TS EN 1555-2` vb.) üçüncü parti sayfa oluşturuculara veya ağır JavaScript slider kütüphanelerine (Slick, Owl Carousel, Swiper 150KB+) ihtiyaç duymadan sunmak üzere tasarlanmış ultra hafif, sıfır harici bağımlılıklı bir vitrin eklentisidir.
 
-The plugin provides:
-- A custom post type (`gnn_logo`) and hierarchical taxonomy (`gnn_logo_group`) with custom meta boxes for native WordPress Media Library image selection.
-- Multi-standard tag chips supporting dynamic Enter/paste entry and structured flex-wrap monospace badge pill styling.
-- Layout engine supporting Responsive Grid, CSS Scroll-Snap horizontal Carousel, and GPU-accelerated Keyframe Marquee/Ticker with left/right direction and pause-on-hover.
-- Custom aspect-ratio container preservation (`16/9`, `4/3`, `1/1`, `3/2`, `2/1`, `auto`) and `object-fit: contain` to prevent distortion.
-- An interactive Shortcode Generator admin interface at position `'79.109'`.
-- Native GitHub Releases automatic updater integrating directly with core WordPress update transients.
+Eklentinin sunduğu temel yetenekler:
+- WordPress yerel Ortam Kütüphanesi (`wp.media`) üzerinden görsel seçimi sağlayan özel yazı türü (`gnn_logo`), hiyerarşik taksonomi (`gnn_logo_group`) ve meta kutuları.
+- Enter veya yapıştırma ile dinamik giriş yapılabilen ve akıcı flexbox monospace rozet hapları halinde sunulan çoklu standart rozet yönetim sistemi.
+- Responsive Grid, CSS Scroll-Snap yatay Karusel ve kesintisiz sağa/sola akış destekleyen GPU hızlandırmalı Keyframe Marquee (Kayan Şerit) düzen motoru.
+- Görsel bozulmalarını ve taşmalarını önleyen modern CSS en-boy oranı (`aspect-ratio`: `16/9`, `4/3`, `1/1`, `3/2`, `2/1`, `auto`) ve `object-fit: contain` desteği.
+- WordPress yönetim panelinde `'79.109'` pozisyonunda yer alan interaktif Shortcode Oluşturucu arayüzü ve 4 adet hazır şablon butonu.
+- WordPress çekirdek güncelleme hattına (`site_transient_update_plugins`) doğrudan bağlanan yerel GitHub Releases otomatik güncelleyicisi.
 
-### 1.1 Business Objective & Target Audience
-- **Target Sectors:** Industrial manufacturing, engineering, B2B services, corporate enterprises, and e-commerce platforms requiring verified compliance badge displays (TSE, EN, ISO standards).
-- **Core Problem Solved:** Eliminates performance degradation, layout shifts (CLS), and PageSpeed penalties caused by bloated page-builder add-ons and external JavaScript slider libraries (Swiper 150KB+, Slick, Owl).
-- **Agency & Developer Utility:** Provides a plug-and-play, zero-conflict solution for digital agencies and WordPress engineers to rapidly integrate clean, accessible logo and certificate showcases across client installations without licensing overhead or CDN vulnerabilities.
+### 1.1 İş Hedefi ve Hedef Kitle
+- **Hedef Sektörler:** İmalat sanayii, mühendislik, B2B kurumsal şirketler ve e-ticaret platformları (TSE, EN, ISO kalite standartlarını ve akreditasyonlarını sergileyen kurumlar).
+- **Çözülen Temel Problem:** Şişkin sayfa oluşturucu eklentilerinin ve harici JavaScript slider kütüphanelerinin (Swiper 150KB+, Slick, Owl) neden olduğu sayfa açılış gecikmelerini (PageSpeed cezaları), kümülatif düzen kaymalarını (CLS) ve Core Web Vitals performans düşüşlerini tamamen ortadan kaldırmak.
+- **Ajans ve Geliştirici Kolaylığı:** Dijital ajanslar ve WordPress mühendisleri için lisanslama maliyeti, CDN güvenlik zaafiyeti veya script çakışması riski olmadan müşteri sitelerine hızlıca şık ve erişilebilir vitrinler entegre etme imkanı sağlamak.
 
 ---
 
-## 2. Prerequisites & System Requirements
+## 2. Önkoşullar ve Sistem Gereksinimleri
 
 <!-- Verified from: gnn-logos/readme.txt#L5-L10 -->
 <!-- Verified from: gnn-logos/gnn-logos.php#L1-L20 -->
 
-| Dimension | Minimum Requirement | Verified Supported Target | Notes |
+| Boyut | Asgari Gereksinim | Doğrulanan Destek Hedefi | Notlar |
 |---|---|---|---|
-| **PHP Runtime** | `8.0` | `8.0`, `8.1`, `8.2`, `8.3` | Uses modern type safety, strict string functions, and null coalescing |
-| **WordPress Core** | `5.8` | Tested up to `6.7` | Requires `wp_get_attachment_image`, `wp_safe_redirect`, and native block compatibility |
-| **Database** | MySQL `5.7+` / MariaDB `10.3+` | WordPress native default | Uses standard `wp_posts`, `wp_postmeta`, `wp_terms`, `wp_term_taxonomy` |
-| **Web Server** | Apache / Nginx / LiteSpeed | HTTP/2 or HTTP/3 recommended | Requires standard PHP rewrite modules for WordPress pretty permalinks |
-| **External Dependencies** | None (`0`) | Strictly zero npm/CDN dependencies | Eliminates jQuery slider plugins, CDNs, or foreign font dependencies |
+| **PHP Çalışma Zamanı** | `8.0` | `8.0`, `8.1`, `8.2`, `8.3` | Modern tip güvenliği, katı string kontrolleri ve null birleştirme işleçleri kullanır |
+| **WordPress Çekirdeği** | `5.8` | Test edilen: `6.7` | `wp_get_attachment_image`, `wp_safe_redirect` ve yerel blok uyumluluğu gerektirir |
+| **Veritabanı** | MySQL `5.7+` / MariaDB `10.3+` | WordPress varsayılanı | Standart `wp_posts`, `wp_postmeta`, `wp_terms`, `wp_term_taxonomy` tablolarını kullanır |
+| **Web Sunucusu** | Apache / Nginx / LiteSpeed | HTTP/2 veya HTTP/3 önerilir | Kalıcı bağlantılar (pretty permalinks) için standart PHP rewrite modüllerini gerektirir |
+| **Harici Bağımlılıklar** | Sıfır (`0`) | Sıfır npm / CDN kütüphanesi | jQuery slider eklentilerini, harici CDN scriptlerini ve yabancı yazı tiplerini tamamen dışlar |
 
 ---
 
-## 3. Quick Start Installation
+## 3. Hızlı Başlangıç ve Kurulum
 
 <!-- Verified from: .specs/bootstrap.md#L14-L20 -->
 
-### Method A: Manual Installation
-1. Download `gnn-logos.zip` from the [GitHub Releases](https://github.com/BigDesigner/gnn-logos/releases) page.
-2. In the WordPress Admin, navigate to **Plugins** -> **Add New** -> **Upload Plugin**.
-3. Upload the archive and click **Activate Plugin**.
+### Yöntem A: Yönetim Panelinden Yükleme (ZIP)
+1. En güncel `gnn-logos.zip` paketini [GitHub Releases](https://github.com/BigDesigner/gnn-logos/releases) sayfasından indirin.
+2. WordPress Yönetim Paneli -> **Eklentiler** -> **Yeni Eklenti Ekle** -> **Eklenti Yükle** alanına gidin.
+3. Arşiv dosyasını seçip yükleyin ve **Eklentiyi Etkinleştir** butonuna tıklayın.
 
-### Method B: Direct Filesystem / Git Clone
-1. Navigate to your WordPress installation's plugin directory:
+### Yöntem B: Dosya Sistemi / Git Clone
+1. WordPress kurulumunuzun eklentiler dizinine gidin:
    ```bash
    cd wp-content/plugins/
    ```
-2. Clone the repository into `gnn-logos`:
+2. Depoyu `gnn-logos` dizinine klonlayın:
    ```bash
    git clone https://github.com/BigDesigner/gnn-logos.git gnn-logos
    ```
-3. Activate the plugin via WP-CLI:
+3. Eklentiyi WP-CLI üzerinden etkinleştirin:
    ```bash
    wp plugin activate gnn-logos
    ```
-   Or activate via the WordPress Admin Dashboard (**Plugins** -> **Installed Plugins** -> **GNN Logos**).
+   Veya WordPress Yönetim Paneli (**Eklentiler** -> **Yüklü Eklentiler** -> **GNN Logos**) üzerinden aktifleştirin.
 
 ---
 
-## 4. Available Verification & CI/CD Scripts
+## 4. Mevcut Doğrulama ve CI/CD Komutları
 
 <!-- Verified from: .github/workflows/release.yml#L1-L50 -->
 
-| Command / Trigger | Environment | Purpose | Source / Citation |
+| Komut / Tetikleyici | Çalışma Ortamı | Amaç | Kaynak Kanıtı |
 |---|---|---|---|
-| `php -l <file.php>` | Local CLI | Validates PHP syntax on individual files before staging | `.specs/constitution.md#L32` |
-| `Get-ChildItem -Recurse -Filter *.php gnn-logos \| ForEach-Object { php -l $_.FullName }` | PowerShell (Windows) | Batch linting of all PHP files in plugin package | Local Dev Workflow |
-| `gh workflow run release.yml` | GitHub CLI | Triggers automated GitHub Release build and zip packaging | `.github/workflows/release.yml#L1-L50` |
-| `git status` | Git CLI | Verifies working tree cleanliness and tracking state | `.memory-bank/system-coherence.md#L11` |
+| `php -l <dosya.php>` | Yerel CLI | Commit öncesinde PHP dosyalarında sözdizim hatası kontrolü yapar | `.specs/constitution.md#L32` |
+| `Get-ChildItem -Recurse -Filter *.php gnn-logos \| ForEach-Object { php -l $_.FullName }` | PowerShell (Windows) | Eklenti paketindeki tüm PHP dosyalarını toplu olarak doğrular | Yerel Geliştirici İş Akışı |
+| `gh workflow run release.yml` | GitHub CLI | GitHub Actions release derleme ve zip paketleme sürecini tetikler | `.github/workflows/release.yml#L1-L50` |
+| `git status` | Git CLI | Çalışma ağacının temizliğini ve takip durumunu doğrular | `.memory-bank/system-coherence.md#L11` |
 
 ---
 
-## 5. Configuration & Constants Inventory
+## 5. Yapılandırma ve Sabitler Envanteri
 
 <!-- Verified from: gnn-logos/gnn-logos.php#L16-L20 -->
 <!-- Verified from: gnn-logos/inc/updater.php#L20-L45 -->
 
-| Identifier | Type | Default Value | Description | File Citation |
+| Tanımlayıcı | Tür | Varsayılan Değer | Açıklama | Dosya Kanıtı |
 |---|---|---|---|---|
-| `GNN_LOGOS_VERSION` | Constant (string) | `'1.2.0'` | Current release semantic version tag | `gnn-logos/gnn-logos.php#L17` |
-| `GNN_LOGOS_FILE` | Constant (string) | `__FILE__` | Absolute path to the main plugin loader file | `gnn-logos/gnn-logos.php#L18` |
-| `GNN_LOGOS_DIR` | Constant (string) | `plugin_dir_path(__FILE__)` | Absolute server directory path with trailing slash | `gnn-logos/gnn-logos.php#L19` |
-| `GNN_LOGOS_URL` | Constant (string) | `plugin_dir_url(__FILE__)` | Public URI to the plugin root with trailing slash | `gnn-logos/gnn-logos.php#L20` |
-| `$repo` | Property (string) | `'BigDesigner/gnn-logos'` | Remote GitHub repository slug for update polling | `gnn-logos/inc/updater.php#L24` |
-| `$transient_key` | Property (string) | `'gnn_logos_github_update_check'` | Transient option key for caching remote GitHub releases | `gnn-logos/inc/updater.php#L38` |
-| `$cache_duration`| Property (int) | `43200` (12 hours) | Time-to-live in seconds for update release cache | `gnn-logos/inc/updater.php#L45` |
-| Menu Position | String | `'79.109'` | Dedicated WordPress admin sidebar slot for GNN family | `gnn-logos/includes/class-gnn-logos-admin.php#L38` |
+| `GNN_LOGOS_VERSION` | Sabit (string) | `'1.2.0'` | Güncel semantik sürüm etiketi | `gnn-logos/gnn-logos.php#L17` |
+| `GNN_LOGOS_FILE` | Sabit (string) | `__FILE__` | Ana eklenti yükleyici dosyasının mutlak sunucu yolu | `gnn-logos/gnn-logos.php#L18` |
+| `GNN_LOGOS_DIR` | Sabit (string) | `plugin_dir_path(__FILE__)` | Eklenti kök dizininin sonu taksimli mutlak yolu | `gnn-logos/gnn-logos.php#L19` |
+| `GNN_LOGOS_URL` | Sabit (string) | `plugin_dir_url(__FILE__)` | Eklenti kök dizininin genel erişim web adresi (URL) | `gnn-logos/gnn-logos.php#L20` |
+| `$repo` | Özellik (string) | `'BigDesigner/gnn-logos'` | Güncelleme sorguları için uzak GitHub depo yolu | `gnn-logos/inc/updater.php#L24` |
+| `$transient_key` | Özellik (string) | `'gnn_logos_github_update_check'` | Uzak GitHub release verilerini saklayan transient anahtarı | `gnn-logos/inc/updater.php#L38` |
+| `$cache_duration`| Özellik (int) | `43200` (12 saat) | Güncelleme önbelleğinin saniye cinsinden yaşam süresi (TTL) | `gnn-logos/inc/updater.php#L45` |
+| Menü Pozisyonu | Değer (string) | `'79.109'` | GNN ailesi için ayrılmış özel WordPress sol menü sırası | `gnn-logos/includes/class-gnn-logos-admin.php#L38` |

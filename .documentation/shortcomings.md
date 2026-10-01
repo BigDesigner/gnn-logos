@@ -1,54 +1,55 @@
-# Technical Debt, Shortcomings & Runtime Risks
+# Teknik Borç, Sınırlar ve Çalışma Zamanı Riskleri
 
 <!-- Verified from: gnn-logos/inc/updater.php#L85-L115 -->
 <!-- Verified from: gnn-logos/includes/class-gnn-logos-shortcode.php#L130-L160 -->
 <!-- Verified from: .specs/boundary-conditions.md#L50-L75 -->
 
-## 1. Code Debt Markers Inventory
+## 1. Kod Borcu İmleri Envanteri
 
-A comprehensive static inspection of all PHP, JavaScript, and CSS files was performed searching for `TODO`, `FIXME`, `HACK`, `BUG`, `XXX`, and `DEPRECATED` annotations:
+Tüm PHP, JavaScript ve CSS dosyalarında `TODO`, `FIXME`, `HACK`, `BUG`, `XXX` ve `DEPRECATED` ifadeleri statik olarak taranmıştır:
 
-| Marker Type | File Path | Line | Code Excerpt / Summary | Status / Severity |
+| İfade Türü | Dosya Yolu | Satır | Kod Özeti / Açıklama | Durum / Önem |
 |---|---|---|---|---|
-| None | N/A | N/A | Zero debt markers detected across all 10 project source files | [OK] Clean Baseline |
+| Yok | N/A | N/A | Projenin 10 kaynak dosyasında hiçbir teknik borç veya geçici yama tespit edilmedi | [OK] Temiz Taban Çizgisi |
 
 ---
 
-## 2. Unverified Runtime Risks & External Boundaries
+## 2. Doğrulanamayan Çalışma Zamanı Riskleri ve Dış Sınırlar
 
 <!-- Verified from: gnn-logos/inc/updater.php#L95-L110 -->
 
 > [!WARNING]
-> Static syntax validation (`php -l`) and unit linting prove only that PHP code parses without fatal syntax errors. The following operational boundaries depend on runtime server environments and external infrastructure:
+> Statik sözdizim denetimi (`php -l`), PHP kodunun yalnızca derleme seviyesinde hatasız olduğunu kanıtlar. Aşağıdaki operasyonel sınırlar sunucu ortamına ve harici altyapılara bağlıdır:
 
-| Risk Identifier | Component | Boundary Description | Potential Failure Mode | Mitigating Architecture |
+| Risk Tanımlayıcısı | İlgili Bileşen | Sınır Açıklaması | Olası Hata Durumu | Uygulanan Mimari Önlem |
 |---|---|---|---|---|
-| **R-001: GitHub API Rate Limits** | `GNN_Logos_Updater` | GitHub's public API limits unauthenticated requests to 60 requests/hour per originating IP address. | If a shared hosting server hosts multiple sites checking updates or an admin repeatedly flushes cache, GitHub returns `403 Forbidden` (`API rate limit exceeded`). | Mitigated by a 12-hour transient cache (`gnn_logos_github_update_check`). Failures are cached for 5 minutes (`300s`) to prevent rapid retry loops. |
-| **R-002: Filesystem Move Permissions** | `GNN_Logos_Updater::after_install` | WordPress `WP_Filesystem::move()` is invoked to normalize the unzipped GitHub folder to `wp-content/plugins/gnn-logos/`. | On servers with restrictive file ownership (e.g. PHP running under `www-data` while files are owned by `root`), the filesystem move operation may fail. | WordPress core prompts for FTP/SSH credentials if direct filesystem writes fail. Standard `upgrader_post_install` error return is preserved. |
-| **R-003: Large Dataset Memory Saturation** | `GNN_Logos_Shortcode` | When `limit="-1"` is specified, `WP_Query` retrieves all published `gnn_logo` posts into memory. | On sites with hundreds of logos, fetching all post records and looping through attachment metadata in a single request could cause PHP memory exhaustion or slow TTFB. | Recommend setting practical `limit` attributes (e.g. `20` or `30`) for marquee and carousel showcases. |
-| **R-004: Browser CSS Aspect Ratio Fallback** | `gnn-logos-frontend.css` | Uses modern CSS `aspect-ratio` property. | Legacy browsers (Chrome <88, Safari <15) do not support native CSS `aspect-ratio`. | Handled progressively; fallback relies on `max-height: 100%` and `object-fit: contain` on `.gnn-logo-img` to avoid horizontal layout breaking. |
+| **R-001: GitHub API Hız Sınırları** | `GNN_Logos_Updater` | GitHub'ın genel API'si yetkilendirilmemiş istekleri kaynak IP başına saatte 60 istekle sınırlar. | Paylaşımlı bir sunucuda birden fazla site güncelleme sorguladığında veya yönetici önbelleği peş peşe temizlediğinde GitHub `403 Forbidden` (`API rate limit exceeded`) dönebilir. | 12 saatlik transient önbelleği (`gnn_logos_github_update_check`) ile korunur. Başarısız istekler de 5 dakika (`300s`) önbelleğe alınarak peş peşe istek döngüleri engellenir. |
+| **R-002: Dosya Taşıma İzinleri** | `GNN_Logos_Updater::after_install` | WordPress `WP_Filesystem::move()` ile GitHub'ın açtığı klasörü `wp-content/plugins/gnn-logos/` yoluna normalize eder. | Kısıtlayıcı dosya sahipliklerinde (örn: PHP `www-data` altında çalışırken dosyaların sahibi `root` ise) klasör taşıma işlemi başarısız olabilir. | Doğrudan yazma yetersizse WordPress çekirdeği otomatik olarak FTP/SSH kimlik bilgisi talep eder; standart `upgrader_post_install` hata akışı korunmuştur. |
+| **R-003: Yüksek Veri Hacminde Bellek Tüketimi** | `GNN_Logos_Shortcode` | `limit="-1"` verildiğinde `WP_Query` yayımlanmış tüm `gnn_logo` yazılarını belleğe çeker. | Yüzlerce logonun bulunduğu sitelerde tek istekte tüm ek meta verilerini döngüye sokmak bellek tüketimini artırabilir. | Karusel ve kayan şerit vitrinlerinde makul limit değerleri (örn: `20` veya `30`) kullanılması önerilir. |
+| **R-004: Eski Tarayıcılarda En-Boy Oranı Desteği** | `gnn-logos-frontend.css` | Modern CSS `aspect-ratio` özelliğini kullanır. | Eski tarayıcılar (Chrome <88, Safari <15) yerel CSS `aspect-ratio` desteğine sahip değildir. | Düzenin bozulmaması için `.gnn-logo-img` üzerinde `max-height: 100%` ve `object-fit: contain` kuralları ile kademeli yedekleme sağlanmıştır. |
 
 ---
 
-## 3. Boundary Hardening History (Resolved in v1.2.0)
+## 3. Sıkılaştırılan Güvenlik Sınırları (v1.2.0 İtibarıyla)
 
-During the recent Sentinel security audit (Commit `5e32cbe`), several architectural seams were identified and permanently resolved:
+Son Sentinel güvenlik denetiminde (Commit `5e32cbe`) tespit edilen sınır eksiklikleri kalıcı olarak çözüme kavuşturulmuştur:
 
-1. **Legacy Certification Code Newline Stripping (H-1):**
-   - *Previous Risk:* `sanitize_text_field()` stripped `\r\n` characters before `preg_split` could parse them, breaking multi-standard line separation.
-   - *Resolution:* Upgraded to `sanitize_textarea_field(wp_unslash($_POST['gnn_cert_code']))`.
-2. **Shortcode `orderby` Parameter Allowlist (H-3):**
-   - *Previous Risk:* Unrestricted query string input passed to `WP_Query` orderby parameter.
-   - *Resolution:* Enforced strict in_array allowlist (`menu_order`, `date`, `title`, `rand`, `ID`, `author`, `name`, `modified`, `parent`, `none`).
-3. **DOM-based XSS Prevention in Admin UI (H-4):**
-   - *Previous Risk:* Image preview box used `.html('<img src="' + url + '">')` string concatenation.
-   - *Resolution:* Replaced with native jQuery element construction (`$('<img>').attr('src', url)`).
-4. **Orphaned Database Records upon Deletion (M-1):**
-   - *Previous Risk:* `uninstall.php` only deleted update transients, leaving custom post entries and taxonomy terms in the database.
-   - *Resolution:* Upgraded `uninstall.php` to completely purge all `gnn_logo` posts, postmeta, `gnn_logo_group` terms, and transients.
+1. **Eski Sertifika Kodlarında Satır Sonu Koruması (H-1):**
+   - *Önceki Risk:* `sanitize_text_field()` fonksiyonunun `\r\n` karakterlerini boşluğa çevirerek `preg_split`'in satır başı ayrımını bozması.
+   - *Çözüm:* `sanitize_textarea_field(wp_unslash($_POST['gnn_cert_code']))` ile değiştirildi.
+2. **Shortcode `orderby` Parametresi İzin Listesi (H-3):**
+   - *Önceki Risk:* Gelen sıralama metninin doğrudan `WP_Query` sorgusuna aktarılması.
+   - *Çözüm:* Katı beyaz liste (`menu_order`, `date`, `title`, `rand`, `ID`, `author`, `name`, `modified`, `parent`, `none`) uygulandı.
+3. **Yönetim Panelinde DOM Tabanlı XSS Önleme (H-4):**
+   - *Önceki Risk:* Görsel önizlemesinde string birleştirmeli `.html('<img src="' + url + '">')` kullanımı.
+   - *Çözüm:* Güvenli jQuery DOM nesne üretimi (`$('<img>').attr('src', url)`) ile değiştirildi.
+4. **Kaldırma Sırasında Yetim Kalan Veritabanı Kayıtları (M-1):**
+   - *Önceki Risk:* `uninstall.php` dosyasının yalnızca transientleri silip yazıları ve terimleri temizlememesi.
+   - *Çözüm:* Kaldırma rutini tüm `gnn_logo` yazılarını, `postmeta` verilerini, `gnn_logo_group` terimlerini ve transientleri tamamen silecek şekilde güncellendi.
 
 ---
 
-## 4. Product Roadmap & Strategic Evolution
-- **Native Block & Page Builder Extensions:** Development of dedicated Gutenberg native blocks (`@wordpress/block-editor`) and Elementor custom widgets to provide visual controls alongside the existing shortcode engine.
-- **Multi-Lingual Localization:** Formal integration and compatibility testing with WPML and Polylang for multi-language logo titles, descriptions, and certificate badge chips.
+## 4. Ürün Yol Haritası ve Stratejik Genişleme
+
+- **Native Editör ve Görsel Düzenleyici Desteği:** Mevcut shortcode motoruna ek olarak modern Gutenberg yerel bloğu (`@wordpress/block-editor`) ve Elementor custom widget bileşenlerinin geliştirilmesi.
+- **Çoklu Dil Uyumluluğu:** Çok dilli web siteleri için WPML ve Polylang entegrasyonu sağlanarak logo başlıkları, açıklamaları ve rozet dizilimlerinin yerelleştirilmesi.
