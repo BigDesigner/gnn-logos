@@ -3,6 +3,9 @@
 - **Status**: Accepted
 - **Confidence**: Verified
 - **Date**: 2026-09-30
+- **Category**: Foundational Dependencies & Persistence
+- **Supersedes**: None
+- **Superseded By**: None
 
 ## Context
 The project requires a lightweight, performant WordPress plugin to manage and display partner logos, client references, certificates, and accreditation marks across any WordPress page using shortcodes. The plugin must run natively within WordPress environments without imposing heavy dependencies or breaking Core Web Vitals.

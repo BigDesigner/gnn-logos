@@ -3,6 +3,9 @@
 - **Status**: Accepted
 - **Confidence**: Verified
 - **Date**: 2026-10-01
+- **Category**: External Integrations & Structural Topology
+- **Supersedes**: [ADR-0004: GNN Ecosystem Menu Position Registry & GitHub Auto-Updater](file://.memory-bank/adr/0004-admin-menu-position-and-auto-updater.md) (Section 3: Updater Engine)
+- **Superseded By**: None
 
 ## Context
 When updating a custom GitHub-hosted plugin, users frequently encounter a false positive "Update Available" notification on `plugins.php` even after upgrading to the latest version.
@@ -35,6 +38,11 @@ This occurs because WordPress caches the `update_plugins` transient in `wp_optio
 - Eliminates recurring false-positive update notices.
 - WordPress Admin accurately reflects the real-time installation status.
 - Zero extra database queries; operates purely in memory on transient objects.
+
+## Lineage & Migration
+1. **Deficiency of ADR-0004 Section 3**: ADR-0004 hooked only `pre_set_site_transient_update_plugins` and did not unset response entries when versions matched. This left stale transient data in `wp_options` for up to 12 hours after an upgrade.
+2. **Migration Path**: The updater now filters transient reads (`site_transient_update_plugins`), immediately sanitizing existing cache entries on every admin screen load.
+3. **Backward Compatibility**: Fully transparent to end users; no settings changes required.
 
 ## Evidence
 - User screenshot `media_1790813125491.png` showing version 1.0.2 installed while simultaneously prompting to update to 1.0.2.

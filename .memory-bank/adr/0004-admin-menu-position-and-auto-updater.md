@@ -1,8 +1,11 @@
 # ADR 0004: GNN Ecosystem Menu Position Registry & GitHub Auto-Updater
 
-- **Status**: Accepted
+- **Status**: Partially Amended by [ADR-0006: Robust WordPress Update Transient Synchronization and Slug Normalization](file://.memory-bank/adr/0006-updater-transient-synchronization.md) (Section 3: Updater Engine)
 - **Confidence**: Verified
 - **Date**: 2026-10-01
+- **Category**: External Integrations & Structural Topology
+- **Supersedes**: None
+- **Superseded By**: [ADR-0006: Robust WordPress Update Transient Synchronization and Slug Normalization](file://.memory-bank/adr/0006-updater-transient-synchronization.md) (Section 3)
 
 ## Context
 Following the established architecture of sibling GNN WordPress plugins (`gnn-smtpmail`, `gnn-filehub`, `gnn-terms-popup`), all GNN plugins follow consistent brand identity, author attribution, admin menu positioning, and seamless GitHub release auto-updating.

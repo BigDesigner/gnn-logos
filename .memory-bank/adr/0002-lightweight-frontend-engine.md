@@ -3,6 +3,9 @@
 - **Status**: Accepted
 - **Confidence**: Verified
 - **Date**: 2026-09-30
+- **Category**: Structural Topology & Dependencies
+- **Supersedes**: None
+- **Superseded By**: None
 
 ## Context
 Many WordPress slider/carousel plugins load bulky external JavaScript bundles (e.g. Slick Carousel + jQuery, Swiper 150KB+), degrading site loading speeds, Google PageSpeed scores, and Core Web Vitals (LCP, CLS, INP). The user explicitly requested an ultra-lightweight plugin that handles carousels, sliding animations, marquee tickers, and responsive grids.

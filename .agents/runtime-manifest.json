@@ -18,8 +18,10 @@
         ".memory-bank/audits/",
         ".memory-bank/bugs/",
         ".archive/docs-migration/",
-        "includes/",
-        "assets/"
+        "gnn-logos/",
+        "gnn-logos/inc/",
+        "gnn-logos/includes/",
+        "gnn-logos/assets/"
       ]
     },
     "automation": {

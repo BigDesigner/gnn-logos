@@ -64,6 +64,21 @@ All logo images rendered on the frontend MUST:
 - Include `loading="lazy"` and `decoding="async"` attributes to preserve Core Web Vitals.
 - Apply `object-fit: contain` within an aspect-ratio container to prevent distortion.
 
+### 2.4 Admin Menu Registry & Position Invariant
+- **Slot**: Must be registered at position `'79.109'` strictly adjacent to WordPress Settings.
+- **Submenus**: Order must remain `All Items`, `Add New`, `Groups`, `Shortcode Generator`, `Check Updates`.
+
+### 2.5 Multi-Standard Badges & Layout Invariant
+- **Layouts**: `badges_layout` supports `wrap` (side-by-side flex wrap) and `stacked` (vertical column).
+- **Horizontal Alignment**: `badges_align` supports `center`, `left`, `right`.
+- **Vertical Alignment**: `badges_valign` supports `bottom` (fixed to card bottom), `top` (14px directly beneath logo), `center` (centered with logo).
+- **Container Structure**: Monospace badge pills (`.gnn-cert-badge`) inside `.gnn-cert-badges-wrap`.
+
+### 2.6 WordPress Update Transient Synchronization Invariant
+- **Slug Resolution**: Dynamically resolved via `plugin_basename(GNN_LOGOS_FILE)` to ensure 100% key matching across custom directory names.
+- **Stale Notification Prevention**: Hook `site_transient_update_plugins` (read hook). Unconditionally `unset($transient->response[$this->plugin_slug])` when local version is greater than or equal to remote version.
+- **Cache Eviction**: Execute `delete_site_transient('update_plugins')` upon post-install upgrade and core update page visits (`$pagenow === 'update-core.php'`).
+
 ## 3. End-to-End Integration Contract (Anti-Illusion Rule)
 Every feature must verify all 5 links of the feature chain:
 1. DB Persistence (`wp_posts`, `wp_postmeta`)
@@ -71,3 +86,4 @@ Every feature must verify all 5 links of the feature chain:
 3. Frontend Renderer (HTML DOM generation with proper data attributes)
 4. UI Trigger Element (Nav buttons, touch drag, auto-play timer)
 5. UI Feedback (Visual slide transition, pause-on-hover state)
+

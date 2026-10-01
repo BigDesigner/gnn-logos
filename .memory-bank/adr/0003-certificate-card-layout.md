@@ -1,8 +1,16 @@
 # ADR 0003: Certificate Codes, Badges, and Card Layout Architecture
 
-- **Status**: Accepted
+> [!WARNING]
+> **SUPERSEDED ARCHITECTURAL DECISION**
+> This decision was superseded on 2026-10-01 by [ADR-0005: Multi-Standard Tag Chips and Certificate Badges Layout Engine](file://.memory-bank/adr/0005-multi-standard-badges-and-layout-engine.md).
+> Refer to the succeeding record for active multi-standard badge arrays and 3D layout/alignment controls.
+
+- **Status**: Superseded by [ADR-0005: Multi-Standard Tag Chips and Certificate Badges Layout Engine](file://.memory-bank/adr/0005-multi-standard-badges-and-layout-engine.md)
 - **Confidence**: Verified
 - **Date**: 2026-09-30
+- **Category**: Persistence & Schema Evolution
+- **Supersedes**: None
+- **Superseded By**: [ADR-0005: Multi-Standard Tag Chips and Certificate Badges Layout Engine](file://.memory-bank/adr/0005-multi-standard-badges-and-layout-engine.md)
 
 ## Context
 The user specified that when displaying certificates (e.g., ISO standards, TSE norms such as `TS EN 12201-2`, `TS EN ISO 1452-2`, `TS EN 1555-2`), there must be a visually appealing, beautifully styled caption/code area underneath each certificate logo/mark.

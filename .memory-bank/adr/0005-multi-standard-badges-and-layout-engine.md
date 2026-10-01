@@ -3,6 +3,9 @@
 - **Status**: Accepted
 - **Confidence**: Verified
 - **Date**: 2026-10-01
+- **Category**: Persistence & Schema Evolution
+- **Supersedes**: [ADR-0003: Certificate Codes, Badges, and Card Layout Architecture](file://.memory-bank/adr/0003-certificate-card-layout.md)
+- **Superseded By**: None
 
 ## Context
 Industrial certificates, technical compliance documents, and partner logos often require displaying multiple standards simultaneously (e.g., `TS EN 12201-2`, `TS EN ISO 1452-2`, `TS EN 1555-2`, `ISO 9001:2015`).
@@ -39,6 +42,11 @@ Added three granular control attributes to `[gnn_logos]`:
 - High-density standard codes render cleanly across varying screen sizes.
 - Users have full visual authority over badge placement and card aesthetics.
 - Zero external libraries or bloated CSS frameworks introduced.
+
+## Lineage & Migration
+1. **Deficiency of ADR-0003**: ADR-0003 only supported a single string field (`_gnn_cert_code`) and a single `.gnn-cert-code` banner. This caused standard codes to clump into a single overflowing text block when multiple standards were required.
+2. **Migration Path**: Existing single strings stored in `_gnn_cert_code` are automatically detected and parsed into the new `_gnn_cert_codes` array upon load and save.
+3. **Backward Compatibility**: Any existing shortcodes without `badges_layout`, `badges_align`, or `badges_valign` maintain their visual appearance via safe defaults (`wrap`, `center`, `bottom`).
 
 ## Evidence
 - User feedback and screenshot verification (`media_1790811958987.png`, `media_1790812476750.png`, `media_1790814367888.png`).
