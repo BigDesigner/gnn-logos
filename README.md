@@ -4,6 +4,7 @@ WordPress logo, referans ve kalite standardı/sertifika vitrin eklentisi.
 
 [![GitHub release](https://img.shields.io/github/v/release/BigDesigner/gnn-logos)](https://github.com/BigDesigner/gnn-logos/releases)
 [![License: GPL-2.0-or-later](https://img.shields.io/badge/License-GPLv2%2B-blue.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
+[![Buy Me A Coffee](https://img.shields.io/badge/Donate-Buy%20Me%20A%20Coffee-yellow.svg)](https://buymeacoffee.com/bigdesigner)
 
 ---
 
