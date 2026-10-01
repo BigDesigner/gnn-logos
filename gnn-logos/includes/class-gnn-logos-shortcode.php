@@ -130,12 +130,16 @@ class GNN_Logos_Shortcode
             $speed .= 's';
         }
 
+        // Strict whitelist for orderby parameter (defense-in-depth)
+        $allowed_orderby = array('none', 'ID', 'author', 'title', 'name', 'type', 'date', 'modified', 'parent', 'rand', 'menu_order');
+        $safe_orderby = in_array($atts['orderby'], $allowed_orderby, true) ? $atts['orderby'] : 'menu_order';
+
         // Build query args
         $query_args = array(
             'post_type'      => GNN_Logos_CPT::POST_TYPE,
             'post_status'    => 'publish',
             'posts_per_page' => $limit,
-            'orderby'        => sanitize_text_field($atts['orderby']),
+            'orderby'        => $safe_orderby,
             'order'          => in_array(strtoupper($atts['order']), array('ASC', 'DESC'), true) ? strtoupper($atts['order']) : 'ASC',
         );
 

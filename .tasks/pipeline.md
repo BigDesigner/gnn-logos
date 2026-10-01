@@ -3,7 +3,7 @@
 - **Project**: GNN Logos
 - **Author**: BigDesigner
 - **Admin Menu Slot**: `'79.109'`
-- **Active Sprint**: v1.0.0-mvp
+- **Active Sprint**: v1.2.0
 - **Status**: Sprint Completed & Verified
 
 ## Sprint Backlog: v1.0.0-mvp
@@ -91,3 +91,12 @@
 - Created flexbox rules `.gnn-valign-top`, `.gnn-valign-center`, and `.gnn-valign-bottom` in `gnn-logos-frontend.css`.
 - Added "Dikey Hizalama" dropdown in Shortcode Builder admin UI.
 - Bumped version to 1.1.1 across all files.
+
+### [x] TASK-012: Security Hardening & Uninstall Cleanup (v1.2.0)
+- Fixed logic bug: `sanitize_text_field` → `sanitize_textarea_field` for legacy cert code fallback to preserve newlines for `preg_split`.
+- Added `wp_unslash()` to `_gnn_link_target` and `_gnn_aspect_ratio` save paths (WPCS compliance).
+- Added strict `orderby` whitelist in shortcode `WP_Query` (defense-in-depth).
+- Replaced `.html()` string concatenation with safe jQuery DOM creation in admin JS (DOM XSS prevention).
+- Added `current_user_can('update_plugins')` capability check in `handle_manual_update_redirect()`.
+- Complete uninstall cleanup: `gnn_logo` posts + postmeta, `gnn_logo_group` taxonomy terms, and all transients.
+- Bumped version to 1.2.0 across all files.

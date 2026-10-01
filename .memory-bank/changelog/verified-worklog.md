@@ -1,9 +1,18 @@
 # Verified Worklog
 
 - **Project**: GNN Logos
-- **Sprint**: v1.1.1
+- **Sprint**: v1.2.0
 
 ## Completed Work
+- **2026-10-01** (v1.2.0):
+  - **Logic Bug Fix (Newline Preservation)**: Replaced `sanitize_text_field()` with `sanitize_textarea_field()` in legacy certificate codes fallback (`class-gnn-logos-cpt.php`), ensuring `\r\n` newlines are preserved so `preg_split` can properly extract individual codes.
+  - **WPCS Input Sanitization**: Added missing `wp_unslash()` calls on `_gnn_link_target` and `_gnn_aspect_ratio` saves.
+  - **Shortcode Orderby Allowlist**: Added strict allowlist for `orderby` parameter in `class-gnn-logos-shortcode.php` (`none`, `ID`, `author`, `title`, `name`, `type`, `date`, `modified`, `parent`, `rand`, `menu_order`).
+  - **Admin DOM XSS Hardening**: Replaced `.html()` string concatenation with safe jQuery DOM element creation (`$('<img>')`) in `gnn-logos-admin.js`.
+  - **Admin Capability Guard**: Added explicit `current_user_can('update_plugins')` authorization guard to `handle_manual_update_redirect()` in `class-gnn-logos-admin.php`.
+  - **Complete Uninstall Lifecycle Cleanup**: Upgraded `uninstall.php` to completely purge all `gnn_logo` custom posts, associated `postmeta`, all `gnn_logo_group` taxonomy terms, and updater transients.
+  - **Documentation & Badges**: Connected `README.md` license badge dynamically to repository's `LICENSE` file (`shields.io/github/license/BigDesigner/gnn-logos`).
+  - **Version Bump**: Bumped version to `1.2.0` across all files (`gnn-logos.php`, `readme.txt`, frontend/admin CSS/JS).
 - **2026-10-01** (v1.1.1):
   - **Badges Vertical Alignment (`badges_valign`)**: Added `badges_valign` parameter with options `bottom` (fixed to bottom of card), `top` (starts directly 14px beneath the logo, eliminating giant gaps in cards with fewer badges), and `center` (centered vertically with logo).
   - **Admin Generator Dikey Hizalama**: Integrated "Dikey Hizalama" dropdown into the Shortcode Builder form with real-time shortcode generation.

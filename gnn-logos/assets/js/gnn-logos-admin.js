@@ -3,7 +3,7 @@
  * Handles WordPress Media Uploader and Interactive Shortcode Generator.
  *
  * @package GNN_Logos
- * @version 1.1.1
+ * @version 1.2.0
  */
 
 jQuery(document).ready(function ($) {
@@ -49,7 +49,9 @@ jQuery(document).ready(function ($) {
                     previewUrl = attachment.sizes.medium.url;
                 }
 
-                $previewBox.addClass('has-image').html('<img src="' + previewUrl + '" alt="Logo Önizleme">');
+                $previewBox.addClass('has-image').empty().append(
+                    $('<img>').attr('src', previewUrl).attr('alt', 'Logo Önizleme')
+                );
                 $removeBtn.show();
             });
 

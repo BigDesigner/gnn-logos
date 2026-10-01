@@ -5,7 +5,7 @@
 - **Active Branch**: main
 - **Last Commit**: 05c3698
 - **Worktree Status**: Clean & Pushed to GitHub
-- **Current Version**: 1.1.1
+- **Current Version**: 1.2.0
 
 ## What Was Executed
 1. **Repository Bootstrap & Sentinel Memory Bank**:
@@ -32,6 +32,15 @@
    - Added "Dikey Hizalama" dropdown to Shortcode Generator.
    - Comprehensive technical `README.md` rewrite: removed marketing fluff and bottom donate section, preserved GitHub Release, License, and Buy Me A Coffee header badges.
    - Recorded ADR-0005 and ADR-0006.
+7. **Security Hardening, Sanitization & Lifecycle Cleanup (v1.2.0 - ADR-0007)**:
+   - Fixed logic bug where `sanitize_text_field()` stripped newlines needed by `preg_split` in legacy cert code parsing; replaced with `sanitize_textarea_field()`.
+   - Added `wp_unslash()` on `_gnn_link_target` and `_gnn_aspect_ratio` saves for WPCS compliance.
+   - Added strict allowlist for `orderby` in shortcode `WP_Query`.
+   - Hardened admin JS against potential DOM XSS by replacing `.html()` with safe jQuery DOM element creation (`$('<img>')`).
+   - Added `current_user_can('update_plugins')` authorization check in `handle_manual_update_redirect()`.
+   - Upgraded `uninstall.php` to completely clean `gnn_logo` posts, postmeta, `gnn_logo_group` terms, and transients.
+   - Linked `README.md` license badge dynamically to local `LICENSE`.
+   - Bumped version to 1.2.0 across all files.
 
 ## Architecture Decision Records (ADRs)
 - `ADR-0001`: Initial Tech Stack (Vanilla PHP 8.0+, Pure CSS, Vanilla JS, Zero External Libraries)
@@ -40,6 +49,7 @@
 - `ADR-0004`: GNN Ecosystem Menu Position Registry (`'79.109'`) & GitHub Auto-Updater
 - `ADR-0005`: Multi-Standard Tag Chips & Certificate Badges Layout Engine (`badges_layout`, `badges_align`, `badges_valign`)
 - `ADR-0006`: Robust WordPress Update Transient Synchronization & Slug Normalization
+- `ADR-0007`: Security Hardening, Sanitization Alignment, and Complete Lifecycle Cleanup
 
 ## Next Recommended Actions
 - Monitor GitHub Releases deployment and verify automatic updates from WordPress Admin for v1.1.1.

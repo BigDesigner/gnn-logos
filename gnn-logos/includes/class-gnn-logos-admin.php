@@ -106,6 +106,9 @@ class GNN_Logos_Admin
      */
     public function handle_manual_update_redirect()
     {
+        if (!current_user_can('update_plugins')) {
+            wp_die(esc_html__('Bu sayfaya erişim yetkiniz bulunmuyor.', 'gnn-logos'));
+        }
         $update_url = wp_nonce_url(admin_url('plugins.php?gnn_logos_check_update=1'), 'gnn_logos_manual_update');
         wp_safe_redirect($update_url);
         exit;

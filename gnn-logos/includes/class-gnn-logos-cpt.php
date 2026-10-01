@@ -317,7 +317,7 @@ class GNN_Logos_CPT
             update_post_meta($post_id, '_gnn_cert_codes', $clean_codes);
             update_post_meta($post_id, '_gnn_cert_code', implode(', ', $clean_codes));
         } elseif (isset($_POST['gnn_cert_code'])) {
-            $cert_code = sanitize_text_field(wp_unslash($_POST['gnn_cert_code']));
+            $cert_code = sanitize_textarea_field(wp_unslash($_POST['gnn_cert_code']));
             update_post_meta($post_id, '_gnn_cert_code', $cert_code);
             $parts = preg_split('/[\r\n,]+/', $cert_code);
             $clean_codes = array_filter(array_map('trim', $parts));
@@ -342,14 +342,14 @@ class GNN_Logos_CPT
 
         // 8. Sanitize and save _gnn_link_target
         if (isset($_POST['gnn_link_target'])) {
-            $target = in_array($_POST['gnn_link_target'], array('_self', '_blank'), true) ? sanitize_text_field($_POST['gnn_link_target']) : '_blank';
+            $target = in_array(wp_unslash($_POST['gnn_link_target']), array('_self', '_blank'), true) ? sanitize_text_field(wp_unslash($_POST['gnn_link_target'])) : '_blank';
             update_post_meta($post_id, '_gnn_link_target', $target);
         }
 
         // 9. Sanitize and save _gnn_aspect_ratio
         if (isset($_POST['gnn_aspect_ratio'])) {
             $allowed_ratios = array('auto', '16:9', '4:3', '1:1', '3:2', '2:1');
-            $ratio = in_array($_POST['gnn_aspect_ratio'], $allowed_ratios, true) ? sanitize_text_field($_POST['gnn_aspect_ratio']) : 'auto';
+            $ratio = in_array(wp_unslash($_POST['gnn_aspect_ratio']), $allowed_ratios, true) ? sanitize_text_field(wp_unslash($_POST['gnn_aspect_ratio'])) : 'auto';
             update_post_meta($post_id, '_gnn_aspect_ratio', $ratio);
         }
     }

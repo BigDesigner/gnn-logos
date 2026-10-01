@@ -3,7 +3,7 @@
 WordPress logo, referans ve kalite standardı/sertifika vitrin eklentisi.
 
 [![GitHub release](https://img.shields.io/github/v/release/BigDesigner/gnn-logos)](https://github.com/BigDesigner/gnn-logos/releases)
-[![License: GPL-2.0-or-later](https://img.shields.io/badge/License-GPLv2%2B-blue.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
+[![License](https://img.shields.io/github/license/BigDesigner/gnn-logos?color=blue)](LICENSE)
 [![Buy Me A Coffee](https://img.shields.io/badge/Donate-Buy%20Me%20A%20Coffee-yellow.svg)](https://buymeacoffee.com/bigdesigner)
 
 ---
@@ -61,7 +61,7 @@ WordPress logo, referans ve kalite standardı/sertifika vitrin eklentisi.
 | `dots` | bool | `false` | Karusel sayfalama noktaları (`true` / `false`) |
 | `pause_on_hover`| bool | `true` | Fare üzerine gelindiğinde animasyonu duraklatma (`true` / `false`) |
 | `limit` | int | `-1` | Listelenecek maksimum öğe sayısı (`-1` limitsiz) |
-| `orderby` | string | `menu_order` | Sıralama alanı: `menu_order`, `date`, `title`, `rand` |
+| `orderby` | string | `menu_order` | Sıralama alanı: `menu_order`, `date`, `title`, `rand`, `ID`, `author`, `name`, `modified`, `parent`, `none` |
 | `order` | string | `ASC` | Sıralama yönü: `ASC`, `DESC` |
 
 ---
