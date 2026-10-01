@@ -3,7 +3,7 @@
  * Handles WordPress Media Uploader and Interactive Shortcode Generator.
  *
  * @package GNN_Logos
- * @version 1.0.1
+ * @version 1.0.2
  */
 
 jQuery(document).ready(function ($) {
@@ -149,6 +149,8 @@ jQuery(document).ready(function ($) {
         var gap = $('#sc_gap').val().trim() || '20px';
 
         var showCode = $('#sc_show_code').is(':checked');
+        var badgesLayout = $('#sc_badges_layout').val();
+        var badgesAlign = $('#sc_badges_align').val();
         var showTitle = $('#sc_show_title').is(':checked');
         var showDesc = $('#sc_show_desc').is(':checked');
         var grayscale = $('#sc_grayscale').is(':checked');
@@ -167,6 +169,13 @@ jQuery(document).ready(function ($) {
             $('#gnn-carousel-options-box').slideDown(150);
         }
 
+        // Toggle badge specific options visibility
+        if (showCode) {
+            $('#gnn-badges-options-box').slideDown(150);
+        } else {
+            $('#gnn-badges-options-box').slideUp(150);
+        }
+
         var parts = ['gnn_logos'];
 
         if (group) parts.push('group="' + group + '"');
@@ -179,7 +188,11 @@ jQuery(document).ready(function ($) {
         if (columnsMobile !== 2) parts.push('columns_mobile="' + columnsMobile + '"');
         if (gap !== '20px') parts.push('gap="' + gap + '"');
 
-        if (showCode) parts.push('show_code="true"');
+        if (showCode) {
+            parts.push('show_code="true"');
+            if (badgesLayout && badgesLayout !== 'wrap') parts.push('badges_layout="' + badgesLayout + '"');
+            if (badgesAlign && badgesAlign !== 'center') parts.push('badges_align="' + badgesAlign + '"');
+        }
         if (showTitle) parts.push('show_title="true"');
         if (showDesc) parts.push('show_desc="true"');
         if (grayscale) parts.push('grayscale="true"');
@@ -208,6 +221,8 @@ jQuery(document).ready(function ($) {
             $('#sc_aspect_ratio').val('4/3');
             $('#sc_columns').val(4);
             $('#sc_show_code').prop('checked', true);
+            $('#sc_badges_layout').val('wrap');
+            $('#sc_badges_align').val('center');
             $('#sc_show_title').prop('checked', false);
             $('#sc_grayscale').prop('checked', false);
             updateShortcode();

@@ -63,6 +63,8 @@
 | `columns_mobile`| `2` | Mobil sütun sayısı |
 | `gap` | `20px` | Logolar arası boşluk |
 | `show_code` | `true` | Sertifika / standart kodunu rozet olarak göster |
+| `badges_layout` | `wrap` | Rozet dizilimi: `wrap` (yan yana / akıcı), `stacked` (alt alta / dikey) |
+| `badges_align` | `center` | Rozet yatay hizalama: `center` (ortalı), `left` (sola), `right` (sağa) |
 | `show_title` | `false` | Başlığı göster |
 | `show_desc` | `false` | Alt açıklamayı göster |
 | `grayscale` | `false` | `true` ise logolar siyah-beyaz başlar, fare üzerine gelince renklenir |

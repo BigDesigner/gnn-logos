@@ -11,9 +11,9 @@
   "git_remote_url": "https://github.com/BigDesigner/gnn-logos.git",
   "worktree_status": "clean",
   "current_sprint": {
-    "sprint_id": "v1.0.1",
+    "sprint_id": "v1.0.2",
     "active_tasks": [
-      "TASK-008: Multi-standard badges and dynamic tags manager (v1.0.1)"
+      "TASK-009: Badges layout (wrap/stacked) and alignment (center/left/right) controls (v1.0.2)"
     ]
   },
   "tracked_memory_areas": {

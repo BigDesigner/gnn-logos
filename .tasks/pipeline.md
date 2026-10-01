@@ -68,3 +68,14 @@
 - Created `gnn-logos/readme.txt` and root `README.md`.
 - Created `gnn-logos/uninstall.php`.
 - Ran `php -l` on all PHP files (0 errors).
+
+### [x] TASK-008: Multi-Standard Tag Chips & Badges System (v1.0.1)
+- Dynamic tag manager in admin CPT edit screen (`_gnn_cert_codes[]`).
+- CSS flex-wrap monospace badge pill styling (`.gnn-cert-badges-wrap`, `.gnn-cert-badge`).
+- Backward compatible legacy string parsing.
+
+### [x] TASK-009: Badges Layout & Alignment Controls (v1.0.2)
+- Added `badges_layout` ('wrap' | 'stacked') and `badges_align` ('center' | 'left' | 'right') to `[gnn_logos]`.
+- Frontend flexbox styles for stacked and wrapped layouts with left/center/right alignment.
+- Admin Shortcode Generator UI dropdowns with dynamic slide toggle based on `show_code`.
+- Version bump to 1.0.2 across all files.

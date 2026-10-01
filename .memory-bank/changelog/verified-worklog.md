@@ -1,9 +1,15 @@
 # Verified Worklog
 
 - **Project**: GNN Logos
-- **Sprint**: v1.0.1
+- **Sprint**: v1.0.2
 
 ## Completed Work
+- **2026-10-01** (v1.0.2):
+  - **Badges Layout Controls**: Added `badges_layout` parameter (`wrap` for flex-wrap side-by-side, `stacked` for vertical column stacked).
+  - **Badges Alignment Controls**: Added `badges_align` parameter (`center` for centered, `left` for left-aligned, `right` for right-aligned).
+  - **Admin UI Generator**: Integrated "Rozet Dizilimi" and "Rozet Hizalama" dropdowns into the Shortcode Generator UI with dynamic slide toggling based on `show_code`.
+  - **CSS Enhancements**: Added responsive layout & alignment classes (`.gnn-badges-layout-wrap`, `.gnn-badges-layout-stacked`, `.gnn-badges-align-center`, `.gnn-badges-align-left`, `.gnn-badges-align-right`) and overflow protection for badges.
+  - **Version Bump**: Bumped plugin version, constant, stable tag, and assets to `1.0.2`.
 - **2026-10-01** (v1.0.1):
   - **Multi-Standard Badges**: Replaced single-block standard code rendering with `.gnn-cert-badges-wrap` and `.gnn-cert-badge` chips. Allows 3-5 standards per certificate (TS EN 12201-2, TS EN ISO 1452-2, etc.) to wrap gracefully into separate, beautiful monospace pills rather than clumping into one overflowing box.
   - **Dynamic Admin Tag Manager**: Added interactive tag chips builder in `class-gnn-logos-cpt.php` with Enter key and bulk comma/newline paste support (`gnn_cert_codes[]`).

@@ -3,7 +3,7 @@
  * Ultra-lightweight, zero-dependency, GPU-accelerated.
  *
  * @package GNN_Logos
- * @version 1.0.1
+ * @version 1.0.2
  */
 
 /* ==========================================================================
@@ -126,13 +126,52 @@ a.gnn-logo-item {
 
 /* Typography & Badges */
 .gnn-cert-badges-wrap {
+    margin-top: 12px;
+    width: 100%;
+}
+
+/* Layout: Wrap (Yan Yana / Akıcı) */
+.gnn-cert-badges-wrap.gnn-badges-layout-wrap {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
+}
+
+/* Layout: Stacked (Alt Alta / Dikey) */
+.gnn-cert-badges-wrap.gnn-badges-layout-stacked {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Alignment: Center (Ortalı) */
+.gnn-cert-badges-wrap.gnn-badges-align-center {
     justify-content: center;
     align-items: center;
-    margin-top: 12px;
-    width: 100%;
+}
+.gnn-cert-badges-wrap.gnn-badges-layout-stacked.gnn-badges-align-center .gnn-cert-badge {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Alignment: Left (Sola) */
+.gnn-cert-badges-wrap.gnn-badges-align-left {
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.gnn-cert-badges-wrap.gnn-badges-layout-stacked.gnn-badges-align-left .gnn-cert-badge {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+/* Alignment: Right (Sağa) */
+.gnn-cert-badges-wrap.gnn-badges-align-right {
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+.gnn-cert-badges-wrap.gnn-badges-layout-stacked.gnn-badges-align-right .gnn-cert-badge {
+    margin-left: auto;
+    margin-right: 0;
 }
 
 .gnn-cert-badge {
@@ -153,6 +192,10 @@ a.gnn-logo-item {
     line-height: 1.35;
     text-align: center;
     white-space: nowrap;
+    max-width: 100%;
+    box-sizing: border-box;
+    text-overflow: ellipsis;
+    overflow: hidden;
     transition: all 0.2s ease;
 }
 

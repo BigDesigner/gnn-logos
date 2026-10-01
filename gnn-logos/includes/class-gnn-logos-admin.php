@@ -297,6 +297,25 @@ class GNN_Logos_Admin
                             </div>
                         </div>
 
+                        <!-- 7.1 Rozet Dizilimi ve Hizalama (v1.0.2) -->
+                        <div class="gnn-form-row gnn-form-group" id="gnn-badges-options-box">
+                            <div class="gnn-form-col">
+                                <label for="sc_badges_layout"><strong><?php esc_html_e('Rozet Dizilimi:', 'gnn-logos'); ?></strong></label>
+                                <select id="sc_badges_layout" class="widefat">
+                                    <option value="wrap"><?php esc_html_e('Yan Yana (Akıcı / Wrap)', 'gnn-logos'); ?></option>
+                                    <option value="stacked"><?php esc_html_e('Alt Alta (Dikey Sıralı)', 'gnn-logos'); ?></option>
+                                </select>
+                            </div>
+                            <div class="gnn-form-col">
+                                <label for="sc_badges_align"><strong><?php esc_html_e('Rozet Hizalama:', 'gnn-logos'); ?></strong></label>
+                                <select id="sc_badges_align" class="widefat">
+                                    <option value="center"><?php esc_html_e('Ortalı (Center)', 'gnn-logos'); ?></option>
+                                    <option value="left"><?php esc_html_e('Sola Hizalı (Left)', 'gnn-logos'); ?></option>
+                                    <option value="right"><?php esc_html_e('Sağa Hizalı (Right)', 'gnn-logos'); ?></option>
+                                </select>
+                            </div>
+                        </div>
+
                         <!-- 8. Carousel / Marquee Özel Ayarları -->
                         <div class="gnn-form-group" id="gnn-carousel-options-box">
                             <label><strong><?php esc_html_e('Karusel / Marquee Ayarları:', 'gnn-logos'); ?></strong></label>
