@@ -17,7 +17,7 @@
         ".memory-bank/changelog/",
         ".memory-bank/audits/",
         ".memory-bank/bugs/",
-        ".archive/docs-migration/",
+        ".documentation/",
         "gnn-logos/",
         "gnn-logos/inc/",
         "gnn-logos/includes/",

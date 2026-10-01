@@ -4,9 +4,9 @@
   "status": "ACTIVE",
   "mode": "Interactive",
   "preferred_language": "Turkish",
-  "timestamp": "2026-10-01T01:54:00Z",
+  "timestamp": "2026-10-01T01:58:00Z",
   "active_branch": "main",
-  "last_commit": "5bec27f",
+  "last_commit": "649c65f",
   "git_history_available": true,
   "git_remote_url": "https://github.com/BigDesigner/gnn-logos.git",
   "worktree_status": "clean",
@@ -20,11 +20,11 @@
     "audits": ".memory-bank/audits/",
     "bugs": ".memory-bank/bugs/",
     "tasks": ".tasks/",
-    "archive": ".archive/docs-migration/"
+    "documentation": ".documentation/"
   },
   "governance_baseline_hashes": {
     "constitution": "1D98A7A07E7D0ABEE6DA9A06EF73E80D0B72DA684C27E25B097A442A8846FEB1",
-    "boundary_conditions": "AA8D26AA359799F7B2503B23B3C8FD8602DC0F0B2D5972CC85C3DD8164984378",
+    "boundary_conditions": "568E9442E579A04B7BC4D44C21A9F3564EF920E352135D7C38019C52437D9E00",
     "agents_rules": "01E3A450A5A05E0CCEE279F49E4B5E14515DB2EF1DE4BFF23A51A58D26F0AA99"
   }
 }
