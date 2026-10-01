@@ -49,8 +49,13 @@ class GNN_Logos_Updater
      */
     public function __construct()
     {
-        // Pipeline update filters
+        if (defined('GNN_LOGOS_FILE')) {
+            $this->plugin_slug = plugin_basename(GNN_LOGOS_FILE);
+        }
+
+        // Pipeline update filters (both save and read hooks)
         add_filter('pre_set_site_transient_update_plugins', array($this, 'check_for_update'));
+        add_filter('site_transient_update_plugins', array($this, 'check_for_update'));
         add_filter('plugins_api', array($this, 'plugin_info'), 20, 3);
         add_filter('upgrader_post_install', array($this, 'after_install'), 10, 3);
 
@@ -161,7 +166,7 @@ class GNN_Logos_Updater
      */
     public function check_for_update($transient)
     {
-        if (empty($transient->checked)) {
+        if (empty($transient) || !is_object($transient)) {
             return $transient;
         }
 
@@ -180,7 +185,32 @@ class GNN_Logos_Updater
             $obj->url         = $release->html_url;
             $obj->package     = $release->download_url;
 
+            if (!isset($transient->response) || !is_array($transient->response)) {
+                $transient->response = array();
+            }
             $transient->response[$this->plugin_slug] = $obj;
+
+            if (isset($transient->no_update[$this->plugin_slug])) {
+                unset($transient->no_update[$this->plugin_slug]);
+            }
+        } else {
+            // Local version is equal or newer: purge stale update notification.
+            if (isset($transient->response[$this->plugin_slug])) {
+                unset($transient->response[$this->plugin_slug]);
+            }
+
+            if (!isset($transient->no_update) || !is_array($transient->no_update)) {
+                $transient->no_update = array();
+            }
+
+            $item = new stdClass();
+            $item->id          = 'gnn-logos';
+            $item->slug        = 'gnn-logos';
+            $item->plugin      = $this->plugin_slug;
+            $item->new_version = $local_version;
+            $item->url         = $release->html_url;
+            $item->package     = '';
+            $transient->no_update[$this->plugin_slug] = $item;
         }
 
         return $transient;
@@ -242,6 +272,7 @@ class GNN_Logos_Updater
         }
 
         delete_transient($this->transient_key);
+        delete_site_transient('update_plugins');
         return $result;
     }
 
@@ -271,6 +302,7 @@ class GNN_Logos_Updater
     public function clear_cache()
     {
         delete_transient($this->transient_key);
+        delete_site_transient('update_plugins');
     }
 }
 

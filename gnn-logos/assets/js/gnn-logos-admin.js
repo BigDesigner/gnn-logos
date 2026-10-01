@@ -3,7 +3,7 @@
  * Handles WordPress Media Uploader and Interactive Shortcode Generator.
  *
  * @package GNN_Logos
- * @version 1.0.2
+ * @version 1.1.0
  */
 
 jQuery(document).ready(function ($) {
@@ -190,8 +190,8 @@ jQuery(document).ready(function ($) {
 
         if (showCode) {
             parts.push('show_code="true"');
-            if (badgesLayout && badgesLayout !== 'wrap') parts.push('badges_layout="' + badgesLayout + '"');
-            if (badgesAlign && badgesAlign !== 'center') parts.push('badges_align="' + badgesAlign + '"');
+            if (badgesLayout) parts.push('badges_layout="' + badgesLayout + '"');
+            if (badgesAlign) parts.push('badges_align="' + badgesAlign + '"');
         }
         if (showTitle) parts.push('show_title="true"');
         if (showDesc) parts.push('show_desc="true"');

@@ -15,8 +15,12 @@
    - Added `badges_layout` ('wrap' | 'stacked') and `badges_align` ('center' | 'left' | 'right') to `[gnn_logos]`.
    - Admin Shortcode Generator UI dropdowns with reactive visibility toggle.
    - Comprehensive CSS layout rules and responsive ellipsis overflow protection.
-   - Bumped version to 1.0.2 in `gnn-logos.php`, `readme.txt`, and assets.
+6. Released v1.1.0:
+   - Fixed button icon vertical alignment in Admin UI.
+   - Forced explicit inclusion of `badges_align="center"` and `badges_layout="wrap"` in wizard.
+   - Fixed updater transient cache desync.
+   - Bumped version to 1.1.0 in `gnn-logos.php`, `readme.txt`, and assets.
    - Validated syntax with `php -l` on all PHP files (0 errors).
 
 ## Next Recommended Action
-- Commit and push v1.0.2 to GitHub repository (`origin/main`).
+- Commit and push v1.1.0 to GitHub repository (`origin/main`).

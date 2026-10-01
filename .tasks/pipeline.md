@@ -79,3 +79,9 @@
 - Frontend flexbox styles for stacked and wrapped layouts with left/center/right alignment.
 - Admin Shortcode Generator UI dropdowns with dynamic slide toggle based on `show_code`.
 - Version bump to 1.0.2 across all files.
+
+### [x] TASK-010: Updater Cache Desync, Explicit Wizard Attributes, and Button Icon Alignment (v1.1.0)
+- Fixed updater transient desync with `site_transient_update_plugins` filter and stale response purging.
+- Forced explicit inclusion of `badges_align="center"` and `badges_layout="wrap"` in shortcode generator.
+- Fixed admin button Dashicon vertical centering with unified flexbox alignment rules.
+- Bumped version to 1.1.0 across all files.

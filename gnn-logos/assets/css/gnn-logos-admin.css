@@ -2,7 +2,7 @@
  * GNN Logos - Admin Styles
  *
  * @package GNN_Logos
- * @version 1.0.2
+ * @version 1.1.0
  */
 
 /* ==========================================================================
@@ -182,11 +182,40 @@
     flex-wrap: wrap;
 }
 
-.gnn-preset-buttons .button {
-    display: inline-flex;
-    align-items: center;
+/* Universal Button & Dashicon Vertical Centering */
+.gnn-admin-wrap .button,
+.gnn-meta-box-wrap .button,
+.gnn-preset-buttons .button,
+#gnn-copy-shortcode-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    vertical-align: middle !important;
     gap: 6px;
-    padding: 4px 12px;
+    height: auto;
+}
+
+.gnn-admin-wrap .button .dashicons,
+.gnn-meta-box-wrap .button .dashicons,
+.gnn-preset-buttons .button .dashicons,
+#gnn-copy-shortcode-btn .dashicons {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    vertical-align: middle !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    position: relative;
+    top: 0;
+}
+
+.gnn-preset-buttons .button {
+    padding: 6px 14px !important;
+    min-height: 32px;
     font-weight: 500;
 }
 
@@ -294,12 +323,16 @@
 
 #gnn-copy-shortcode-btn {
     width: 100%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+    min-height: 44px;
+    padding: 0 20px !important;
     font-size: 15px;
     font-weight: 600;
+}
+
+#gnn-copy-shortcode-btn .dashicons {
+    font-size: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
 }
 
 .gnn-copy-feedback {

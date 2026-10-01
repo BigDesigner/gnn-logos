@@ -5,7 +5,7 @@ Tags: logos, logo showcase, carousel, marquee, certificates, partners, reference
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 8.0
-Stable tag: 1.0.2
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,6 +49,15 @@ Sonsuz Kayan Logo Şeridi (Marquee):
 `[gnn_logos layout="marquee" speed="25s" grayscale="true"]`
 
 == Changelog ==
+
+= 1.1.0 =
+* Geliştirme: Admin paneli butonlarındaki (Şablonlar, Kopyala, Logo Seç, Ekle) Dashicon ikonlarının dikeyde metin ile kusursuz ortalanması sağlandı.
+* Düzeltme: Shortcode Sihirbazı'nda 'center' ve 'wrap' seçildiğinde rozet hizalama ve dizilim parametrelerinin (badges_align="center", badges_layout="wrap") her zaman açıkça koda eklenmesi sağlandı.
+* Düzeltme: Eklenti güncellendiğinde WordPress çekirdek güncelleme önbelleğinde eski sürüm uyarısının kalması engellendi (site_transient_update_plugins temizleme ve otomatik senkronizasyon).
+
+= 1.0.3 =
+* Düzeltme: Shortcode Sihirbazı'nda 'center' ve 'wrap' seçildiğinde rozet hizalama ve dizilim parametrelerinin (badges_align="center", badges_layout="wrap") her zaman açıkça koda eklenmesi sağlandı.
+* Düzeltme: Eklenti güncellendiğinde WordPress çekirdek güncelleme önbelleğinde eski sürüm uyarısının kalması engellendi (site_transient_update_plugins temizleme ve otomatik senkronizasyon).
 
 = 1.0.2 =
 * Geliştirme: Sertifika standart rozetleri için yerleşim düzeni (badges_layout="wrap|stacked" - yan yana veya alt alta) parametresi eklendi.

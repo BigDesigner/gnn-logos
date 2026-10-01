@@ -1,9 +1,15 @@
 # Verified Worklog
 
 - **Project**: GNN Logos
-- **Sprint**: v1.0.2
+- **Sprint**: v1.1.0
 
 ## Completed Work
+- **2026-10-01** (v1.1.0):
+  - **Button Icon Vertical Centering**: Added universal CSS flexbox centering for all admin buttons and Dashicons (`.gnn-admin-wrap .button`, `.gnn-meta-box-wrap .button`, `.gnn-preset-buttons .button`, `#gnn-copy-shortcode-btn`). Completely eliminated bottom-heavy icon misalignment, aligning icons and button text strictly on the mathematical vertical center.
+  - **Explicit Wizard Attributes**: Modified `updateShortcode` in `gnn-logos-admin.js` to unconditionally output `badges_align="center"` and `badges_layout="wrap"` when selected, eliminating confusing omissions.
+  - **Updater Cache Desync Fix**: Fixed updater issue where WordPress `update_plugins` transient retained stale update notifications. Added `site_transient_update_plugins` filter on read, ensured `unset($transient->response[$this->plugin_slug])` occurs when `version_compare` is equal or newer, and flushed transient cache on install/core-update.
+  - **Dynamic Plugin Slug Resolution**: Dynamically resolved `$this->plugin_slug` using `plugin_basename(GNN_LOGOS_FILE)` to ensure 100% key matching across custom directory names.
+  - **Version Bump**: Bumped version to `1.1.0` across all manifests and assets.
 - **2026-10-01** (v1.0.2):
   - **Badges Layout Controls**: Added `badges_layout` parameter (`wrap` for flex-wrap side-by-side, `stacked` for vertical column stacked).
   - **Badges Alignment Controls**: Added `badges_align` parameter (`center` for centered, `left` for left-aligned, `right` for right-aligned).
