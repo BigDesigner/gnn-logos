@@ -156,7 +156,7 @@ class GNN_Logos_CPT
             <div class="gnn-meta-row">
                 <label class="gnn-meta-label">
                     <strong><?php esc_html_e('Logo / Sertifika Görseli:', 'gnn-logos'); ?></strong>
-                    <span class="description"><?php esc_html_e('(PNG, SVG, JPG, WebP formatları önerilir)', 'gnn-logos'); ?></span>
+                    <span class="description"><?php esc_html_e('(PNG, SVG, JPG, WebP, AVIF formatları önerilir)', 'gnn-logos'); ?></span>
                 </label>
                 <div class="gnn-media-upload-area">
                     <input type="hidden" name="gnn_logo_id" id="gnn_logo_id" value="<?php echo esc_attr($logo_id); ?>">
@@ -427,7 +427,7 @@ class GNN_Logos_CPT
 
             case 'gnn_order':
                 $post = get_post($post_id);
-                echo esc_html($post->menu_order);
+                echo $post ? esc_html($post->menu_order) : '&mdash;';
                 break;
         }
     }

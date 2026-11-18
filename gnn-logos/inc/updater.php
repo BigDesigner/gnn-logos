@@ -90,6 +90,9 @@ class GNN_Logos_Updater
     private function get_remote_release()
     {
         $cached = get_transient($this->transient_key);
+        if ('error' === $cached) {
+            return false;
+        }
         if (false !== $cached) {
             return $cached;
         }
@@ -106,7 +109,7 @@ class GNN_Logos_Updater
         $response = wp_remote_get($url, $args);
 
         if (is_wp_error($response) || 200 !== wp_remote_retrieve_response_code($response)) {
-            set_transient($this->transient_key, false, 300); // Cache failure for 5 mins
+            set_transient($this->transient_key, 'error', 300); // Cache failure for 5 mins
             return false;
         }
 
@@ -138,9 +141,14 @@ class GNN_Logos_Updater
             return false;
         }
 
-        // SSRF defense: Validate download URL host is strictly GitHub
+        // SSRF defense: Validate download URL scheme and host are strictly GitHub HTTPS
         $parsed = wp_parse_url($download_url);
-        if (empty($parsed['host']) || !in_array($parsed['host'], array('github.com', 'codeload.github.com', 'objects.githubusercontent.com'), true)) {
+        if (
+            empty($parsed['scheme']) ||
+            'https' !== $parsed['scheme'] ||
+            empty($parsed['host']) ||
+            !in_array($parsed['host'], array('github.com', 'codeload.github.com', 'objects.githubusercontent.com'), true)
+        ) {
             return false;
         }
         $download_url = esc_url_raw($download_url);
@@ -226,7 +234,7 @@ class GNN_Logos_Updater
      */
     public function plugin_info($result, $action, $args)
     {
-        if ('plugin_information' !== $action || 'gnn-logos' !== $args->slug) {
+        if ('plugin_information' !== $action || empty($args->slug) || 'gnn-logos' !== $args->slug) {
             return $result;
         }
 
@@ -239,6 +247,9 @@ class GNN_Logos_Updater
             'name'          => 'GNN Logos',
             'slug'          => 'gnn-logos',
             'version'       => $release->version,
+            'requires'      => '5.8',
+            'tested'        => '7.1',
+            'requires_php'  => '8.0',
             'author'        => 'BigDesigner',
             'homepage'      => 'https://github.com/BigDesigner/gnn-logos',
             'download_link' => $release->download_url,
@@ -286,13 +297,15 @@ class GNN_Logos_Updater
                 wp_die(esc_html__('Güvenlik doğrulaması başarısız oldu.', 'gnn-logos'));
             }
 
-            if (current_user_can('update_plugins')) {
-                delete_transient($this->transient_key);
-                delete_site_transient('update_plugins');
-
-                wp_safe_redirect(admin_url('update-core.php?force-check=1'));
-                exit;
+            if (!current_user_can('update_plugins')) {
+                wp_die(esc_html__('Bu işlem için yetkiniz bulunmuyor.', 'gnn-logos'));
             }
+
+            delete_transient($this->transient_key);
+            delete_site_transient('update_plugins');
+
+            wp_safe_redirect(admin_url('update-core.php?force-check=1'));
+            exit;
         }
     }
 

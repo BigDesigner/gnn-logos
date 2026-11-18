@@ -256,7 +256,7 @@ class GNN_Logos_Shortcode
                 <!-- CAROUSEL LAYOUT -->
                 <?php if ($arrows) : ?>
                     <button type="button" class="gnn-carousel-arrow prev" aria-label="<?php esc_attr_e('Önceki', 'gnn-logos'); ?>">
-                        <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
                     </button>
                 <?php endif; ?>
 
@@ -270,14 +270,14 @@ class GNN_Logos_Shortcode
 
                 <?php if ($arrows) : ?>
                     <button type="button" class="gnn-carousel-arrow next" aria-label="<?php esc_attr_e('Sonraki', 'gnn-logos'); ?>">
-                        <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
                     </button>
                 <?php endif; ?>
 
                 <?php if ($dots) : ?>
                     <div class="gnn-carousel-dots" role="tablist">
                         <?php foreach ($items as $idx => $item) : ?>
-                            <button type="button" class="gnn-carousel-dot <?php echo 0 === $idx ? 'active' : ''; ?>" aria-label="<?php echo esc_attr(sprintf(__('Slayt %d', 'gnn-logos'), $idx + 1)); ?>"></button>
+                            <button type="button" role="tab" aria-selected="<?php echo 0 === $idx ? 'true' : 'false'; ?>" class="gnn-carousel-dot <?php echo 0 === $idx ? 'active' : ''; ?>" aria-label="<?php echo esc_attr(sprintf(__('Slayt %d', 'gnn-logos'), $idx + 1)); ?>"></button>
                         <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
@@ -294,7 +294,7 @@ class GNN_Logos_Shortcode
                     <!-- Duplicate set for seamless continuous loop -->
                     <?php foreach ($items as $item) : ?>
                         <div class="gnn-marquee-item" aria-hidden="true">
-                            <?php echo $this->render_item_html($item, $show_code, $show_title, $show_desc, $badges_layout, $badges_align, $badges_valign); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                            <?php echo $this->render_item_html($item, $show_code, $show_title, $show_desc, $badges_layout, $badges_align, $badges_valign, true); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -314,9 +314,10 @@ class GNN_Logos_Shortcode
      * @param string $badges_layout Badges layout ('wrap' or 'stacked').
      * @param string $badges_align  Badges alignment ('center', 'left', 'right').
      * @param string $badges_valign Badges vertical alignment ('bottom', 'top', 'center').
+     * @param bool   $is_duplicate  Whether this item is rendered inside an aria-hidden duplicate marquee track.
      * @return string HTML output.
      */
-    private function render_item_html($item, $show_code, $show_title, $show_desc, $badges_layout = 'wrap', $badges_align = 'center', $badges_valign = 'bottom')
+    private function render_item_html($item, $show_code, $show_title, $show_desc, $badges_layout = 'wrap', $badges_align = 'center', $badges_valign = 'bottom', $is_duplicate = false)
     {
         $has_link = !empty($item['link_url']);
         $tag = $has_link ? 'a' : 'div';
@@ -324,9 +325,10 @@ class GNN_Logos_Shortcode
 
         if ($has_link) {
             $link_attrs = sprintf(
-                'href="%s" target="%s" rel="noopener noreferrer"',
+                'href="%s" target="%s" rel="noopener noreferrer"%s',
                 esc_url($item['link_url']),
-                esc_attr($item['link_target'])
+                esc_attr($item['link_target']),
+                $is_duplicate ? ' tabindex="-1"' : ''
             );
         }
 
@@ -343,7 +345,7 @@ class GNN_Logos_Shortcode
                 false,
                 array(
                     'class'    => 'gnn-logo-img',
-                    'alt'      => esc_attr($item['title']),
+                    'alt'      => $item['title'],
                     'loading'  => 'lazy',
                     'decoding' => 'async',
                 )

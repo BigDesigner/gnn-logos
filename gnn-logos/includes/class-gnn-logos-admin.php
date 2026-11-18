@@ -97,6 +97,9 @@ class GNN_Logos_Admin
      */
     public function page_redirect_to_all()
     {
+        if (!current_user_can('manage_options')) {
+            wp_die(esc_html__('Bu sayfaya erişim yetkiniz bulunmuyor.', 'gnn-logos'));
+        }
         wp_safe_redirect(admin_url('edit.php?post_type=' . GNN_Logos_CPT::POST_TYPE));
         exit;
     }
@@ -151,6 +154,7 @@ class GNN_Logos_Admin
         wp_localize_script('gnn-logos-admin', 'gnnLogosAdmin', array(
             'chooseLogoText' => __('Logo Seçin', 'gnn-logos'),
             'useLogoText'    => __('Bu Logoyu Kullan', 'gnn-logos'),
+            'noImageText'    => __('Görsel seçilmedi', 'gnn-logos'),
             'copiedText'     => __('Shortcode Kopyalandı!', 'gnn-logos'),
         ));
     }

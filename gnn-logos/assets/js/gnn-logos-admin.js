@@ -61,7 +61,10 @@ jQuery(document).ready(function ($) {
         $removeBtn.on('click', function (e) {
             e.preventDefault();
             $logoIdInput.val('');
-            $previewBox.removeClass('has-image').html('<span class="gnn-no-image-text">Görsel seçilmedi</span>');
+            var noImageText = (window.gnnLogosAdmin && window.gnnLogosAdmin.noImageText) || 'Görsel seçilmedi';
+            $previewBox.removeClass('has-image').empty().append(
+                $('<span class="gnn-no-image-text"></span>').text(noImageText)
+            );
             $removeBtn.hide();
         });
     }

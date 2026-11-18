@@ -45,6 +45,16 @@
             if (next) next.addEventListener('click', function (e) { e.preventDefault(); goNext(); });
             if (prev) prev.addEventListener('click', function (e) { e.preventDefault(); goPrev(); });
 
+            carousel.addEventListener('keydown', function (e) {
+                if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    goNext();
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    goPrev();
+                }
+            });
+
             if (dots.length) {
                 dots.forEach(function (dot, i) {
                     dot.addEventListener('click', function (e) {
@@ -57,7 +67,11 @@
                     if (!ticking) {
                         window.requestAnimationFrame(function () {
                             var active = Math.round(viewport.scrollLeft / getStep());
-                            dots.forEach(function (d, idx) { d.classList.toggle('active', idx === active); });
+                            dots.forEach(function (d, idx) {
+                                var isActive = idx === active;
+                                d.classList.toggle('active', isActive);
+                                d.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                            });
                             ticking = false;
                         });
                         ticking = true;
