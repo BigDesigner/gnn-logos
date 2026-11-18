@@ -12,6 +12,8 @@
 .gnn-logos-wrapper {
     position: relative;
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
     box-sizing: border-box;
     margin: 20px 0;
     --gnn-columns: 4;
@@ -425,6 +427,8 @@ a.gnn-logo-item {
 .gnn-logos-layout-marquee {
     overflow: hidden;
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
     position: relative;
     mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
     -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
@@ -432,6 +436,7 @@ a.gnn-logo-item {
 
 .gnn-marquee-track {
     display: flex;
+    align-items: center;
     gap: var(--gnn-gap, 20px);
     width: max-content;
     will-change: transform;
@@ -447,9 +452,13 @@ a.gnn-logo-item {
 }
 
 .gnn-marquee-item {
-    flex-shrink: 0;
+    flex: 0 0 auto;
+    width: clamp(140px, 16vw, 200px);
     display: flex;
-    min-width: 140px;
+}
+
+.gnn-logos-layout-marquee:not(.gnn-has-aspect-ratio) .gnn-logo-box {
+    max-height: 90px;
 }
 
 @keyframes gnn-marquee-scroll-left {
