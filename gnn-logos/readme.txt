@@ -3,9 +3,9 @@ Contributors: BigDesigner
 Donate link: https://buymeacoffee.com/bigdesigner
 Tags: logos, logo showcase, carousel, marquee, certificates, partners, references
 Requires at least: 5.8
-Tested up to: 6.7
+Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,6 +49,18 @@ Sonsuz Kayan Logo Şeridi (Marquee):
 `[gnn_logos layout="marquee" speed="25s" grayscale="true"]`
 
 == Changelog ==
+
+= 1.2.1 =
+* Düzeltme: WordPress 6.7+ `_load_textdomain_just_in_time` uyarısını önlemek için `load_plugin_textdomain()` çağrısı `init` kancasına priority `1` ile taşındı.
+* Düzeltme: Updater hata önbellekleme mantık hatası (`false` sentinel yerine `'error'`) giderildi ve SSRF doğrulamasına `https` şema kontrolü eklendi.
+* Geliştirme: WordPress 7.1 uyumluluğu güncellendi; `plugin_info()` yanıtına `requires`, `tested`, `requires_php` ve `gnn-logos.php` başlığına minimum sürüm etiketleri eklendi.
+* Geliştirme: WCAG erişilebilirlik iyileştirmeleri (marquee duplicate link `tabindex="-1"`, tablist `role="tab"`/`aria-selected`, klavye ok navigasyonu, `:focus-visible` ve `prefers-reduced-motion` desteği).
+* Geliştirme: `languages/gnn-logos.pot` çeviri şablonu eklendi.
+
+= 1.2.0 =
+* Güvenlik: Eski sertifika kodları ayrıştırmasında satır sonu korunumu (`sanitize_textarea_field`), `wp_unslash()` uyumu ve `orderby` beyaz listesi eklendi.
+* Güvenlik: Admin JS önizleme DOM XSS koruması ve `handle_manual_update_redirect()` yetki kontrolü eklendi.
+* Geliştirme: `uninstall.php` tüm `gnn_logo` yazıları, meta verileri, `gnn_logo_group` terimleri ve transientleri tamamen silecek şekilde güncellendi.
 
 = 1.1.1 =
 * Geliştirme: Rozetler için dikey hizalama parametresi (badges_valign="bottom|top|center") eklendi. Rozetlerin kartın en altına sabitlenmesi (bottom), logonun hemen altında başlaması (top) veya kart içinde ortalanması (center) seçilebilir.

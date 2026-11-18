@@ -3,7 +3,7 @@
  * Handles WordPress Media Uploader and Interactive Shortcode Generator.
  *
  * @package GNN_Logos
- * @version 1.2.0
+ * @version 1.2.1
  */
 
 jQuery(document).ready(function ($) {
