@@ -33,29 +33,31 @@ class GNN_Logos_Admin
      */
     public function register_admin_menu()
     {
-        // 1. Top-level GNN Logos menu positioned at '79.109'
+        $parent_slug = 'edit.php?post_type=' . GNN_Logos_CPT::POST_TYPE;
+
+        // 1. Top-level GNN Logos menu positioned at '79.109', opening All Logos directly
         add_menu_page(
-            __('GNN Logos', 'gnn-logos'),
+            __('Tüm Logolar & Sertifikalar', 'gnn-logos'),
             __('GNN Logos', 'gnn-logos'),
             'manage_options',
-            'gnn-logos',
-            array($this, 'page_redirect_to_all'),
+            $parent_slug,
+            '',
             'dashicons-images-alt2',
             self::MENU_POSITION
         );
 
-        // 2. Submenu: Tüm Logolar & Sertifikalar
+        // 2. Submenu: Tüm Logolar & Sertifikalar (replaces duplicate top-level label)
         add_submenu_page(
-            'gnn-logos',
+            $parent_slug,
             __('Tüm Logolar & Sertifikalar', 'gnn-logos'),
             __('Tüm Logolar & Sertifikalar', 'gnn-logos'),
             'manage_options',
-            'edit.php?post_type=' . GNN_Logos_CPT::POST_TYPE
+            $parent_slug
         );
 
         // 3. Submenu: Yeni Ekle
         add_submenu_page(
-            'gnn-logos',
+            $parent_slug,
             __('Yeni Ekle', 'gnn-logos'),
             __('Yeni Ekle', 'gnn-logos'),
             'manage_options',
@@ -64,7 +66,7 @@ class GNN_Logos_Admin
 
         // 4. Submenu: Logo Grupları
         add_submenu_page(
-            'gnn-logos',
+            $parent_slug,
             __('Logo Grupları', 'gnn-logos'),
             __('Logo Grupları', 'gnn-logos'),
             'manage_options',
@@ -73,48 +75,13 @@ class GNN_Logos_Admin
 
         // 5. Submenu: Shortcode Oluşturucu
         add_submenu_page(
-            'gnn-logos',
+            $parent_slug,
             __('Shortcode Oluşturucu', 'gnn-logos'),
             __('Shortcode Oluşturucu', 'gnn-logos'),
             'manage_options',
             'gnn-logos-generator',
             array($this, 'page_generator')
         );
-
-        // 6. Submenu: Güncellemeleri Kontrol Et
-        add_submenu_page(
-            'gnn-logos',
-            __('Güncellemeleri Kontrol Et', 'gnn-logos'),
-            __('Güncellemeleri Kontrol Et', 'gnn-logos'),
-            'manage_options',
-            'gnn-logos-check-update',
-            array($this, 'handle_manual_update_redirect')
-        );
-    }
-
-    /**
-     * Redirect top-level click to All Logos list table.
-     */
-    public function page_redirect_to_all()
-    {
-        if (!current_user_can('manage_options')) {
-            wp_die(esc_html__('Bu sayfaya erişim yetkiniz bulunmuyor.', 'gnn-logos'));
-        }
-        wp_safe_redirect(admin_url('edit.php?post_type=' . GNN_Logos_CPT::POST_TYPE));
-        exit;
-    }
-
-    /**
-     * Redirect to manual update check url with nonce.
-     */
-    public function handle_manual_update_redirect()
-    {
-        if (!current_user_can('update_plugins')) {
-            wp_die(esc_html__('Bu sayfaya erişim yetkiniz bulunmuyor.', 'gnn-logos'));
-        }
-        $update_url = wp_nonce_url(admin_url('plugins.php?gnn_logos_check_update=1'), 'gnn_logos_manual_update');
-        wp_safe_redirect($update_url);
-        exit;
     }
 
     /**

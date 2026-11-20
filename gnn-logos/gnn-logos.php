@@ -122,7 +122,7 @@ final class GNN_Logos
     public function plugin_action_links($links)
     {
         $donate_link    = '<a href="' . esc_url('https://buymeacoffee.com/bigdesigner') . '" target="_blank" rel="noopener noreferrer" style="font-weight:bold; color:#d63638;">' . esc_html__('Donate', 'gnn-logos') . '</a>';
-        $generator_link = '<a href="' . esc_url(admin_url('admin.php?page=gnn-logos-generator')) . '">' . esc_html__('Shortcode Oluşturucu', 'gnn-logos') . '</a>';
+        $generator_link = '<a href="' . esc_url(admin_url('edit.php?post_type=' . GNN_Logos_CPT::POST_TYPE . '&page=gnn-logos-generator')) . '">' . esc_html__('Shortcode Oluşturucu', 'gnn-logos') . '</a>';
         $update_url     = wp_nonce_url(admin_url('plugins.php?gnn_logos_check_update=1'), 'gnn_logos_manual_update');
         $update_link    = '<a href="' . esc_url($update_url) . '">' . esc_html__('Check Updates', 'gnn-logos') . '</a>';
 
