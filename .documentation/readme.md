@@ -5,7 +5,7 @@
 
 **Mimari Kategori:** WordPress Eklentisi (Logo, Referans ve Kalite Sertifikası Vitrini)  
 **Temel Teknoloji Yığını:** PHP 8.0+, Saf CSS (GPU Keyframe Animasyonları ve CSS Scroll-Snap), Vanilla JavaScript (<3 KB)  
-**Mevcut Sürüm:** 1.2.0  
+**Mevcut Sürüm:** 1.2.4  
 **Lisans:** GNU General Public License v2 (GPL-2.0)  
 
 ---
@@ -37,7 +37,7 @@ Eklentinin sunduğu temel yetenekler:
 | Boyut | Asgari Gereksinim | Doğrulanan Destek Hedefi | Notlar |
 |---|---|---|---|
 | **PHP Çalışma Zamanı** | `8.0` | `8.0`, `8.1`, `8.2`, `8.3` | Modern tip güvenliği, katı string kontrolleri ve null birleştirme işleçleri kullanır |
-| **WordPress Çekirdeği** | `5.8` | Test edilen: `6.7` | `wp_get_attachment_image`, `wp_safe_redirect` ve yerel blok uyumluluğu gerektirir |
+| **WordPress Çekirdeği** | `5.8` | Test edilen: `7.1` | `wp_get_attachment_image`, `wp_safe_redirect` ve yerel blok uyumluluğu gerektirir |
 | **Veritabanı** | MySQL `5.7+` / MariaDB `10.3+` | WordPress varsayılanı | Standart `wp_posts`, `wp_postmeta`, `wp_terms`, `wp_term_taxonomy` tablolarını kullanır |
 | **Web Sunucusu** | Apache / Nginx / LiteSpeed | HTTP/2 veya HTTP/3 önerilir | Kalıcı bağlantılar (pretty permalinks) için standart PHP rewrite modüllerini gerektirir |
 | **Harici Bağımlılıklar** | Sıfır (`0`) | Sıfır npm / CDN kütüphanesi | jQuery slider eklentilerini, harici CDN scriptlerini ve yabancı yazı tiplerini tamamen dışlar |
@@ -90,7 +90,7 @@ Eklentinin sunduğu temel yetenekler:
 
 | Tanımlayıcı | Tür | Varsayılan Değer | Açıklama | Dosya Kanıtı |
 |---|---|---|---|---|
-| `GNN_LOGOS_VERSION` | Sabit (string) | `'1.2.0'` | Güncel semantik sürüm etiketi | `gnn-logos/gnn-logos.php#L17` |
+| `GNN_LOGOS_VERSION` | Sabit (string) | `'1.2.4'` | Güncel semantik sürüm etiketi (`VERSION` dosyası ile senkronize) | `gnn-logos/gnn-logos.php#L19` |
 | `GNN_LOGOS_FILE` | Sabit (string) | `__FILE__` | Ana eklenti yükleyici dosyasının mutlak sunucu yolu | `gnn-logos/gnn-logos.php#L18` |
 | `GNN_LOGOS_DIR` | Sabit (string) | `plugin_dir_path(__FILE__)` | Eklenti kök dizininin sonu taksimli mutlak yolu | `gnn-logos/gnn-logos.php#L19` |
 | `GNN_LOGOS_URL` | Sabit (string) | `plugin_dir_url(__FILE__)` | Eklenti kök dizininin genel erişim web adresi (URL) | `gnn-logos/gnn-logos.php#L20` |

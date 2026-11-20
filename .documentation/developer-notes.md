@@ -98,8 +98,7 @@ GitHub'a yeni bir sürüm gönderildiğinde WordPress panelinde "Güncelleme Mev
 ## 5. Sürüm ve Dağıtım Kontrol Listesi
 
 GitHub Releases üzerinden yeni bir sürüm yayımlamadan önce:
-- [ ] `gnn-logos/gnn-logos.php` içindeki sürüm numarasını güncelleyin (`Version: X.Y.Z` başlığı ve `GNN_LOGOS_VERSION` sabiti).
-- [ ] `gnn-logos/readme.txt` içindeki `Stable tag: X.Y.Z` değerini güncelleyin.
+- [ ] Kök `VERSION` dosyası, `gnn-logos/gnn-logos.php` (`Version: X.Y.Z` ve `GNN_LOGOS_VERSION`), `gnn-logos/readme.txt` (`Stable tag: X.Y.Z`) ve `gnn-logos/languages/gnn-logos.pot` (`Project-Id-Version`) değerlerini güncelleyin.
 - [ ] `gnn-logos-frontend.css`, `gnn-logos-admin.css`, `gnn-logos-frontend.js`, `gnn-logos-admin.js` dosyalarındaki `@version X.Y.Z` değerlerini güncelleyin.
 - [ ] Tüm PHP dosyalarında `php -l` çalıştırarak 0 hata olduğunu doğrulayın.
 - [ ] `README.md` dosyasındaki rozet URL'lerinin hedef sürümle eşleştiğini kontrol edin.

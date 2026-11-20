@@ -84,11 +84,10 @@ Temel önyüz vitrin arayüzü `add_shortcode('gnn_logos', ...)` ile kaydedilen 
 
 | Rota / Kanca Tanımlayıcısı | HTTP Metodu | Yetki Kontrolü | Eylem / Amaç | Dosya Kanıtı |
 |---|---|---|---|---|
-| `admin.php?page=gnn-logos` | `GET` | `manage_options` | Üst seviye menü girişi (`'79.109'`); otomatik olarak CPT listeleme tablosuna yönlendirir | `includes/class-gnn-logos-admin.php#L38` |
-| `edit.php?post_type=gnn_logo` | `GET` | `edit_posts` | Küçük görsel, standart rozetleri ve grubu gösteren CPT yönetim tablosu | `includes/class-gnn-logos-cpt.php#L360` |
+| `edit.php?post_type=gnn_logo` | `GET` | `manage_options` / `edit_posts` | Üst seviye `'79.109'` menüsü doğrudan açar; küçük görsel, standart rozetleri ve grubu gösteren CPT yönetim tablosu | `includes/class-gnn-logos-admin.php#L36`, `includes/class-gnn-logos-cpt.php#L360` |
 | `post-new.php?post_type=gnn_logo` | `GET` / `POST` | `edit_posts` | Yeni logo/sertifika ekleme ekranı; ortam seçici ve etiket hap yöneticisini sunar | `includes/class-gnn-logos-cpt.php#L90` |
 | `edit-tags.php?taxonomy=gnn_logo_group` | `GET` / `POST` | `manage_categories` | Logo grupları için taksonomi terim yönetim ekranı | `includes/class-gnn-logos-cpt.php#L65` |
-| `admin.php?page=gnn-logos-generator` | `GET` | `manage_options` | 4 hazır şablon butonlu interaktif Shortcode Oluşturucu arayüzü | `includes/class-gnn-logos-admin.php#L70` |
-| `plugins.php?gnn_logos_check_update=1` | `GET` | `update_plugins` | `_wpnonce` korumalı manuel güncelleme tetikleyicisi; transientleri temizler ve çekirdek güncelleyiciye yönlendirir | `inc/updater.php#L280` |
+| `edit.php?post_type=gnn_logo&page=gnn-logos-generator` | `GET` | `manage_options` | 4 hazır şablon butonlu interaktif Shortcode Oluşturucu arayüzü | `includes/class-gnn-logos-admin.php#L75` |
+| `plugins.php?gnn_logos_check_update=1` | `GET` | `update_plugins` | `_wpnonce` korumalı manuel güncelleme tetikleyicisi; transientleri temizler ve çekirdek güncelleyiciye yönlendirir | `inc/updater.php#L293` |
 | `site_transient_update_plugins` | Filtre Kancası | Dahili | Güncelleme kontrollerinde yeni sürüm verisini enjekte eder veya eski bildirimleri temizler | `inc/updater.php#L58` |
-| `upgrader_post_install` | Filtre Kancası | `update_plugins` | GitHub ZIP açıldıktan sonra klasör adını `gnn-logos` olarak normalleştirir | `inc/updater.php#L260` |
+| `upgrader_post_install` | Filtre Kancası | `update_plugins` | GitHub ZIP açıldıktan sonra klasör adını `gnn-logos` olarak normalleştirir | `inc/updater.php#L271` |

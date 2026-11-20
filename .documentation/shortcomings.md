@@ -46,6 +46,9 @@ Son Sentinel güvenlik denetiminde (Commit `5e32cbe`) tespit edilen sınır eksi
 4. **Kaldırma Sırasında Yetim Kalan Veritabanı Kayıtları (M-1):**
    - *Önceki Risk:* `uninstall.php` dosyasının yalnızca transientleri silip yazıları ve terimleri temizlememesi.
    - *Çözüm:* Kaldırma rutini tüm `gnn_logo` yazılarını, `postmeta` verilerini, `gnn_logo_group` terimlerini ve transientleri tamamen silecek şekilde güncellendi.
+5. **Shortcode CSS Enjeksiyonu, Updater Sentinel & WCAG (v1.2.1–v1.2.4):**
+   - `gap`, `aspect_ratio` ve `speed` niteliklerine katı regex doğrulaması eklendi; updater hata önbelleklemesi `'error'` sentinel değerine ve SSRF `https` şema kontrolüne taşındı.
+   - `load_plugin_textdomain()` WP 6.7+ uyumu için `init` priority `1`'e alındı, marquee öğelerine `clamp(140px, 16vw, 200px)` genişlik sınırı getirildi ve tam WCAG (klavye, `:focus-visible`, `prefers-reduced-motion`, `tabindex="-1"`) desteği eklendi.
 
 ---
 

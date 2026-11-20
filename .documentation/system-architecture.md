@@ -10,7 +10,8 @@ gnn-logos/
 ├── gnn-logos.php                     # [Çekirdek] Ana giriş noktası, singleton başlatıcı, eylem bağlantıları
 ├── readme.txt                         # [Metadata] WordPress.org depo gereksinimleri
 ├── uninstall.php                      # [Yaşam Döngüsü] Yazı, terim ve transient verilerini temizleyen güvenli kaldırıcı
-├── LICENSE                            # [Lisans] GNU General Public License v2
+├── languages/
+│   └── gnn-logos.pot                  # [Yerelleştirme] 120 dizgilik POT çeviri şablonu
 ├── inc/
 │   └── updater.php                    # [Güncelleyici] Transient senkronizasyonlu GitHub Releases API istemcisi
 ├── includes/
