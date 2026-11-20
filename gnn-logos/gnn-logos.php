@@ -3,7 +3,7 @@
  * Plugin Name: GNN Logos
  * Plugin URI:  https://github.com/BigDesigner/gnn-logos
  * Description: WordPress için ultra hafif logo ve sertifika vitrini. CSS Scroll-Snap karusel, GPU destekli sonsuz marquee ve estetik sertifika kartları (TS EN 12201-2 vb.) sunar.
- * Version:     1.2.3
+ * Version:     1.2.4
  * Requires at least: 5.8
  * Requires PHP: 8.0
  * Author:      BigDesigner
@@ -16,7 +16,7 @@
 defined('ABSPATH') || exit;
 
 // Define plugin constants.
-define('GNN_LOGOS_VERSION', '1.2.3');
+define('GNN_LOGOS_VERSION', '1.2.4');
 define('GNN_LOGOS_FILE', __FILE__);
 define('GNN_LOGOS_DIR', plugin_dir_path(__FILE__));
 define('GNN_LOGOS_URL', plugin_dir_url(__FILE__));

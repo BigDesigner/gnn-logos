@@ -5,7 +5,7 @@ Tags: logos, logo showcase, carousel, marquee, certificates, partners, reference
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,6 +49,10 @@ Sonsuz Kayan Logo Şeridi (Marquee):
 `[gnn_logos layout="marquee" speed="25s" grayscale="true"]`
 
 == Changelog ==
+
+= 1.2.4 =
+* Düzeltme: Sol yönetim menüsündeki üst **GNN Logos** bağlantısı doğrudan **Tüm Logolar & Sertifikalar** (`edit.php?post_type=gnn_logo`) ekranını açacak şekilde güncellendi; mükerrer boş `GNN Logos` alt menüsü kaldırıldı.
+* Düzeltme: **Güncellemeleri Kontrol Et** öğesi sol menüden kaldırıldı (güncellemeler GNN Dashboard / Eklentiler eylem bağlantısı üzerinden yönetilmektedir).
 
 = 1.2.3 =
 * Güvenlik: Shortcode `gap`, `aspect_ratio` ve `speed` parametrelerine katı regex doğrulaması eklenerek CSS enjeksiyonu riski kapatıldı; çift `esc_attr()` temizlendi.
