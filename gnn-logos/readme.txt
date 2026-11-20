@@ -5,7 +5,7 @@ Tags: logos, logo showcase, carousel, marquee, certificates, partners, reference
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,6 +49,12 @@ Sonsuz Kayan Logo Şeridi (Marquee):
 `[gnn_logos layout="marquee" speed="25s" grayscale="true"]`
 
 == Changelog ==
+
+= 1.2.3 =
+* Güvenlik: Shortcode `gap`, `aspect_ratio` ve `speed` parametrelerine katı regex doğrulaması eklenerek CSS enjeksiyonu riski kapatıldı; çift `esc_attr()` temizlendi.
+* Geliştirme: Updater `check_for_update()` yanıtına `requires`, `tested` (`7.1`) ve `requires_php` eklendi; `get_plugin_data()` erken çeviri koruması (`$translate = false`) ve `after_install()` filesystem kontrolleri güçlendirildi.
+* Geliştirme: Carousel kapsayıcısına WCAG APG `role="region"` ve `aria-roledescription="carousel"` eklendi; sürükleme sonrası yanlışlıkla link açılmasını önleyen `hasDragged` koruması eklendi.
+* Geliştirme: Kök `VERSION` dosyası oluşturuldu ve `languages/gnn-logos.pot` tüm çevrilebilir dizgilerle (120 kayıt) güncellendi.
 
 = 1.2.2 =
 * Düzeltme: Marquee düzenindeki öğelere (`gnn-marquee-item`) genişlik sınırı (`clamp(140px, 16vw, 200px)`) ve `auto` en-boy oranı için maksimum yükseklik (`90px`) eklenerek yüksek çözünürlüklü logoların footer/dar alanlarda dev gibi görünmesi engellendi.
