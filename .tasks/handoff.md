@@ -1,11 +1,11 @@
 # Session Handoff State
 
-- **Date**: 2026-10-01
+- **Date**: 2026-11-20
 - **Mode**: Interactive
 - **Active Branch**: main
-- **Last Commit**: 950be22
+- **Last Commit**: c43f9d0
 - **Worktree Status**: Clean & Pushed to GitHub
-- **Current Version**: 1.2.0
+- **Current Version**: 1.2.4
 
 ## What Was Executed
 1. **Repository Bootstrap & Sentinel Memory Bank**:
@@ -41,6 +41,17 @@
    - Upgraded `uninstall.php` to completely clean `gnn_logo` posts, postmeta, `gnn_logo_group` terms, and transients.
    - Linked `README.md` license badge dynamically to local `LICENSE`.
    - Bumped version to 1.2.0 across all files.
+8. **WP 7.1 Compatibility, Updater Hardening & WCAG Accessibility (v1.2.1 - ADR-0008)**:
+   - Moved `load_plugin_textdomain()` to `init` priority `1`; added `Requires at least: 5.8`, `Requires PHP: 8.0`, and `Tested up to: 7.1`.
+   - Fixed updater error transient caching bug (`'error'` sentinel), added `https` scheme check, and added `php -l` gate to `release.yml`.
+   - Added WCAG keyboard navigation, `:focus-visible`, `prefers-reduced-motion`, `role="tab"`/`aria-selected`, and `tabindex="-1"` on marquee duplicates.
+9. **Marquee Sizing & Footer Containment Fix (v1.2.2 - ADR-0008)**:
+   - Constrained `.gnn-marquee-item` width (`clamp(140px, 16vw, 200px)`) and `auto` aspect-ratio `max-height: 90px` so high-res logos never blow up in footer/narrow containers.
+10. **Shortcode CSS Injection Defense & Full Localization (v1.2.3 - ADR-0008)**:
+    - Enforced strict regex allowlists on `gap`, `aspect_ratio`, and `speed`; added `requires`/`tested`/`requires_php` to `check_for_update()`.
+    - Added root `VERSION` file, full 120-string `languages/gnn-logos.pot`, carousel `role="region"`, and `hasDragged` click guard.
+11. **Direct CPT Admin Menu & Sidebar Cleanup (v1.2.4 - ADR-0008)**:
+    - Bound top-level `'79.109'` menu directly to `edit.php?post_type=gnn_logo` and removed redundant `Güncellemeleri Kontrol Et` sidebar submenu.
 
 ## Architecture Decision Records (ADRs)
 - `ADR-0001`: Initial Tech Stack (Vanilla PHP 8.0+, Pure CSS, Vanilla JS, Zero External Libraries)
@@ -50,7 +61,8 @@
 - `ADR-0005`: Multi-Standard Tag Chips & Certificate Badges Layout Engine (`badges_layout`, `badges_align`, `badges_valign`)
 - `ADR-0006`: Robust WordPress Update Transient Synchronization & Slug Normalization
 - `ADR-0007`: Security Hardening, Sanitization Alignment, and Complete Lifecycle Cleanup
+- `ADR-0008`: WP 7.1 Compatibility, CSS Injection Defense, WCAG Accessibility, and Menu Ergonomics
 
 ## Next Recommended Actions
-- Monitor GitHub Releases deployment and verify automatic updates from WordPress Admin for v1.1.1.
+- Monitor WordPress 7.2 final release (scheduled December 8, 2026) and bump `Tested up to` when verified.
 - All tasks in pipeline are completed and verified (0 PHP syntax errors).

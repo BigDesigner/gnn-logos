@@ -7,7 +7,7 @@
 ## 1. Prerequisites
 - **Repository**: `https://github.com/BigDesigner/gnn-logos.git` (Verified)
 - **PHP**: 8.0 or newer (Verified)
-- **WordPress**: 5.8+ (tested up to 6.x) (Verified)
+- **WordPress**: 5.8+ (tested up to 7.1) (Verified)
 - **Web Server**: Apache / Nginx / LocalWP / Laragon / Docker WordPress (Verified)
 - **Database**: MySQL 5.7+ or MariaDB 10.3+ (WordPress native) (Verified)
 
@@ -23,6 +23,8 @@ gnn-logos/
 ├── gnn-logos.php                     # Main plugin entry point
 ├── readme.txt                         # WordPress plugin repository metadata
 ├── uninstall.php                      # Safe cleanup routine
+├── languages/
+│   └── gnn-logos.pot                  # Translation template (120 strings)
 ├── inc/
 │   └── updater.php                    # GitHub Releases API auto-updater
 ├── includes/
@@ -40,9 +42,9 @@ gnn-logos/
 
 ## 4. CI/CD Pipelines
 - **Pipeline File**: `.github/workflows/release.yml` (Verified)
-- **Trigger**: Tag push (`v*`)
+- **Trigger**: Manual `workflow_dispatch`
 - **Jobs**:
-  - `build-and-release`: Syntax linting with `php -l`, automated packaging of `gnn-logos/` directory into zip, and artifact release upload via `softprops/action-gh-release`.
+  - `build-and-release`: Syntax linting with `php -l`, automated packaging of `gnn-logos/` directory into zip, and artifact release upload via `softprops/action-gh-release@v3`.
 
 ## 5. Suggested Validation Commands
 | Command | Purpose | Prerequisite | Notes |

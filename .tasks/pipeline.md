@@ -3,7 +3,7 @@
 - **Project**: GNN Logos
 - **Author**: BigDesigner
 - **Admin Menu Slot**: `'79.109'`
-- **Active Sprint**: v1.2.0
+- **Active Sprint**: v1.2.4
 - **Status**: Sprint Completed & Verified
 
 ## Sprint Backlog: v1.0.0-mvp
@@ -100,3 +100,25 @@
 - Added `current_user_can('update_plugins')` capability check in `handle_manual_update_redirect()`.
 - Complete uninstall cleanup: `gnn_logo` posts + postmeta, `gnn_logo_group` taxonomy terms, and all transients.
 - Bumped version to 1.2.0 across all files.
+
+### [x] TASK-013: WP 7.1 Compatibility, Updater Cache Fix & WCAG Accessibility (v1.2.1)
+- Moved `load_plugin_textdomain()` to `init` priority `1` and added plugin header requirements (`Requires at least: 5.8`, `Requires PHP: 8.0`).
+- Fixed updater `'error'` transient sentinel, enforced `https` scheme in SSRF check, and added `requires`/`tested`/`requires_php` to `plugin_info()`.
+- Added WCAG accessibility: `tabindex="-1"` on marquee duplicates, `role="tab"`/`aria-selected` on dots, keyboard navigation, `:focus-visible`, and `prefers-reduced-motion`.
+- Added `php -l` validation step to `.github/workflows/release.yml` and bumped version to `1.2.1`.
+
+### [x] TASK-014: Marquee Width Constraint & Flex/Grid Containment (v1.2.2)
+- Constrained `.gnn-marquee-item` with `width: clamp(140px, 16vw, 200px)` and `max-height: 90px` for `auto` aspect ratio in `gnn-logos-frontend.css`.
+- Added `max-width: 100%; min-width: 0;` to `.gnn-logos-wrapper` and `.gnn-logos-layout-marquee`.
+- Bumped version to `1.2.2`.
+
+### [x] TASK-015: Shortcode CSS Injection Defense, Full POT & Drag Guard (v1.2.3)
+- Enforced strict regex validation on `gap`, `aspect_ratio`, and `speed` CSS variables in `class-gnn-logos-shortcode.php`.
+- Added `requires`/`tested`/`requires_php` to `check_for_update()` and `$translate = false` to `get_plugin_data()`.
+- Added `role="region"` / `aria-roledescription="carousel"` and `hasDragged` click suppression in `gnn-logos-frontend.js`.
+- Created root `VERSION` file and populated `gnn-logos/languages/gnn-logos.pot` (120 strings); bumped version to `1.2.3`.
+
+### [x] TASK-016: Direct CPT Admin Menu & Sidebar Cleanup (v1.2.4)
+- Bound top-level `'79.109'` menu directly to `edit.php?post_type=gnn_logo` to eliminate duplicate empty submenu.
+- Removed redundant `Güncellemeleri Kontrol Et` submenu from admin sidebar (updates handled via GNN Dashboard & `plugins.php` action link).
+- Updated `plugin_action_links` generator URL and bumped version to `1.2.4`.

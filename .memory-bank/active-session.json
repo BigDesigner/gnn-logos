@@ -1,30 +1,32 @@
-{
-  "schema_version": "1.1.0",
-  "session_id": "c0326e64-5853-48b4-a95e-399fa52b4501",
-  "status": "ACTIVE",
-  "mode": "Interactive",
-  "preferred_language": "Turkish",
-  "timestamp": "2026-10-01T02:06:00Z",
-  "active_branch": "main",
-  "last_commit": "950be22",
-  "git_history_available": true,
-  "git_remote_url": "https://github.com/BigDesigner/gnn-logos.git",
-  "worktree_status": "clean",
-  "current_sprint": {
-    "sprint_id": "v1.2.0",
-    "active_tasks": []
-  },
-  "tracked_memory_areas": {
-    "adr": ".memory-bank/adr/",
-    "changelog": ".memory-bank/changelog/",
-    "audits": ".memory-bank/audits/",
-    "bugs": ".memory-bank/bugs/",
-    "tasks": ".tasks/",
-    "documentation": ".documentation/"
-  },
-  "governance_baseline_hashes": {
-    "constitution": "1D98A7A07E7D0ABEE6DA9A06EF73E80D0B72DA684C27E25B097A442A8846FEB1",
-    "boundary_conditions": "568E9442E579A04B7BC4D44C21A9F3564EF920E352135D7C38019C52437D9E00",
-    "agents_rules": "01E3A450A5A05E0CCEE279F49E4B5E14515DB2EF1DE4BFF23A51A58D26F0AA99"
-  }
+﻿{
+    "schema_version":  "1.1.0",
+    "session_id":  "c0326e64-5853-48b4-a95e-399fa52b4501",
+    "status":  "ACTIVE",
+    "mode":  "Interactive",
+    "preferred_language":  "Turkish",
+    "timestamp":  "2026-11-20T21:44:00Z",
+    "active_branch":  "main",
+    "last_commit":  "c43f9d0",
+    "git_history_available":  true,
+    "git_remote_url":  "https://github.com/BigDesigner/gnn-logos.git",
+    "worktree_status":  "clean",
+    "current_sprint":  {
+                           "sprint_id":  "v1.2.4",
+                           "active_tasks":  [
+
+                                            ]
+                       },
+    "tracked_memory_areas":  {
+                                 "adr":  ".memory-bank/adr/",
+                                 "changelog":  ".memory-bank/changelog/",
+                                 "audits":  ".memory-bank/audits/",
+                                 "bugs":  ".memory-bank/bugs/",
+                                 "tasks":  ".tasks/",
+                                 "documentation":  ".documentation/"
+                             },
+    "governance_baseline_hashes":  {
+                                       "constitution":  "1D98A7A07E7D0ABEE6DA9A06EF73E80D0B72DA684C27E25B097A442A8846FEB1",
+                                       "boundary_conditions":  "D396567801EB2902C1CC15E6C2ECBA3C7B3CD557725F5EDCE6974DED2DE951D4",
+                                       "agents_rules":  "01E3A450A5A05E0CCEE279F49E4B5E14515DB2EF1DE4BFF23A51A58D26F0AA99"
+                                   }
 }

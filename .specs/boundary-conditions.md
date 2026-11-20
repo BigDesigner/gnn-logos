@@ -65,8 +65,8 @@ All logo images rendered on the frontend MUST:
 - Apply `object-fit: contain` within an aspect-ratio container to prevent distortion.
 
 ### 2.4 Admin Menu Registry & Position Invariant
-- **Slot**: Must be registered at position `'79.109'` strictly adjacent to WordPress Settings.
-- **Submenus**: Order must remain `All Items`, `Add New`, `Groups`, `Shortcode Generator`, `Check Updates`.
+- **Slot**: Must be registered at position `'79.109'` strictly adjacent to WordPress Settings, bound directly to `edit.php?post_type=gnn_logo`.
+- **Submenus**: Order must remain `All Items` (`Tüm Logolar & Sertifikalar`), `Add New` (`Yeni Ekle`), `Groups` (`Logo Grupları`), `Shortcode Generator` (`Shortcode Oluşturucu`). Manual update checks are exposed via `plugins.php` action links (`Check Updates`) and GNN Dashboard rather than a sidebar submenu.
 
 ### 2.5 Multi-Standard Badges & Layout Invariant
 - **Layouts**: `badges_layout` supports `wrap` (side-by-side flex wrap) and `stacked` (vertical column).

@@ -1,9 +1,26 @@
 # Verified Worklog
 
 - **Project**: GNN Logos
-- **Sprint**: v1.2.0
+- **Sprint**: v1.2.4
 
 ## Completed Work
+- **2026-11-20** (v1.2.4):
+  - **Admin Menu Ergonomics**: Bound top-level `'79.109'` menu directly to `edit.php?post_type=gnn_logo` in `class-gnn-logos-admin.php`, eliminating the duplicate empty `GNN Logos` submenu item and redirect screen.
+  - **Sidebar Cleanup**: Removed `Güncellemeleri Kontrol Et` from sidebar submenu (updates managed via GNN Dashboard and `plugins.php` action link) and updated `plugin_action_links` generator URL in `gnn-logos.php`.
+- **2026-11-20** (v1.2.3):
+  - **Shortcode CSS Injection Defense**: Added strict regex validation for `gap`, `aspect_ratio`, and `speed` in `class-gnn-logos-shortcode.php`, and removed redundant double `esc_attr()`.
+  - **Updater Metadata & Safety**: Added `requires`, `tested` (`7.1`), `requires_php` to `check_for_update()`, added `$translate = false` to `get_plugin_data()`, and hardened `after_install()` filesystem move checks.
+  - **Carousel WCAG & Drag Guard**: Added `role="region"` and `aria-roledescription="carousel"`, plus `hasDragged` (>5px) click suppression in `gnn-logos-frontend.js`.
+  - **Localization & Version Files**: Created root `VERSION` file and populated `gnn-logos/languages/gnn-logos.pot` with all 120 translatable strings.
+  - **CI/CD Cleanup**: Added `generate_release_notes: true` to `softprops/action-gh-release@v3` in `.github/workflows/release.yml`.
+- **2026-11-18** (v1.2.2):
+  - **Marquee Footer Sizing Fix**: Constrained `.gnn-marquee-item` to `width: clamp(140px, 16vw, 200px)` and added `max-height: 90px` for `auto` aspect ratio in `gnn-logos-frontend.css`, preventing high-res logos from rendering oversized in narrow/footer containers.
+  - **Flex/Grid Containment**: Added `max-width: 100%; min-width: 0;` to `.gnn-logos-wrapper` and `.gnn-logos-layout-marquee`.
+- **2026-11-18** (v1.2.1):
+  - **WP 6.7+ / 7.1 Compatibility**: Moved `load_plugin_textdomain()` to `init` priority `1`, added `Requires at least: 5.8` and `Requires PHP: 8.0` headers, and updated `Tested up to: 7.1`.
+  - **Updater Hardening**: Fixed error transient caching bug (`'error'` sentinel instead of `false`), enforced `https` scheme in SSRF validation, added `empty($args->slug)` guard, and added `wp_die()` on unauthorized manual checks.
+  - **WCAG Accessibility**: Added `tabindex="-1"` on duplicate marquee links, `role="tab"`/`aria-selected` on carousel dots, `ArrowLeft`/`ArrowRight` keyboard navigation, `:focus-visible` outlines, and `prefers-reduced-motion` support.
+  - **CI Syntax Gate**: Added `php -l` syntax validation step to `.github/workflows/release.yml`.
 - **2026-10-01** (v1.2.0):
   - **Logic Bug Fix (Newline Preservation)**: Replaced `sanitize_text_field()` with `sanitize_textarea_field()` in legacy certificate codes fallback (`class-gnn-logos-cpt.php`), ensuring `\r\n` newlines are preserved so `preg_split` can properly extract individual codes.
   - **WPCS Input Sanitization**: Added missing `wp_unslash()` calls on `_gnn_link_target` and `_gnn_aspect_ratio` saves.
