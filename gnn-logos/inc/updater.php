@@ -78,7 +78,7 @@ class GNN_Logos_Updater
         if (!function_exists('get_plugin_data')) {
             require_once ABSPATH . 'wp-admin/includes/plugin.php';
         }
-        $plugin_data = get_plugin_data(WP_PLUGIN_DIR . '/' . $this->plugin_slug);
+        $plugin_data = get_plugin_data(WP_PLUGIN_DIR . '/' . $this->plugin_slug, false, false);
         return isset($plugin_data['Version']) ? $plugin_data['Version'] : '1.0.0';
     }
 
@@ -187,11 +187,14 @@ class GNN_Logos_Updater
 
         if (version_compare($release->version, $local_version, '>')) {
             $obj = new stdClass();
-            $obj->slug        = 'gnn-logos';
-            $obj->plugin      = $this->plugin_slug;
-            $obj->new_version = $release->version;
-            $obj->url         = $release->html_url;
-            $obj->package     = $release->download_url;
+            $obj->slug         = 'gnn-logos';
+            $obj->plugin       = $this->plugin_slug;
+            $obj->new_version  = $release->version;
+            $obj->url          = $release->html_url;
+            $obj->package      = $release->download_url;
+            $obj->requires     = '5.8';
+            $obj->tested       = '7.1';
+            $obj->requires_php = '8.0';
 
             if (!isset($transient->response) || !is_array($transient->response)) {
                 $transient->response = array();
@@ -277,9 +280,10 @@ class GNN_Logos_Updater
         global $wp_filesystem;
         $plugin_dir = WP_PLUGIN_DIR . '/gnn-logos';
 
-        if ($result['destination'] !== $plugin_dir) {
-            $wp_filesystem->move($result['destination'], $plugin_dir);
-            $result['destination'] = $plugin_dir;
+        if (is_object($wp_filesystem) && !empty($result['destination']) && $result['destination'] !== $plugin_dir) {
+            if ($wp_filesystem->move($result['destination'], $plugin_dir, true)) {
+                $result['destination'] = $plugin_dir;
+            }
         }
 
         delete_transient($this->transient_key);

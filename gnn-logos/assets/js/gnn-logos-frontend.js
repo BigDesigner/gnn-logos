@@ -92,9 +92,10 @@
                 }
             }
 
-            var isDown = false, startX = 0, scrollStart = 0;
+            var isDown = false, hasDragged = false, startX = 0, scrollStart = 0;
             viewport.addEventListener('mousedown', function (e) {
                 isDown = true;
+                hasDragged = false;
                 viewport.style.scrollBehavior = 'auto';
                 startX = e.pageX - viewport.offsetLeft;
                 scrollStart = viewport.scrollLeft;
@@ -106,9 +107,19 @@
             });
             viewport.addEventListener('mousemove', function (e) {
                 if (!isDown) return;
+                var delta = e.pageX - viewport.offsetLeft - startX;
+                if (Math.abs(delta) > 5) {
+                    hasDragged = true;
+                }
                 e.preventDefault();
-                viewport.scrollLeft = scrollStart - (e.pageX - viewport.offsetLeft - startX) * 1.5;
+                viewport.scrollLeft = scrollStart - delta * 1.5;
             });
+            viewport.addEventListener('click', function (e) {
+                if (hasDragged) {
+                    e.preventDefault();
+                    hasDragged = false;
+                }
+            }, true);
         });
     }
     if (document.readyState === 'loading') {

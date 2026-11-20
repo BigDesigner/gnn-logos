@@ -114,20 +114,29 @@ class GNN_Logos_Shortcode
         $direction      = in_array($atts['direction'], array('left', 'right'), true) ? $atts['direction'] : 'left';
         $limit          = intval($atts['limit']);
 
-        // Normalize gap
+        // Normalize and strictly validate gap (prevent CSS injection)
         $gap = sanitize_text_field($atts['gap']);
         if (is_numeric($gap)) {
             $gap .= 'px';
         }
+        if (!preg_match('/^\d+(\.\d+)?(px|rem|em|%|vw)$/', $gap)) {
+            $gap = '20px';
+        }
 
-        // Normalize aspect ratio
+        // Normalize and strictly validate aspect ratio (prevent CSS injection)
         $aspect_ratio = str_replace(':', '/', sanitize_text_field($atts['aspect_ratio']));
+        if ('auto' !== $aspect_ratio && !preg_match('/^\d+\/\d+$/', $aspect_ratio)) {
+            $aspect_ratio = 'auto';
+        }
         $has_aspect_ratio = ('auto' !== $aspect_ratio);
 
-        // Normalize speed
+        // Normalize and strictly validate speed (prevent CSS injection)
         $speed = sanitize_text_field($atts['speed']);
         if (is_numeric($speed)) {
             $speed .= 's';
+        }
+        if (!preg_match('/^\d+(\.\d+)?(s|ms)$/', $speed)) {
+            $speed = '25s';
         }
 
         // Strict whitelist for orderby parameter (defense-in-depth)
@@ -229,9 +238,9 @@ class GNN_Logos_Shortcode
             '--gnn-columns: ' . intval($columns),
             '--gnn-columns-tablet: ' . intval($columns_tablet),
             '--gnn-columns-mobile: ' . intval($columns_mobile),
-            '--gnn-gap: ' . esc_attr($gap),
-            '--gnn-aspect-ratio: ' . esc_attr($aspect_ratio),
-            '--gnn-marquee-speed: ' . esc_attr($speed),
+            '--gnn-gap: ' . $gap,
+            '--gnn-aspect-ratio: ' . $aspect_ratio,
+            '--gnn-marquee-speed: ' . $speed,
         );
         $style_attr = 'style="' . esc_attr(implode('; ', $css_vars)) . ';"';
 
@@ -239,6 +248,9 @@ class GNN_Logos_Shortcode
         ?>
         <div class="<?php echo esc_attr(implode(' ', $wrapper_classes)); ?>" <?php echo $style_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
             <?php if ('carousel' === $layout) : ?>
+                role="region"
+                aria-roledescription="carousel"
+                aria-label="<?php esc_attr_e('Logo ve Sertifika Karuseli', 'gnn-logos'); ?>"
                 data-autoplay="<?php echo esc_attr($autoplay); ?>"
                 data-autoplay-speed="<?php echo esc_attr($autoplay_speed); ?>"
                 data-pause-on-hover="<?php echo esc_attr($pause_on_hover); ?>"
