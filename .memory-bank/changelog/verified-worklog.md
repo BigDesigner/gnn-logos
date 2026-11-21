@@ -1,9 +1,11 @@
 # Verified Worklog
 
 - **Project**: GNN Logos
-- **Sprint**: v1.2.4
+- **Sprint**: v1.2.5
 
 ## Completed Work
+- **2026-11-21** (v1.2.5):
+  - **Updater Self-Deletion Fix**: Normalized `$result['destination']` and `$plugin_dir` using `wp_normalize_path(untrailingslashit(...))` in `GNN_Logos_Updater::after_install()`, preventing `$wp_filesystem->move(..., ..., true)` from deleting the plugin folder when paths differed only by a trailing slash.
 - **2026-11-20** (v1.2.4):
   - **Admin Menu Ergonomics**: Bound top-level `'79.109'` menu directly to `edit.php?post_type=gnn_logo` in `class-gnn-logos-admin.php`, eliminating the duplicate empty `GNN Logos` submenu item and redirect screen.
   - **Sidebar Cleanup**: Removed `Güncellemeleri Kontrol Et` from sidebar submenu (updates managed via GNN Dashboard and `plugins.php` action link) and updated `plugin_action_links` generator URL in `gnn-logos.php`.

@@ -3,7 +3,7 @@
 - **Project**: GNN Logos
 - **Author**: BigDesigner
 - **Admin Menu Slot**: `'79.109'`
-- **Active Sprint**: v1.2.4
+- **Active Sprint**: v1.2.5
 - **Status**: Sprint Completed & Verified
 
 ## Sprint Backlog: v1.0.0-mvp
@@ -122,3 +122,7 @@
 - Bound top-level `'79.109'` menu directly to `edit.php?post_type=gnn_logo` to eliminate duplicate empty submenu.
 - Removed redundant `Güncellemeleri Kontrol Et` submenu from admin sidebar (updates handled via GNN Dashboard & `plugins.php` action link).
 - Updated `plugin_action_links` generator URL and bumped version to `1.2.4`.
+
+### [x] TASK-017: Updater `after_install()` Path Normalization Fix (v1.2.5)
+- Normalized `$result['destination']` and `$plugin_dir` via `wp_normalize_path(untrailingslashit(...))` in `inc/updater.php` to prevent self-deletion on upgrade.
+- Bumped version to `1.2.5`.

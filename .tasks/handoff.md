@@ -1,11 +1,11 @@
 # Session Handoff State
 
-- **Date**: 2026-11-20
+- **Date**: 2026-11-21
 - **Mode**: Interactive
 - **Active Branch**: main
-- **Last Commit**: c43f9d0
+- **Last Commit**: 1106e37
 - **Worktree Status**: Clean & Pushed to GitHub
-- **Current Version**: 1.2.4
+- **Current Version**: 1.2.5
 
 ## What Was Executed
 1. **Repository Bootstrap & Sentinel Memory Bank**:
@@ -52,6 +52,8 @@
     - Added root `VERSION` file, full 120-string `languages/gnn-logos.pot`, carousel `role="region"`, and `hasDragged` click guard.
 11. **Direct CPT Admin Menu & Sidebar Cleanup (v1.2.4 - ADR-0008)**:
     - Bound top-level `'79.109'` menu directly to `edit.php?post_type=gnn_logo` and removed redundant `Güncellemeleri Kontrol Et` sidebar submenu.
+12. **Updater `after_install()` Path Normalization Fix (v1.2.5)**:
+    - Normalized `$result['destination']` and `$plugin_dir` using `wp_normalize_path(untrailingslashit(...))` to prevent trailing-slash mismatch from deleting the plugin folder during upgrades.
 
 ## Architecture Decision Records (ADRs)
 - `ADR-0001`: Initial Tech Stack (Vanilla PHP 8.0+, Pure CSS, Vanilla JS, Zero External Libraries)
