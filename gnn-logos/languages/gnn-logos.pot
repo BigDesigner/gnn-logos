@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GNN Logos 1.2.5\n"
+"Project-Id-Version: GNN Logos 1.2.6\n"
 "Report-Msgid-Bugs-To: https://github.com/BigDesigner/gnn-logos/issues\n"
 "POT-Creation-Date: 2026-11-20 03:35+0300\n"
 "MIME-Version: 1.0\n"
