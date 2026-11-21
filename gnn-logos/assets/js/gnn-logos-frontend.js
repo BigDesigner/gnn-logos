@@ -1,7 +1,7 @@
 /**
  * GNN Logos - Frontend Controller (Ultra-light Vanilla JS, Zero-dependency)
  * @package GNN_Logos
- * @version 1.2.4
+ * @version 1.2.5
  */
 (function () {
     'use strict';
