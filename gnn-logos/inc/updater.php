@@ -278,11 +278,13 @@ class GNN_Logos_Updater
         }
 
         global $wp_filesystem;
-        $plugin_dir = WP_PLUGIN_DIR . '/gnn-logos';
+        $plugin_dir  = wp_normalize_path(untrailingslashit(WP_PLUGIN_DIR . '/gnn-logos'));
+        $destination = !empty($result['destination']) ? wp_normalize_path(untrailingslashit($result['destination'])) : '';
 
-        if (is_object($wp_filesystem) && !empty($result['destination']) && $result['destination'] !== $plugin_dir) {
-            if ($wp_filesystem->move($result['destination'], $plugin_dir, true)) {
-                $result['destination'] = $plugin_dir;
+        if (is_object($wp_filesystem) && '' !== $destination && $destination !== $plugin_dir) {
+            if ($wp_filesystem->move($destination, $plugin_dir, true)) {
+                $result['destination']      = trailingslashit($plugin_dir);
+                $result['destination_name'] = 'gnn-logos';
             }
         }
 
