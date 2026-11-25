@@ -5,7 +5,7 @@ Tags: logos, logo showcase, carousel, marquee, certificates, partners, reference
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 1.2.6
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,20 +15,20 @@ WordPress için ultra hafif, sıfır harici bağımlılıklı logo, çözüm ort
 
 GNN Logos; WordPress sitenizde referanslar, çözüm ortakları, sponsorlar ve kalite sertifikalarını (TS EN 12201-2, TS EN ISO 1452-2 vb.) modern ve estetik düzenlerde sunmanızı sağlayan yüksek performanslı bir vitrin eklentisidir.
 
-Sitenizi yavaşlatan ağır harici JavaScript kütüphaneleri (Slick, Swiper 150KB+, jQuery eklentileri) KULLANMAZ. Modern CSS Scroll-Snap, donanım (GPU) hızlandırmalı sonsuz akan marquee ve 3 KB'tan küçük mikro Vanilla JS ile çalışır.
+Sitenizi yavaşlatan ağır harici JavaScript kütüphaneleri (Slick, Swiper 150KB+, jQuery eklentileri) KULLANMAZ. Modern CSS Scroll-Snap, çok gruplu kusursuz GPU marquee, dahili Lightbox ve sıfır bağımlılıklı Vanilla JS ile çalışır.
 
 = Temel Özellikler =
-* **Ortam Kütüphanesi Entegrasyonu:** WordPress'in kendi "Gözat" penceresi üzerinden tek tıkla logo seçimi.
-* **Sertifika & Standart Rozetleri:** Logoların veya belgelerin altına TS EN 12201-2 gibi standart kodlarını şık rozet/badge tipografisiyle ekleme.
-* **En-Boy Oranı Koruması:** Modern CSS aspect-ratio (16:9, 4:3, 1:1, 3:2, 2:1, auto) ile logoların şeklini ve hizasını bozmadan sergileme.
-* **3 Farklı Vitrin Modu:**
-  1. Carousel / Slider (Ok ve dokunmatik swipe kaydırmalı, otomatik oynatmalı)
-  2. Continuous Ticker / Marquee (Kesintisiz sonsuz akan pürüzsüz şerit)
+* **Native Gutenberg Bloğu (API v3):** Blok Editörü ve Site Editor (FSE) içinde canlı önizlemeli `GNN Logos` bloğu (`wide` ve `full` hizalama desteği).
+* **Sürükle-Bırak Sıralama & Toplu Yükleme:** Yönetim listesinde satırları sürükleyerek anlık `menu_order` sıralaması ve Ortam Kütüphanesi'nden çoklu seçimle tek tıkta toplu logo oluşturma.
+* **Canlı Görsel Önizlemeli Shortcode Sihirbazı:** Açık/Koyu/Dama zemin seçicisi, 5 hazır şablon ve anlık render önizleme.
+* **Light, Dark, Auto Temalar & Glassmorphism:** Koyu/açık tema token sistemi, buzlu cam (`glass`) kart stili ve koyu footer'lar için `monochrome-white` / `monochrome-dark` / `grayscale` logo filtreleri.
+* **Erişilebilir Dahili Lightbox:** Sertifika ve logoları tam boyutta, rozetleri ve dış belge bağlantısıyla açan sıfır bağımlılıklı modal.
+* **Kusursuz 3 Vitrin Modu:**
+  1. Carousel / Slider (Hatasız son slayt geçişi, dinamik erişilebilir noktalar, akıcı sürükleme, IntersectionObserver + sekme görünürlüğü korumalı autoplay)
+  2. Continuous Ticker / Marquee (Sıfır sıçramalı çok gruplu döngü, 1–3 logoda dahi 4K ekranı dolduran otomatik klonlama, kenar yumuşatma maskesi)
   3. Responsive Grid (Çok sütunlu estetik ızgara)
-* **Görsel Stilleri:** Modern Kart (Card), İnce Çerçeveli (Bordered), Minimal / Sade.
-* **Hover Filtreleri:** Varsayılan gri (grayscale) başlayıp fare üzerine gelindiğinde orijinal rengini alma efekti.
-* **Görsel Shortcode Sihirbazı:** Menüden ayarları seçip tek tıkla `[gnn_logos ...]` kodunu kopyalayabileceğiniz admin paneli.
-* **GitHub Entegre Güncelleyici:** Yeni sürümleri doğrudan WordPress panelinden güncelleme imkanı.
+* **Sertifika & Standart Rozetleri:** Logoların altına TS EN 12201-2 gibi çoklu standart kodlarını yatay/dikey hizalamalı rozetlerle ekleme.
+* **GitHub Entegre Güncelleyici:** Unified GNN GitHub Updater standardı ile WordPress panelinden otomatik güncelleme.
 
 == Installation ==
 
@@ -49,6 +49,18 @@ Sonsuz Kayan Logo Şeridi (Marquee):
 `[gnn_logos layout="marquee" speed="25s" grayscale="true"]`
 
 == Changelog ==
+
+= 2.0.0 =
+* Yeni: Native Gutenberg Bloğu (`gnn-logos/showcase`, `apiVersion: 3`, `ServerSideRender`, `wide`/`full` hizalama, FSE Footer/Header uyumlu).
+* Yeni: Light / Dark / Auto (`prefers-color-scheme`) CSS Custom Property tema motoru, `glass` (Glassmorphism) kart stili ve `logo_filter` (`none`, `grayscale`, `monochrome-white`, `monochrome-dark`) desteği.
+* Yeni: Erişilebilir sıfır bağımlılıklı sertifika/logo Lightbox modalı (`lightbox="true"`, sıfır `innerHTML`, odak geri yükleme, `Escape`/backdrop kapatma).
+* Yeni: Yeni shortcode ve blok parametreleri: `theme`, `style="glass"`, `logo_filter`, `logo_height`, `item_width`, `fade_edges`, `lightbox`.
+* Yeni: Yönetim tablosunda sürükle-bırak `menu_order` sıralaması (`gnn_logos_reorder` AJAX), tek tıkla Toplu Logo Yükleyici (`gnn_logos_bulk_create` AJAX), `gnn_logo_group` kategori filtresi ve sıralanabilir `Sıra` sütunu.
+* Yeni: Shortcode Oluşturucu'ya Açık/Koyu/Dama zemin seçicili Canlı Görsel Önizleme (`gnn_logos_preview` AJAX), 5 hazır şablon ve düzen odaklı akıllı kontrol panelleri eklendi.
+* Düzeltme: Marquee motoru çok gruplu `.gnn-marquee-group` + `ResizeObserver` dinamik klonlama ile sıfır sıçrama ve 1–4 logoda bile 4K/ultrawide doluluk sağlayacak şekilde yeniden yazıldı.
+* Düzeltme: Carousel `goNext()` son slayt atlama (off-by-one) hatası giderildi; ulaşılamayan fazla noktalar gizlendi, tüm öğeler sığdığında ok/nokta otomatik gizleme, akıcı `clientX` sürükleme (`scroll-snap` askıya alma) ve `IntersectionObserver` + `visibilitychange` + `focusin` autoplay duraklatma eklendi.
+* Düzeltme: Shortcode Oluşturucu'da "Standart kodunu göster" kutusu kapatıldığında `show_code="false"` üretilmemesi hatası giderildi.
+* Optimizasyon: `WP_Query` içine `no_found_rows => true` eklendi; tamamen boş kayıtların ve boş görsel kutularının render edilmesi engellendi.
 
 = 1.2.6 =
 * Geliştirme: GitHub güncelleyici (`GNN_Logos_Updater`) unified GNN GitHub Updater standardına geçirildi.
