@@ -1,11 +1,11 @@
 # ADR 0002: Ultra-Lightweight Zero-Dependency Frontend Engine
 
-- **Status**: Accepted
+- **Status**: Superseded
 - **Confidence**: Verified
 - **Date**: 2026-09-30
 - **Category**: Structural Topology & Dependencies
 - **Supersedes**: None
-- **Superseded By**: None
+- **Superseded By**: [ADR-0010: AAA v2.0.0 Frontend Engine, Theme Token System, Lightbox, Admin UX & Native Gutenberg Block](file://.memory-bank/adr/0010-aaa-v2-engine-gutenberg-block-and-admin-ux.md)
 
 ## Context
 Many WordPress slider/carousel plugins load bulky external JavaScript bundles (e.g. Slick Carousel + jQuery, Swiper 150KB+), degrading site loading speeds, Google PageSpeed scores, and Core Web Vitals (LCP, CLS, INP). The user explicitly requested an ultra-lightweight plugin that handles carousels, sliding animations, marquee tickers, and responsive grids.

@@ -1,9 +1,19 @@
 # Verified Worklog
 
 - **Project**: GNN Logos
-- **Sprint**: v1.2.5
+- **Sprint**: v2.0.0
 
 ## Completed Work
+- **2026-11-25** (v2.0.0 — ADR-0010):
+  - **Seamless Multi-Group Marquee Engine**: Replaced single-track `-50%` duplication with sibling `.gnn-marquee-group` containers (`translate3d(-100%, 0, 0)`, `padding-right: var(--gnn-gap)`) + `ResizeObserver` viewport fill cloning for 1–4 logos on 4K displays, `fade_edges`, `item_width`, and `loading="eager"`.
+  - **Bug-Free Scroll-Snap Carousel**: Fixed off-by-one `goNext()` last-slide skip, hid unreachable dots and applied `.gnn-carousel-static` when items fit, suspended scroll-snap during `clientX` drags (`.is-dragging`), added autoplay reset on manual nav, and added `IntersectionObserver` + `visibilitychange` + `focusin` + `touchstart` autoplay pausing.
+  - **Theme Token Engine, Glassmorphism & Logo Filters**: Added CSS custom property theming (`theme="light|dark|auto"`), `style="glass"`, `logo_filter="none|grayscale|monochrome-white|monochrome-dark"`, and `logo_height` with strict regex CSS validation.
+  - **Zero-Dependency Accessible Lightbox**: Added optional `lightbox="true"` modal via delegated click listener and safe DOM construction (zero `innerHTML`), `Escape`/backdrop close, and focus restoration.
+  - **Admin UX Overhaul**: Added drag-and-drop `menu_order` reordering (`gnn_logos_reorder` AJAX), multi-select Bulk Logo Uploader (`gnn_logos_bulk_create` AJAX), `gnn_logo_group` filter dropdown, sortable `Sıra` column, default `menu_order ASC` sorting, and Live Visual Preview Shortcode Generator (`gnn_logos_preview` AJAX) with Light/Dark/Checker canvas switcher, 5 presets, layout-aware panels, and fixed `show_code="false"` bug.
+  - **Native Gutenberg Block (API v3)**: Added zero-build `gnn-logos/showcase` block (`blocks/showcase/block.json`, `editor.js`, `includes/class-gnn-logos-block.php`) with `ServerSideRender`, 5 Inspector panels, and `align: ["wide", "full"]`.
+  - **Query & Localization**: Added `no_found_rows => true` to `WP_Query`, filtered completely empty items, and regenerated `languages/gnn-logos.pot` with 177 strings.
+- **2026-11-21** (v1.2.6 — ADR-0009):
+  - **Unified GNN GitHub Updater Standard**: Upgraded `inc/updater.php` to the unified GNN updater architecture (`pre_set_site_transient_update_plugins`, `upgrader_pre_install` active-state capture, `wp_remote_head` + `expanded_assets` fallback, `wp_clean_plugins_cache(true)`, active-state restoration).
 - **2026-11-21** (v1.2.5):
   - **Updater Self-Deletion Fix**: Normalized `$result['destination']` and `$plugin_dir` using `wp_normalize_path(untrailingslashit(...))` in `GNN_Logos_Updater::after_install()`, preventing `$wp_filesystem->move(..., ..., true)` from deleting the plugin folder when paths differed only by a trailing slash.
 - **2026-11-20** (v1.2.4):
@@ -67,6 +77,7 @@
 - **2026-10-01**: **TASK-007**: Created `gnn-logos/readme.txt`, `gnn-logos/uninstall.php`, `README.md`, and validated syntax with `php -l` on all PHP files (0 errors).
 
 ## Validation Status
-- Static analysis: `php -l` passed on all 6 PHP files with 0 syntax errors.
-- Security checks: Verified `ABSPATH` guards, nonces (`gnn_logos_save_meta`, `gnn_logos_manual_update`), capability checks (`edit_post`, `manage_options`, `update_plugins`), and contextual escaping (`esc_html`, `esc_attr`, `esc_url`).
-- Performance check: Frontend CSS (8.7KB) and JS (4.6KB) strictly inside the <10KB / <5KB payload budget. Zero external CDN/npm dependencies.
+- Static analysis: `php -l` passed on all 7 PHP files (0 syntax errors); `node --check` passed on all 3 JS files (`gnn-logos-frontend.js`, `gnn-logos-admin.js`, `blocks/showcase/editor.js`); `block.json` schema validated (`apiVersion: 3`, 30 attributes).
+- Security checks: Verified `ABSPATH` / `WP_UNINSTALL_PLUGIN` guards, nonces (`gnn_logos_save_meta`, `gnn_logos_admin_nonce`, `gnn_logos_manual_update`), capability checks (`edit_post`, `edit_others_posts`, `publish_posts`, `manage_options`, `update_plugins`), strict regex CSS allowlists, contextual escaping (`esc_html`, `esc_attr`, `esc_url`), and zero `innerHTML` in frontend JS.
+- Performance check: Frontend CSS (23.6 KB unminified) and JS (17.7 KB unminified) within ADR-0010 budgets (<28 KB / <20 KB) with zero external CDN/npm/slider dependencies and conditional enqueueing.
+- Localization: `gnn-logos/languages/gnn-logos.pot` refreshed with 177 verified strings (`Project-Id-Version: GNN Logos 2.0.0`).

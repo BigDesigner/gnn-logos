@@ -1,109 +1,56 @@
 # Geliştirici Rehberi, Sözleşmeler ve Hata Ayıklama
 
-<!-- Verified from: .specs/constitution.md#L1-L34 -->
-<!-- Verified from: .specs/boundary-conditions.md#L1-L50 -->
-<!-- Verified from: .github/workflows/release.yml#L1-L50 -->
+<!-- Verified from: .specs/constitution.md -->
+<!-- Verified from: .specs/boundary-conditions.md -->
+<!-- Verified from: .github/workflows/release.yml -->
 
 ## 1. Mühendislik Disiplinleri ve Kod Standartları
 
 ### 1.1 WordPress Kodlama Standartları (WPCS)
-- **Doğrudan Erişim Koruması:** Her PHP dosyası mutlaka şu kontrolle başlamalıdır:
-  ```php
-  defined('ABSPATH') || exit;
-  ```
-  *(Yaşam döngüsü kaldırma dosyası için: `defined('WP_UNINSTALL_PLUGIN') || exit;`).*
-- **Ters Eğik Çizgi Arındırma (Unslashing) ve Sanitizasyon:** Süper globaller (`$_POST`, `$_GET`) arındırılmadan asla sanitize edilmemelidir:
-  ```php
-  $clean = sanitize_text_field(wp_unslash($_POST['key']));
-  $clean_url = esc_url_raw(wp_unslash($_POST['url']));
-  ```
-- **Bağlamsal Çıktı Kaçışı (Contextual Output Escaping):** HTML içine aktarılan her dinamik değer kesinlikle bağlama uygun kaçış fonksiyonundan geçirilmelidir:
-  - HTML metin düğümü: `esc_html($var)`
-  - Etiket özniteliği: `esc_attr($var)`
-  - URL bağlantısı: `esc_url($var)`
-  - Çoklu dil destekli metin: `esc_html__('Metin', 'gnn-logos')`
-- **Sıfır Harici Önyüz Bağımlılığı Kuralı:**
-  - jQuery slider eklentileri (Slick, Owl Carousel) veya ağır harici kütüphanelerin (Swiper 150KB+) eklenmesi kesinlikle yasaktır.
-  - Karusel etkileşimleri yalnızca yerel CSS Scroll-Snap + hafif Vanilla JS (<3 KB) ile çalışmalıdır.
-  - Kayan şerit (marquee) animasyonları %100 saf CSS GPU keyframe dönüşümleri (`translate3d`) ile yürütülmelidir.
+- **Doğrudan Erişim Koruması:** Her PHP dosyası `defined('ABSPATH') || exit;` ile başlamalıdır (`uninstall.php` için `defined('WP_UNINSTALL_PLUGIN') || exit;`).
+- **Unslashing ve Sanitizasyon:** Süper globaller (`$_POST`, `$_GET`) `wp_unslash()` olmadan sanitize edilmemelidir.
+- **AJAX Güvenliği:** Her `wp_ajax_*` işleyicisi önce `check_ajax_referer('gnn_logos_admin_nonce', 'nonce')`, ardından ilgili `current_user_can(...)` denetimini çalıştırmalıdır.
+- **Bağlamsal Kaçış ve DOM Güvenliği:** PHP çıktılarında `esc_html()`, `esc_attr()`, `esc_url()`, `esc_html__()` zorunludur. Önyüz JS dosyasında (`gnn-logos-frontend.js`) `innerHTML` kesinlikle kullanılmaz.
+- **Sıfır Harici Önyüz Bağımlılığı (ADR-0010):** jQuery slider, harici lightbox, npm runtime paketi veya CDN scripti yasaktır. Önyüz bütçesi sıkıştırılmamış CSS `< 28 KB` (~23.6 KB), JS `< 20 KB` (~17.7 KB) sınırındadır.
 
 ---
 
-## 2. Test ve Statik Analiz Rehberi
+## 2. Test ve Statik Analiz Komutları
 
-### 2.1 Sözdizim Doğrulama (`php -l`)
-Her commit öncesinde, değiştirilen veya eklenen tüm PHP dosyaları sözdizim hatalarına karşı taranmalıdır:
-```bash
-# Windows PowerShell toplu doğrulama:
+```powershell
+# 1. Tüm PHP dosyaları sözdizimi doğrulaması:
 Get-ChildItem -Recurse -Filter *.php gnn-logos | ForEach-Object { php -l $_.FullName }
 
-# Linux / macOS Bash:
-find gnn-logos -name "*.php" -exec php -l {} \;
-```
+# 2. JS sözdizimi doğrulaması:
+node --check gnn-logos/assets/js/gnn-logos-frontend.js
+node --check gnn-logos/assets/js/gnn-logos-admin.js
+node --check gnn-logos/blocks/showcase/editor.js
 
-### 2.2 Güvenlik Denetimi ve Sentinel Araçları
-```bash
-# Sentinel Hafıza Bankası sağlık kontrolü:
-/sentinel-doctor
-
-# Mimari Karar Kayıtları (ADR) kontrolü:
-/sentinel-adr
-
-# Teknik dokümantasyonu yeniden derleme:
-/sentinel-docgen
+# 3. Gutenberg block.json şema doğrulaması:
+Get-Content gnn-logos/blocks/showcase/block.json -Raw | ConvertFrom-Json
 ```
 
 ---
 
-## 3. Yerel Hata Ayıklama ve Sorun Giderme Reçeteleri
+## 3. Hata Ayıklama Reçeteleri
 
-### 3.1 WordPress Hata Günlüğü (Debug Logging)
-Çalışma zamanı hatalarını ve veritabanı uyarılarını izlemek için `wp-config.php` dosyasına ekleyin:
-```php
-define('WP_DEBUG', true);
-define('WP_DEBUG_LOG', true);
-define('WP_DEBUG_DISPLAY', false);
-```
-Günlük kayıtları `/wp-content/debug.log` dosyasına yazılacaktır.
+### 3.1 Güncelleme Kontrolünü Zorlama
+`https://ornek-site.com/wp-admin/plugins.php?gnn_logos_check_update=1` (Eklentiler sayfasındaki **Check Updates** bağlantısı üzerinden nonce ile çağrılır). `gnn_logos_github_update_check` transientini temizler ve `update-core.php?force-check=1` ekranına yönlendirir.
 
-### 3.2 Güncelleme Kontrolünü Zorlama ve Transient Temizleme
-GitHub'a yeni bir sürüm gönderildiğinde WordPress panelinde "Güncelleme Mevcut" uyarısı hemen belirmemişse:
-1. Şu adrese gidin:
-   `https://ornek-site.com/wp-admin/plugins.php?gnn_logos_check_update=1`
-2. Bu işlem `GNN_Logos_Updater::handle_manual_check()` fonksiyonunu tetikleyerek `gnn_logos_github_update_check` ve `_site_transient_update_plugins` önbelleklerini temizler ve güvenle `update-core.php?force-check=1` sayfasına yönlendirir.
+### 3.2 Canlı Önizleme veya Sürükle-Bırak Sıralama Çalışmıyorsa
+- `GNN_Logos_Admin::enqueue_admin_assets()` içinde `gnnLogosAdmin` nesnesinin (`ajaxUrl`, `nonce`, `pageOffset`) enjekte edildiğini doğrulayın.
+- Sürükle-bırak sıralama yalnızca `edit.php?post_type=gnn_logo` ekranında ve `jquery-ui-sortable` yüklü olduğunda aktifleşir.
+- Shortcode Oluşturucu canlı önizlemesi her AJAX yanıtından sonra `window.GNNLogosInit(stageElement)` fonksiyonunu çağırarak Marquee, Carousel ve Lightbox motorlarını yeniden başlatır.
 
-### 3.3 Ortam Seçici Scriptinin Yüklenmemesi
-"Gözat / Logo Seç" butonu WordPress ortam modalını açmıyorsa:
-- Hedef yönetim ekranında `wp_enqueue_media()` çağrısının yapıldığını doğrulayın.
-- `class-gnn-logos-admin.php#L130-L135` içinde bu scriptlerin yalnızca `post_type === 'gnn_logo'` veya `page === 'gnn-logos-generator'` ekranlarında koşullu olarak yüklendiğini unutmayın.
+### 3.3 Gutenberg Bloğu Önizleme Stilleri
+`GNN_Logos_Shortcode::register_assets()` kancası `init` priority `5` ile çalışarak `gnn-logos-frontend` stilini `GNN_Logos_Block::register_block()` (`init` priority `10`) öncesinde kaydeder; böylece `block.json` içindeki `"style": "gnn-logos-frontend"` Site Editor (FSE) iframe'inde de yüklenir.
 
 ---
 
-## 4. Git ve Katkı Sağlama İş Akışı
+## 4. Sürüm ve Dağıtım Kontrol Listesi
 
-- **Dal Stratejisi:** Geliştirmeler doğrudan `main` üzerinde sürüm hazırlığı veya özellik dalları (`feat/ozellik-adi`, `fix/hata-adi`) şeklinde yürütülür.
-- **Commit Formatı:** Conventional Commits standardı benimsenmiştir:
-  - `feat: release v1.2.0 with security hardening`
-  - `fix(cpt): preserve newlines in legacy cert codes`
-  - `docs(readme): fix shields badge endpoints with static svg`
-  - `chore(sentinel): standardize ADR lineage and memory bank baseline`
-- **Etiketleme (Tagging) Protokolü:** Sürümler kesin semantik versiyonlama ile etiketlenmelidir:
-  ```bash
-  git tag -a v1.2.0 -m "Release v1.2.0: Security hardening, sanitization alignment, and complete lifecycle cleanup"
-  git push origin v1.2.0
-  ```
-
----
-
-## 5. Sürüm ve Dağıtım Kontrol Listesi
-
-GitHub Releases üzerinden yeni bir sürüm yayımlamadan önce:
-- [ ] Kök `VERSION` dosyası, `gnn-logos/gnn-logos.php` (`Version: X.Y.Z` ve `GNN_LOGOS_VERSION`), `gnn-logos/readme.txt` (`Stable tag: X.Y.Z`) ve `gnn-logos/languages/gnn-logos.pot` (`Project-Id-Version`) değerlerini güncelleyin.
-- [ ] `gnn-logos-frontend.css`, `gnn-logos-admin.css`, `gnn-logos-frontend.js`, `gnn-logos-admin.js` dosyalarındaki `@version X.Y.Z` değerlerini güncelleyin.
-- [ ] Tüm PHP dosyalarında `php -l` çalıştırarak 0 hata olduğunu doğrulayın.
-- [ ] `README.md` dosyasındaki rozet URL'lerinin hedef sürümle eşleştiğini kontrol edin.
-- [ ] Değişiklikleri `main` dalına commit edip pushlayın.
-- [ ] `vX.Y.Z` Git etiketini oluşturup `origin`e gönderin.
-- [ ] GitHub Actions manuel yayın iş akışını tetikleyin: `gh workflow run release.yml`.
-- [ ] GitHub Releases sayfasında `gnn-logos-X.Y.Z.zip` arşivinin üretildiğini doğrulayın.
-- [ ] Canlı bir WordPress kurulumunda güncellemenin sorunsuz yüklendiğini teyit edin.
+- [ ] Kök `VERSION`, `gnn-logos/gnn-logos.php` (`Version` ve `GNN_LOGOS_VERSION`), `gnn-logos/readme.txt` (`Stable tag` ve Changelog), `gnn-logos/blocks/showcase/block.json` (`version`), `gnn-logos/languages/gnn-logos.pot` (`Project-Id-Version`) ve `README.md` rozetini güncelleyin.
+- [ ] Kod değişikliklerini ayrı commit, sürüm artışını `chore(release): bump version to X.Y.Z` ayrı commit olarak kaydedin.
+- [ ] Tüm PHP (`php -l`), JS (`node --check`) ve `block.json` doğrulamalarını 0 hatayla geçin.
+- [ ] `git push origin main`, `git tag -a vX.Y.Z -m "Release vX.Y.Z"`, `git push origin vX.Y.Z` ve `gh workflow run release.yml` komutlarını çalıştırın.
+- [ ] GitHub Releases üzerinde `gnn-logos-X.Y.Z.zip` paketinin oluşturulduğunu doğrulayın.

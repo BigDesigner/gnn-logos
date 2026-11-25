@@ -1,13 +1,12 @@
 # Veri Sözlüğü ve Kalıcılık Belirtimi
 
-<!-- Verified from: gnn-logos/includes/class-gnn-logos-cpt.php#L20-L80 -->
-<!-- Verified from: gnn-logos/includes/class-gnn-logos-cpt.php#L300-L355 -->
-<!-- Verified from: gnn-logos/inc/updater.php#L35-L45 -->
-<!-- Verified from: gnn-logos/uninstall.php#L1-L44 -->
+<!-- Verified from: gnn-logos/includes/class-gnn-logos-cpt.php -->
+<!-- Verified from: gnn-logos/inc/updater.php -->
+<!-- Verified from: gnn-logos/uninstall.php -->
 
 ## 1. Varlık İlişkileri Genel Bakışı (ER Şeması)
 
-GNN Logos, harici özel SQL tabloları oluşturmadan tamamen WordPress çekirdek ilişkisel tablolarını kullanır:
+GNN Logos, özel SQL tablosu oluşturmadan tamamen WordPress çekirdek ilişkisel tablolarını kullanır:
 
 ```mermaid
 erDiagram
@@ -17,7 +16,7 @@ erDiagram
         string post_name
         string post_type "gnn_logo"
         string post_status "publish"
-        int menu_order
+        int menu_order "Surukle-birak siralama"
     }
 
     WP_POSTMETA {
@@ -42,7 +41,7 @@ erDiagram
     }
 
     WP_TERM_RELATIONSHIPS {
-        bigint object_id PK,FK "wp_posts.ID ile eşleşir"
+        bigint object_id PK,FK
         bigint term_taxonomy_id PK,FK
     }
 
@@ -54,71 +53,52 @@ erDiagram
     }
 
     WP_POSTS ||--o{ WP_POSTMETA : "meta verilerine sahiptir"
-    WP_POSTS ||--o{ WP_TERM_RELATIONSHIPS : "sınıflandırılır"
+    WP_POSTS ||--o{ WP_TERM_RELATIONSHIPS : "siniflandirilir"
     WP_TERM_TAXONOMY ||--o{ WP_TERM_RELATIONSHIPS : "gruplar"
-    WP_TERMS ||--|| WP_TERM_TAXONOMY : "tanımlar"
+    WP_TERMS ||--|| WP_TERM_TAXONOMY : "tanimlar"
 ```
 
 ---
 
-## 2. Temel Varlık Belirtimleri
+## 2. Temel Varlıklar
 
 ### 2.1 Özel Yazı Türü (CPT): `gnn_logo`
-- **Kayıt Dosyası:** `gnn-logos/includes/class-gnn-logos-cpt.php#L20-L50`
-- **Depolama Tablosu:** `wp_posts`
-- **Filtrelenen Alanlar:**
-  - `post_type`: Kesin olarak `'gnn_logo'`
-  - `post_status`: `'publish'`, `'draft'`, `'trash'`
-  - `post_title`: Logo / Firma Adı olarak kullanılır ve görsel `alt` metni için yedektir.
-  - `menu_order`: `orderby="menu_order"` varsayılan sıralamasında kullanılır.
+- **Depolama:** `wp_posts` (`post_type = 'gnn_logo'`)
+- **Sıralama (`menu_order`):** Yönetim listesinde varsayılan sıralama `menu_order ASC` olarak çalışır ve `wp_ajax_gnn_logos_reorder` ile sürükle-bırak olarak doğrudan güncellenir.
 
 ### 2.2 Taksonomi: `gnn_logo_group`
-- **Kayıt Dosyası:** `gnn-logos/includes/class-gnn-logos-cpt.php#L55-L85`
-- **Depolama Tabloları:** `wp_terms`, `wp_term_taxonomy`, `wp_term_relationships`
-- **Tür:** Hiyerarşik (kategori yapısında)
-- **Amaç:** Logoları mantıksal vitrin gruplarına ayırır (örn: `sertifikalar`, `referanslar`, `cozum-ortaklari`).
+- **Depolama:** `wp_terms`, `wp_term_taxonomy`, `wp_term_relationships`
+- **Tür:** Hiyerarşik kategori; CPT yönetim tablosunda doğrudan açılır filtre (`restrict_manage_posts`) ve Toplu Logo Yükleme çubuğunda hedef grup seçici olarak sunulur.
 
 ---
 
-## 3. İkincil Nitelikler ve Postmeta Anahtarları
+## 3. Postmeta Anahtarları
 
-<!-- Verified from: gnn-logos/includes/class-gnn-logos-cpt.php#L300-L355 -->
-
-Tüm özel nitelikler WordPress standart `get_post_meta()` ve `update_post_meta()` API'leri üzerinden `wp_postmeta` tablosunda saklanır:
-
-| Meta Anahtarı (`meta_key`) | Veri Türü | Serileştirme | Sanitizasyon Fonksiyonu | Amaç ve Varsayılan Değer |
-|---|---|---|---|---|
-| `_gnn_logo_id` | Tamsayı (`bigint`) | Ham Skaler | `absint($_POST['gnn_logo_id'])` | `wp_posts` tablosundaki eke işaret eden WordPress ortam ID'si (`post_type = 'attachment'`). |
-| `_gnn_cert_codes` | String Dizisi | PHP Serialized Array | `sanitize_text_field(wp_unslash($raw_code))` | Çoklu standart etiket dizisi (örn: `['TS EN 12201-2', 'TS EN ISO 1452-2']`). Ayrı rozet hapları olarak basılır. |
-| `_gnn_cert_code` | Metin (`varchar`) | Virgülle ayrılmış string | `sanitize_textarea_field(wp_unslash($_POST['gnn_cert_code']))` | Geriye dönük uyumluluk için korunan tekli standart metni. |
-| `_gnn_description` | Metin (`text`) | Ham String | `sanitize_text_field(wp_unslash($_POST['gnn_description']))` | Başlığın altında gösterilen alt açıklama veya akreditasyon kurumu metni. |
-| `_gnn_link_url` | Web Adresi (`url`) | Ham String | `esc_url_raw(wp_unslash($_POST['gnn_link_url']))` | Logoya tıklandığında gidilecek hedef yönlendirme bağlantısı. |
-| `_gnn_link_target` | Seçim (`enum`) | Ham String | `in_array(..., ['_self', '_blank'])` | Bağlantının açılma hedefi (`_blank` yeni sekme, `_self` aynı sekme). Varsayılan: `'_blank'`. |
-| `_gnn_aspect_ratio` | Seçim (`enum`) | Ham String | `in_array(..., ['auto', '16:9', '4:3', '1:1', '3:2', '2:1'])` | Öğeye özel en-boy oranı geçersiz kılma ayarı. Varsayılan: `'auto'`. |
+| Meta Anahtarı (`meta_key`) | Veri Türü | Sanitizasyon Fonksiyonu | Amaç ve Varsayılan Değer |
+|---|---|---|---|
+| `_gnn_logo_id` | Tamsayı (`bigint`) | `absint()` | WordPress medya eki ID'si (`attachment`) |
+| `_gnn_cert_codes` | String Dizisi | `sanitize_text_field(wp_unslash())` | Çoklu standart rozet dizisi (örn: `['TS EN 12201-2', 'TS EN ISO 1452-2']`) |
+| `_gnn_cert_code` | Metin (`varchar`) | `sanitize_textarea_field(wp_unslash())` | Geriye uyumlu tekli/çok satırlı standart metni |
+| `_gnn_description` | Metin (`text`) | `sanitize_text_field(wp_unslash())` | Alt açıklama / akreditasyon kurumu metni |
+| `_gnn_link_url` | URL | `esc_url_raw(wp_unslash())` | Tıklama veya Lightbox dış belge/PDF bağlantısı |
+| `_gnn_link_target` | Enum | `in_array(..., ['_self', '_blank'], true)` | Bağlantı hedefi (varsayılan `'_blank'`) |
+| `_gnn_aspect_ratio` | Enum | `in_array(..., ['auto', '16:9', '4:3', '1:1', '3:2', '2:1'], true)` | Öğeye özel en-boy oranı geçersiz kılma (varsayılan `'auto'`) |
 
 ---
 
 ## 4. Önbellekleme ve Transient Sözlüğü
 
-<!-- Verified from: gnn-logos/inc/updater.php#L35-L45 -->
-<!-- Verified from: gnn-logos/inc/updater.php#L156 -->
-<!-- Verified from: gnn-logos/uninstall.php#L37-L43 -->
-
-Eklenti, dış ağ isteklerini ve güncelleme bildirimlerini WordPress Transients API (`wp_options` tablosu) üzerinden yönetir:
-
-| Transient Anahtarı | Depolama Yeri | Yaşam Süresi (TTL) | Temizleme / Geçersiz Kılma Tetikleyicisi | Saklanan Veri Yapısı |
-|---|---|---|---|---|
-| `gnn_logos_github_update_check` | `wp_options` (`_transient_...`) | `43200` saniye (12 saat) | `update-core.php` ziyareti, manuel güncelleme kontrolü veya eklenti kaldırma (`uninstall.php`) | `(object) ['version' => '1.2.0', 'download_url' => '...', 'changelog' => '...', 'published_at' => '...']` |
-| `_site_transient_update_plugins` | `wp_options` (WP Çekirdeği) | WP Çekirdeği Yönetir (12 saat) | Güncelleme sonrası kurulum, çekirdek kontrolü veya manuel istek | `$transient->response['gnn-logos/gnn-logos.php']` içine standart güncelleme nesnesi ekler |
+| Transient Anahtarı | Yaşam Süresi (TTL) | Temizleme Tetikleyicisi | Saklanan Yapı |
+|---|---|---|---|
+| `gnn_logos_github_update_check` | `43200s` (12 saat pozitif) / `300s` (5 dk negatif) | `load-update-core.php`, manuel kontrol veya `uninstall.php` | Release nesnesi (`version`, `download_url`, `changelog`, `published_at`) veya `(object) ['failed' => true]` |
+| `_site_transient_update_plugins` | WP Çekirdeği yönetir | `pre_set_site_transient_update_plugins`, `uninstall.php` | Standart WP güncelleme nesnesi (`response` veya `no_update`) |
 
 ---
 
 ## 5. Fiziksel Depolama Varlıkları
 
-<!-- Verified from: gnn-logos/includes/class-gnn-logos-cpt.php#L190-L240 -->
-
-| Varlık Türü | Depolama Konumu | Erişim Protokolü | Yönetim Arayüzü |
-|---|---|---|---|
-| **Logo Görselleri** | `/wp-content/uploads/YYYY/MM/` | Standart WordPress Ek URL'leri | "Gözat / Logo Seç" butonu ile WordPress Ortam Kütüphanesi modalı (`wp.media`) |
-| **Eklenti Paketi** | `/wp-content/plugins/gnn-logos/` | Yerel Sunucu Dosya Sistemi | WordPress Eklentiler Sayfası / Git |
-| **Sürüm Paketi Arşivi** | `gnn-logos-1.2.0.zip` | GitHub Releases CDN | GitHub Actions Yayınlama Hattı (`.github/workflows/release.yml`) |
+| Varlık Türü | Depolama Konumu | Yönetim Arayüzü |
+|---|---|---|
+| **Logo Görselleri** | `/wp-content/uploads/YYYY/MM/` | Tekli Ortam Seçici veya Çoklu Toplu Logo Yükleyici (`wp.media`) |
+| **Gutenberg Blok Tanımı** | `/wp-content/plugins/gnn-logos/blocks/showcase/` | `block.json` + zero-build `editor.js` |
+| **Sürüm Arşivi** | `gnn-logos-2.0.0.zip` | GitHub Releases (`.github/workflows/release.yml`) |

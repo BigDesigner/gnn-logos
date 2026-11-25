@@ -3,7 +3,7 @@
 - **Project**: GNN Logos
 - **Author**: BigDesigner
 - **Admin Menu Slot**: `'79.109'`
-- **Active Sprint**: v1.2.5
+- **Active Sprint**: v2.0.0
 - **Status**: Sprint Completed & Verified
 
 ## Sprint Backlog: v1.0.0-mvp
@@ -126,3 +126,16 @@
 ### [x] TASK-017: Updater `after_install()` Path Normalization Fix (v1.2.5)
 - Normalized `$result['destination']` and `$plugin_dir` via `wp_normalize_path(untrailingslashit(...))` in `inc/updater.php` to prevent self-deletion on upgrade.
 - Bumped version to `1.2.5`.
+
+### [x] TASK-018: Unified GNN GitHub Updater Standard (v1.2.6 - ADR-0009)
+- Upgraded `inc/updater.php` with `upgrader_pre_install` active-state capture, `wp_remote_head` + `expanded_assets` fallback, `wp_clean_plugins_cache(true)`, and post-install reactivation.
+- Bumped version to `1.2.6`.
+
+### [x] TASK-019: AAA v2.0.0 Engine Overhaul, Theme System, Lightbox, Admin UX & Gutenberg Block (v2.0.0 - ADR-0010)
+- Rebuilt frontend CSS (`gnn-logos-frontend.css`) with CSS custom property themes (`light`, `dark`, `auto`), `glass` style, `logo_filter` (`grayscale`, `monochrome-white`, `monochrome-dark`), multi-group zero-jump marquee, `.gnn-carousel-static`/`.is-dragging` states, and `.gnn-lightbox` modal.
+- Rebuilt frontend JS (`gnn-logos-frontend.js`) with `window.GNNLogosInit`, `ResizeObserver` marquee viewport fill, fixed carousel off-by-one & dynamic dots, `IntersectionObserver` + `visibilitychange` + `focusin` autoplay pausing, and delegated zero-`innerHTML` Lightbox.
+- Upgraded `class-gnn-logos-shortcode.php` with shared `get_defaults()`, new attributes (`theme`, `style="glass"`, `logo_filter`, `logo_height`, `item_width`, `fade_edges`, `lightbox`), regex CSS validation, `no_found_rows => true`, and `init` priority `5` asset registration.
+- Upgraded `class-gnn-logos-cpt.php` with drag-and-drop `menu_order` reorder (`gnn_logos_reorder`), Bulk Logo Uploader (`gnn_logos_bulk_create`), `gnn_logo_group` filter dropdown, and sortable `Sıra` column.
+- Rebuilt `class-gnn-logos-admin.php`, `gnn-logos-admin.js`, and `gnn-logos-admin.css` with Live Visual Preview (`gnn_logos_preview`), Light/Dark/Checker canvas switcher, 5 presets, layout-aware panels, and fixed `show_code="false"` emission.
+- Added zero-build Native Gutenberg Block `gnn-logos/showcase` (`blocks/showcase/block.json`, `editor.js`, `includes/class-gnn-logos-block.php`).
+- Regenerated `languages/gnn-logos.pot` (177 strings), validated PHP/JS/JSON, bumped version to `2.0.0`, and published `v2.0.0` GitHub Release.

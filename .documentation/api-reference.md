@@ -1,93 +1,86 @@
 # API ve Arayüz Başvuru Belirtimi
 
-<!-- Verified from: gnn-logos/gnn-logos.php#L120-L130 -->
-<!-- Verified from: gnn-logos/includes/class-gnn-logos-admin.php#L35-L115 -->
-<!-- Verified from: gnn-logos/includes/class-gnn-logos-shortcode.php#L60-L125 -->
-<!-- Verified from: gnn-logos/inc/updater.php#L280-L297 -->
+<!-- Verified from: gnn-logos/includes/class-gnn-logos-shortcode.php -->
+<!-- Verified from: gnn-logos/includes/class-gnn-logos-cpt.php -->
+<!-- Verified from: gnn-logos/includes/class-gnn-logos-admin.php -->
+<!-- Verified from: gnn-logos/includes/class-gnn-logos-block.php -->
 
 ## 1. Yetkilendirme ve Güvenlik Sınırları
 
-| Arayüz Türü | Yetkilendirme Mekanizması | Gerekli Yetki (Capability) | Uygulanan Güvenlik Korumaları |
+| Arayüz Türü | Yetkilendirme Mekanizması | Gerekli Yetki (Capability) | Güvenlik Korumaları |
 |---|---|---|---|
-| **CPT Meta Kutusu Kaydı** | Kriptografik Nonce & Yetki Kontrolü | `edit_post` (`$post_id`) | `wp_verify_nonce($_POST['gnn_logos_meta_nonce'], 'gnn_logos_meta_box_nonce_action')` |
-| **Yönetim Ayarları & Sihirbaz** | WordPress Kullanıcı Oturumu | `manage_options` | `add_menu_page()` ve `add_submenu_page()` seviyesinde zorunlu tutulur |
-| **Manuel Güncelleme Kontrolü** | Nonce & Eklenti Güncelleme Yetkisi | `update_plugins` | `wp_verify_nonce($_GET['_wpnonce'], 'gnn_logos_manual_update')` ve `current_user_can('update_plugins')` |
-| **Önyüz Shortcode** | Genel Erişim | Yok (Halka Açık) | `WP_Query` ile salt-okunur sorgu, HTML etiketlerinde bağlamsal kaçış (contextual escaping) |
+| **CPT Meta Kutusu Kaydı** | Nonce & Yetki | `edit_post` (`$post_id`) | `wp_verify_nonce($_POST['gnn_logos_meta_nonce'], 'gnn_logos_save_meta')` |
+| **Sürükle-Bırak Sıralama AJAX** | AJAX Nonce & Yetki | `edit_others_posts` veya `manage_options` | `check_ajax_referer('gnn_logos_admin_nonce', 'nonce')`, post type doğrulaması (`gnn_logo`) |
+| **Toplu Logo Oluşturma AJAX** | AJAX Nonce & Yetki | `publish_posts` | `check_ajax_referer('gnn_logos_admin_nonce', 'nonce')`, attachment MIME doğrulaması |
+| **Canlı Önizleme AJAX** | AJAX Nonce & Yetki | `manage_options` | `check_ajax_referer('gnn_logos_admin_nonce', 'nonce')`, `GNN_Logos_Shortcode` sanitizasyonu |
+| **Manuel Güncelleme Kontrolü** | Nonce & Yetki | `update_plugins` | `wp_verify_nonce($_GET['_wpnonce'], 'gnn_logos_manual_update')` |
+| **Önyüz Shortcode & Blok** | Halka Açık | Yok (Salt-Okunur) | Katı beyaz listeler, regex CSS koruması, bağlamsal kaçış (`esc_html`, `esc_attr`, `esc_url`) |
 
 ---
 
-## 2. Genel Shortcode Arayüzü (`[gnn_logos]`)
+## 2. Shortcode (`[gnn_logos]`) ve Gutenberg Bloğu (`gnn-logos/showcase`) Parametreleri
 
-Temel önyüz vitrin arayüzü `add_shortcode('gnn_logos', ...)` ile kaydedilen `[gnn_logos]` etiketidir.
+Her iki arayüz aynı 30+ nitelik sözleşmesini paylaşır (`GNN_Logos_Shortcode::get_defaults()`):
 
-### 2.1 Parametre Belirtim Tablosu
+| Parametre | Tip | Varsayılan | Kabul Edilen Değerler / Doğrulama |
+|---|---|---|---|
+| `group` | string | `""` | `gnn_logo_group` terim slug'ı (`sanitize_title`) |
+| `layout` | string | `'carousel'` | `'carousel'`, `'marquee'`, `'grid'` |
+| `style` | string | `'minimal'` | `'minimal'`, `'card'`, `'bordered'`, `'glass'` |
+| `theme` | string | `'light'` | `'light'`, `'dark'`, `'auto'` (`prefers-color-scheme`) |
+| `logo_filter` | string | `'none'` | `'none'`, `'grayscale'`, `'monochrome-white'`, `'monochrome-dark'` |
+| `aspect_ratio` | string | `'auto'` | `'auto'`, `'16/9'`, `'4/3'`, `'1/1'`, `'3/2'`, `'2/1'` (regex korumalı) |
+| `logo_height` | string | `""` | CSS uzunluk değeri (örn: `56px`, `4rem`; regex korumalı) |
+| `item_width` | string | `""` | Marquee öğe genişliği CSS değeri (örn: `180px`; regex korumalı) |
+| `columns` | integer | `4` | `1`–`12` |
+| `columns_tablet` | integer | `3` | `1`–`8` |
+| `columns_mobile` | integer | `2` | `1`–`4` |
+| `gap` | string | `'20px'` | CSS uzunluk değeri (regex korumalı) |
+| `show_code` | boolean | `true` | `'true'` / `'false'` |
+| `badges_layout` | string | `'wrap'` | `'wrap'`, `'stacked'` |
+| `badges_align` | string | `'center'` | `'center'`, `'left'`, `'right'` |
+| `badges_valign` | string | `'bottom'` | `'bottom'`, `'top'`, `'center'` |
+| `show_title` | boolean | `false` | `'true'` / `'false'` |
+| `show_desc` | boolean | `false` | `'true'` / `'false'` |
+| `lightbox` | boolean | `false` | `'true'` / `'false'` (Erişilebilir sertifika/logo büyütme modalı) |
+| `grayscale` | boolean | `false` | Geriye uyumlu kısa yol (`logo_filter="grayscale"`) |
+| `autoplay` | boolean | `true` | `'true'` / `'false'` |
+| `autoplay_speed` | integer | `3000` | Milisaniye (`>= 500`) |
+| `arrows` | boolean | `true` | `'true'` / `'false'` |
+| `dots` | boolean | `false` | `'true'` / `'false'` |
+| `speed` | string | `'25s'` | CSS süre değeri (`s` veya `ms`; regex korumalı) |
+| `direction` | string | `'left'` | `'left'`, `'right'` |
+| `fade_edges` | boolean | `true` | `'true'` / `'false'` (Marquee kenar maskesi) |
+| `pause_on_hover` | boolean | `true` | `'true'` / `'false'` |
+| `limit` | integer | `-1` | `-1` (sınırsız) veya pozitif tamsayı |
+| `orderby` | string | `'menu_order'` | `menu_order`, `date`, `title`, `rand`, `ID`, `author`, `name`, `modified`, `parent`, `none` |
+| `order` | string | `'ASC'` | `'ASC'`, `'DESC'` |
 
-<!-- Verified from: gnn-logos/includes/class-gnn-logos-shortcode.php#L70-L140 -->
-
-| Parametre | Veri Türü | Varsayılan | Kabul Edilen Değerler | Açıklama ve Doğrulama Kuralları |
-|---|---|---|---|---|
-| `group` | string | `""` | Geçerli taksonomi slug'ı | `gnn_logo_group` slug değerine göre filtreler. `sanitize_title()` ile temizlenir. Boş bırakılırsa tüm gruplar listelenir. |
-| `layout` | string | `'carousel'` | `'carousel'`, `'marquee'`, `'grid'` | Vitrin sunum modu. `in_array()` ile doğrulanır. |
-| `style` | string | `'minimal'` | `'minimal'`, `'card'`, `'bordered'` | Kart görsel stili. `'card'` stili çerçeve, gölge ve yuvarlatılmış köşeler uygular. |
-| `aspect_ratio` | string | `'auto'` | `'16/9'`, `'4/3'`, `'1/1'`, `'3/2'`, `'2/1'`, `'auto'` | Görsel kutusuna modern CSS en-boy oranı zorlar. `:` karakterini otomatik `/` yapar. |
-| `columns` | integer | `4` | `1` - `10` | Izgara ve karusel için masaüstü sütun sayısı. `absint()` ile temizlenir. |
-| `columns_tablet` | integer | `3` | `1` - `8` | Tablet ekran sütun sayısı. `absint()` ile temizlenir. |
-| `columns_mobile` | integer | `2` | `1` - `4` | Mobil ekran sütun sayısı. `absint()` ile temizlenir. |
-| `gap` | string | `'20px'` | Geçerli CSS birimi (px, rem) | Öğeler arasındaki boşluk. `sanitize_text_field()` ile temizlenir; sayısal ise `px` eklenir. |
-| `show_code` | boolean | `true` | `'true'`, `'false'` | Kalite belgesi ve standart kod rozetlerinin görünürlüğü. `filter_var(..., FILTER_VALIDATE_BOOLEAN)` ile doğrulanır. |
-| `badges_layout` | string | `'wrap'` | `'wrap'`, `'stacked'` | Rozet yerleşim dizilimi: `'wrap'` akıcı flexbox yan yana, `'stacked'` tek sütun alt alta. |
-| `badges_align` | string | `'center'` | `'center'`, `'left'`, `'right'` | Rozetlerin kart içindeki yatay hizalaması. |
-| `badges_valign` | string | `'bottom'` | `'bottom'`, `'top'`, `'center'` | Rozetlerin kart içindeki dikey hizalaması: `'bottom'` (en alta sabitli), `'top'` (logonun hemen altında), `'center'` (dikey ortalı). |
-| `show_title` | boolean | `false` | `'true'`, `'false'` | Logo ve firma başlığının görünürlüğü. |
-| `show_desc` | boolean | `false` | `'true'`, `'false'` | Alt açıklama / kurum metninin görünürlüğü. |
-| `grayscale` | boolean | `false` | `'true'`, `'false'` | `true` ise görseller %100 siyah-beyaz başlar, fare üzerine gelince renklenir. |
-| `autoplay` | boolean | `true` | `'true'`, `'false'` | Karusel modunda slaytların otomatik kayması. |
-| `autoplay_speed` | integer | `3000` | Milisaniye | Karusel otomatik geçiş aralığı (örn: `3000` = 3 saniye). `absint()` ile temizlenir. |
-| `speed` | string | `'25s'` | CSS zaman birimi | Marquee kayan şeridinin tam tur dönüş süresi (örn: `20s`, `30s`). |
-| `direction` | string | `'left'` | `'left'`, `'right'` | Marquee akış yönü. |
-| `arrows` | boolean | `true` | `'true'`, `'false'` | Karusel navigasyon ok butonlarının görünürlüğü. |
-| `dots` | boolean | `false` | `'true'`, `'false'` | Karusel alt sayfalama noktalarının görünürlüğü. |
-| `pause_on_hover`| boolean | `true` | `'true'`, `'false'` | Fareyle üzerine gelindiğinde kaymayı duraklatma. |
-| `limit` | integer | `-1` | Öğe sayısı | Listelenecek maksimum öğe adedi (`-1` sınırsız). `intval()` ile temizlenir. |
-| `orderby` | string | `'menu_order'` | `'none'`, `'ID'`, `'author'`, `'title'`, `'name'`, `'type'`, `'date'`, `'modified'`, `'parent'`, `'rand'`, `'menu_order'` | Sıralama ölçütü. Katı beyaz liste (`$allowed_orderby`) ile doğrulanır. |
-| `order` | string | `'ASC'` | `'ASC'`, `'DESC'` | Sıralama yönü. `in_array()` ile doğrulanır. |
-
----
-
-### 2.2 Shortcode Kullanım Senaryoları
+### 2.1 Örnek Kullanım Senaryoları
 
 <details>
-<summary><b>Örnek Shortcode Kullanım Senaryoları</b></summary>
+<summary><b>v2.0.0 Örnek Shortcode Senaryoları</b></summary>
 
-#### Senaryo 1: TS EN Sertifikaları İçin Kart Izgarası
+#### Koyu Footer Sonsuz Kayan Şerit (Beyaz Monokrom)
 ```html
-[gnn_logos group="kalite-belgeleri" layout="grid" style="card" aspect_ratio="4/3" columns="4" show_code="true" badges_layout="wrap" badges_align="center" badges_valign="bottom"]
+[gnn_logos group="referanslar" layout="marquee" style="minimal" theme="dark" logo_filter="monochrome-white" logo_height="44px" item_width="160px" speed="28s" fade_edges="true" show_code="false"]
 ```
 
-#### Senaryo 2: Referanslar İçin Sonsuz Kayan Şerit (Sola Doğru)
+#### Lightbox Destekli Glassmorphism Sertifika Vitrini
 ```html
-[gnn_logos group="referanslar" layout="marquee" speed="20s" direction="left" grayscale="true" pause_on_hover="true"]
-```
-
-#### Senaryo 3: Çözüm Ortakları Dokunmatik Slider (Karusel)
-```html
-[gnn_logos group="cozum-ortaklari" layout="carousel" columns="5" aspect_ratio="16/9" autoplay="true" autoplay_speed="3000" arrows="true" dots="true"]
+[gnn_logos group="sertifikalar" layout="grid" style="glass" theme="dark" aspect_ratio="4/3" columns="4" show_code="true" lightbox="true"]
 ```
 </details>
 
 ---
 
-## 3. Yönetim Paneli Rotaları ve Kanca Başvurusu
+## 3. Yönetim Paneli Rotaları ve AJAX Uç Noktaları
 
-<!-- Verified from: gnn-logos/includes/class-gnn-logos-admin.php#L35-L95 -->
-<!-- Verified from: gnn-logos/inc/updater.php#L55-L65 -->
-
-| Rota / Kanca Tanımlayıcısı | HTTP Metodu | Yetki Kontrolü | Eylem / Amaç | Dosya Kanıtı |
+| Rota / Action | Metot | Yetki | Amaç | Dosya Kanıtı |
 |---|---|---|---|---|
-| `edit.php?post_type=gnn_logo` | `GET` | `manage_options` / `edit_posts` | Üst seviye `'79.109'` menüsü doğrudan açar; küçük görsel, standart rozetleri ve grubu gösteren CPT yönetim tablosu | `includes/class-gnn-logos-admin.php#L36`, `includes/class-gnn-logos-cpt.php#L360` |
-| `post-new.php?post_type=gnn_logo` | `GET` / `POST` | `edit_posts` | Yeni logo/sertifika ekleme ekranı; ortam seçici ve etiket hap yöneticisini sunar | `includes/class-gnn-logos-cpt.php#L90` |
-| `edit-tags.php?taxonomy=gnn_logo_group` | `GET` / `POST` | `manage_categories` | Logo grupları için taksonomi terim yönetim ekranı | `includes/class-gnn-logos-cpt.php#L65` |
-| `edit.php?post_type=gnn_logo&page=gnn-logos-generator` | `GET` | `manage_options` | 4 hazır şablon butonlu interaktif Shortcode Oluşturucu arayüzü | `includes/class-gnn-logos-admin.php#L75` |
-| `plugins.php?gnn_logos_check_update=1` | `GET` | `update_plugins` | `_wpnonce` korumalı manuel güncelleme tetikleyicisi; transientleri temizler ve çekirdek güncelleyiciye yönlendirir | `inc/updater.php#L293` |
-| `site_transient_update_plugins` | Filtre Kancası | Dahili | Güncelleme kontrollerinde yeni sürüm verisini enjekte eder veya eski bildirimleri temizler | `inc/updater.php#L58` |
-| `upgrader_post_install` | Filtre Kancası | `update_plugins` | GitHub ZIP açıldıktan sonra klasör adını `gnn-logos` olarak normalleştirir | `inc/updater.php#L271` |
+| `edit.php?post_type=gnn_logo` | `GET` | `edit_posts` | Sürükle-bırak sıralama, kategori filtresi ve Toplu Logo Yükleme çubuğunu içeren ana liste | `includes/class-gnn-logos-cpt.php` |
+| `edit.php?post_type=gnn_logo&page=gnn-logos-generator` | `GET` | `manage_options` | 5 şablonlu ve canlı görsel önizlemeli Shortcode Oluşturucu | `includes/class-gnn-logos-admin.php` |
+| `wp_ajax_gnn_logos_reorder` | `POST` | `edit_others_posts` / `manage_options` | Satır ID dizisine göre `menu_order` değerlerini günceller | `includes/class-gnn-logos-cpt.php` |
+| `wp_ajax_gnn_logos_bulk_create` | `POST` | `publish_posts` | Seçilen medya ID'lerinden toplu `gnn_logo` kayıtları oluşturur ve opsiyonel gruba atar | `includes/class-gnn-logos-cpt.php` |
+| `wp_ajax_gnn_logos_preview` | `POST` | `manage_options` | Shortcode oluşturucudaki ayarları gerçek render motorundan geçirip HTML döner | `includes/class-gnn-logos-admin.php` |
+| `plugins.php?gnn_logos_check_update=1` | `GET` | `update_plugins` | Nonce korumalı manuel GitHub güncelleme kontrolü | `inc/updater.php` |

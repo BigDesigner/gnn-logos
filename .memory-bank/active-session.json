@@ -4,14 +4,14 @@
     "status":  "ACTIVE",
     "mode":  "Interactive",
     "preferred_language":  "Turkish",
-    "timestamp":  "2026-11-21T00:12:27Z",
+    "timestamp":  "2026-11-25T16:14:15Z",
     "active_branch":  "main",
-    "last_commit":  "1106e37",
+    "last_commit":  "15f566d",
     "git_history_available":  true,
     "git_remote_url":  "https://github.com/BigDesigner/gnn-logos.git",
     "worktree_status":  "clean",
     "current_sprint":  {
-                           "sprint_id":  "v1.2.5",
+                           "sprint_id":  "v2.0.0",
                            "active_tasks":  [
 
                                             ]
@@ -26,7 +26,7 @@
                              },
     "governance_baseline_hashes":  {
                                        "constitution":  "1D98A7A07E7D0ABEE6DA9A06EF73E80D0B72DA684C27E25B097A442A8846FEB1",
-                                       "boundary_conditions":  "D396567801EB2902C1CC15E6C2ECBA3C7B3CD557725F5EDCE6974DED2DE951D4",
+                                       "boundary_conditions":  "D0E5E7995A624E66FC2890F297E7F925424CF9430396A7441A0589630A02E2E3",
                                        "agents_rules":  "01E3A450A5A05E0CCEE279F49E4B5E14515DB2EF1DE4BFF23A51A58D26F0AA99"
                                    }
 }

@@ -17,7 +17,7 @@
 ## 3. Context Drift Prevention
 - Source of truth for functional and technical specifications resides in `.specs/constitution.md` and `.specs/boundary-conditions.md`.
 - No architectural modifications may be introduced without creating a corresponding numbered ADR under `.memory-bank/adr/`.
-- Every feature must strictly adhere to the zero-external-dependency rule for frontend assets (maximum payload budget: CSS < 10KB, JS < 5KB).
+- Every feature must strictly adhere to the zero-external-dependency rule for frontend assets (maximum unminified payload budget: CSS < 28KB, JS < 20KB; ~10KB combined gzipped, per ADR-0010).
 
 ## 4. Pre-Change Checklist
 - [ ] Check `.memory-bank/bugs/bug-list.md` for active blockers.
