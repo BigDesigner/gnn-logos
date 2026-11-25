@@ -439,7 +439,7 @@ msgid "Shortcode'u Kopyala"
 msgstr ""
 
 #: includes/class-gnn-logos-admin.php:503
-msgid "AAA İpuçları"
+msgid "Kullanım İpuçları"
 msgstr ""
 
 #: includes/class-gnn-logos-admin.php:505

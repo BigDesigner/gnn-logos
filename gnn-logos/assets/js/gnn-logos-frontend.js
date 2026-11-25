@@ -1,5 +1,5 @@
 /**
- * GNN Logos - AAA Frontend Controller (Zero-Dependency Vanilla JS)
+ * GNN Logos - Frontend Controller (Zero-Dependency Vanilla JS)
  * Handles Seamless Marquee Fill, Bug-Free Scroll-Snap Carousel, and Accessible Lightbox.
  *
  * @package GNN_Logos

@@ -500,7 +500,7 @@ class GNN_Logos_Admin
                     <hr class="gnn-divider">
 
                     <div class="gnn-info-box">
-                        <h4><?php esc_html_e('AAA İpuçları', 'gnn-logos'); ?></h4>
+                        <h4><?php esc_html_e('Kullanım İpuçları', 'gnn-logos'); ?></h4>
                         <ul>
                             <li><strong><?php esc_html_e('Koyu Footerlar için:', 'gnn-logos'); ?></strong> <code>theme="dark"</code> + <code>logo_filter="monochrome-white"</code> + <code>logo_height="44px"</code> kullanın.</li>
                             <li><strong><?php esc_html_e('Sertifikalar için:', 'gnn-logos'); ?></strong> <code>style="card"</code> + <code>aspect_ratio="4/3"</code> + <code>lightbox="true"</code> ile tam ekran inceleme sağlayın.</li>

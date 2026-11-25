@@ -106,25 +106,26 @@ class GNN_Logos_Updater
     }
 
     /**
-     * Get local installed version from constant or plugin headers.
+     * Get local installed version directly from the on-disk plugin header.
+     * Reading from disk avoids stale in-memory constants during the same-request upgrade cycle.
      *
      * @return string
      */
     private function get_local_version()
     {
-        if (defined('GNN_LOGOS_VERSION')) {
-            return GNN_LOGOS_VERSION;
+        $main_file = WP_PLUGIN_DIR . '/' . $this->plugin_basename;
+        if (file_exists($main_file)) {
+            if (function_exists('clearstatcache')) {
+                clearstatcache(true, $main_file);
+            }
+            $headers = get_file_data($main_file, array('Version' => 'Version'), 'plugin');
+            if (!empty($headers['Version'])) {
+                return trim((string) $headers['Version']);
+            }
         }
 
-        $main_file = dirname(__DIR__) . '/gnn-logos.php';
-        if (file_exists($main_file)) {
-            if (!function_exists('get_plugin_data')) {
-                require_once ABSPATH . 'wp-admin/includes/plugin.php';
-            }
-            $plugin_data = get_plugin_data($main_file, false, false);
-            if (!empty($plugin_data['Version'])) {
-                return $plugin_data['Version'];
-            }
+        if (defined('GNN_LOGOS_VERSION')) {
+            return (string) GNN_LOGOS_VERSION;
         }
 
         return '0.0.0';

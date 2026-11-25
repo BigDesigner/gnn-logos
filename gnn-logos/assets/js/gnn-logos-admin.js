@@ -1,5 +1,5 @@
 /**
- * GNN Logos - AAA Admin JavaScript
+ * GNN Logos - Admin JavaScript
  * Handles Media Uploader, Tag Chips, Drag-and-Drop Reorder,
  * Bulk Upload, and Live-Preview Shortcode Generator.
  *
