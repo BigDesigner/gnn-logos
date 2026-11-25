@@ -3,7 +3,7 @@
  * Plugin Name: GNN Logos
  * Plugin URI:  https://github.com/BigDesigner/gnn-logos
  * Description: WordPress için yüksek performanslı, sıfır harici bağımlılıklı logo, referans ve sertifika vitrini. Kusursuz marquee, Scroll-Snap karusel, Light/Dark/Glass temaları, Lightbox, sürükle-bırak sıralama, toplu yükleme ve Gutenberg bloğu sunar.
- * Version:     2.0.0
+ * Version:     2.0.1
  * Requires at least: 5.8
  * Requires PHP: 8.0
  * Author:      BigDesigner
@@ -16,7 +16,7 @@
 defined('ABSPATH') || exit;
 
 // Define plugin constants.
-define('GNN_LOGOS_VERSION', '2.0.0');
+define('GNN_LOGOS_VERSION', '2.0.1');
 define('GNN_LOGOS_FILE', __FILE__);
 define('GNN_LOGOS_DIR', plugin_dir_path(__FILE__));
 define('GNN_LOGOS_URL', plugin_dir_url(__FILE__));

@@ -5,7 +5,7 @@ Tags: logos, logo showcase, carousel, marquee, certificates, partners, reference
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,6 +49,9 @@ Sonsuz Kayan Logo Şeridi (Marquee):
 `[gnn_logos layout="marquee" speed="25s" grayscale="true"]`
 
 == Changelog ==
+
+= 2.0.1 =
+* Düzeltme: Updater `get_local_version()` artık güncelleme sırasında bellekte kalan eski sürüm sabiti yerine doğrudan diskteki eklenti başlığını (`get_file_data()` + `clearstatcache()`) okur; güncelleme sonrası aynı sürümün tekrar "güncelleme mevcut" olarak görünmesi hatası giderildi.
 
 = 2.0.0 =
 * Yeni: Native Gutenberg Bloğu (`gnn-logos/showcase`, `apiVersion: 3`, `ServerSideRender`, `wide`/`full` hizalama, FSE Footer/Header uyumlu).
