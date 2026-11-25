@@ -30,6 +30,7 @@ if (file_exists(GNN_LOGOS_DIR . 'inc/updater.php')) {
 require_once GNN_LOGOS_DIR . 'includes/class-gnn-logos-cpt.php';
 require_once GNN_LOGOS_DIR . 'includes/class-gnn-logos-shortcode.php';
 require_once GNN_LOGOS_DIR . 'includes/class-gnn-logos-admin.php';
+require_once GNN_LOGOS_DIR . 'includes/class-gnn-logos-block.php';
 
 /**
  * Main GNN Logos Plugin Class.
@@ -65,6 +66,13 @@ final class GNN_Logos
     public $admin;
 
     /**
+     * Gutenberg Block Handler.
+     *
+     * @var GNN_Logos_Block
+     */
+    public $block;
+
+    /**
      * Main plugin instance getter.
      *
      * @return GNN_Logos
@@ -94,6 +102,7 @@ final class GNN_Logos
         $this->cpt       = new GNN_Logos_CPT();
         $this->shortcode = new GNN_Logos_Shortcode();
         $this->admin     = new GNN_Logos_Admin();
+        $this->block     = new GNN_Logos_Block();
     }
 
     /**

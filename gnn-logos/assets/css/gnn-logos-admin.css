@@ -1,8 +1,8 @@
 /**
- * GNN Logos - Admin Styles
+ * GNN Logos - AAA Admin Styles
  *
  * @package GNN_Logos
- * @version 1.2.6
+ * @version 2.0.0
  */
 
 /* ==========================================================================
@@ -47,7 +47,7 @@
 }
 
 .gnn-logo-preview {
-    width: 140px;
+    width: 150px;
     height: 100px;
     border: 2px dashed #cbd5e1;
     border-radius: 8px;
@@ -85,7 +85,7 @@
 
 /* Standards Tag Manager */
 .gnn-standards-manager {
-    max-width: 600px;
+    max-width: 620px;
     background: #f8fafc;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
@@ -151,26 +151,169 @@
     flex: 1;
 }
 
+.gnn-standards-hint {
+    margin-top: 6px;
+    display: block;
+}
+
 /* ==========================================================================
-   2. Shortcode Generator Styles
+   2. CPT List Table (Drag-and-Drop, Thumbnails, Badges, Bulk Toolbar)
+   ========================================================================== */
+.post-type-gnn_logo .column-gnn_drag {
+    width: 34px;
+    text-align: center;
+}
+
+.post-type-gnn_logo .column-gnn_preview {
+    width: 78px;
+}
+
+.post-type-gnn_logo .column-gnn_order {
+    width: 64px;
+    text-align: center;
+}
+
+.gnn-drag-handle {
+    cursor: grab;
+    color: #94a3b8;
+    transition: color 0.15s ease;
+}
+
+.gnn-drag-handle:hover {
+    color: #0f172a;
+}
+
+.post-type-gnn_logo .ui-sortable-helper {
+    background: #ffffff !important;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.15);
+    display: table;
+}
+
+.post-type-gnn_logo .gnn-sort-placeholder {
+    height: 54px;
+    background: #eff6ff !important;
+    outline: 2px dashed #3b82f6;
+}
+
+.gnn-col-thumb {
+    max-width: 60px;
+    max-height: 45px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 3px;
+    background: #ffffff;
+    display: block;
+}
+
+.gnn-col-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.gnn-col-badge {
+    display: inline-block;
+    padding: 2px 7px;
+    font-weight: 600;
+    font-size: 11px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    color: #0f172a;
+    white-space: nowrap;
+}
+
+.gnn-col-muted {
+    color: #94a3b8;
+}
+
+.gnn-col-link {
+    font-size: 12px;
+}
+
+.gnn-order-num {
+    display: inline-block;
+    min-width: 24px;
+    padding: 2px 6px;
+    border-radius: 999px;
+    background: #f1f5f9;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.gnn-bulk-toolbar {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 8px;
+}
+
+.gnn-bulk-toolbar .button {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px;
+}
+
+.gnn-bulk-toolbar .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    line-height: 1;
+}
+
+.gnn-table-status {
+    display: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.gnn-table-status.is-success {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.gnn-table-status.is-error {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* ==========================================================================
+   3. Shortcode Generator & Live Visual Preview
    ========================================================================== */
 .gnn-admin-wrap {
-    max-width: 1200px;
+    max-width: 1280px;
     margin-top: 20px;
 }
 
-.gnn-presets-card {
+.gnn-page-icon {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+.gnn-presets-card,
+.gnn-live-preview-card {
     background: #ffffff;
     border: 1px solid #cbd5e1;
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 16px 20px;
-    margin: 20px 0;
+    margin: 18px 0;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .gnn-presets-card h3 {
     margin: 0 0 12px;
-    font-size: 14px;
+    font-size: 13px;
     color: #475569;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -178,8 +321,82 @@
 
 .gnn-preset-buttons {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
+}
+
+/* Live Preview Card */
+.gnn-live-preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.gnn-live-preview-header h2 {
+    margin: 0;
+    font-size: 16px;
+    color: #0f172a;
+}
+
+.gnn-canvas-switcher {
+    display: inline-flex;
+    gap: 6px;
+}
+
+.gnn-canvas-switcher .button.is-active {
+    background: #0f172a;
+    border-color: #0f172a;
+    color: #ffffff;
+}
+
+.gnn-preview-stage {
+    border-radius: 10px;
+    padding: 24px;
+    min-height: 130px;
+    border: 1px solid #e2e8f0;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+    overflow: hidden;
+}
+
+.gnn-preview-stage.is-loading {
+    opacity: 0.55;
+}
+
+.gnn-preview-stage.gnn-canvas-light {
+    background: #f8fafc;
+}
+
+.gnn-preview-stage.gnn-canvas-dark {
+    background: #0b0f19;
+    border-color: #1e293b;
+}
+
+.gnn-preview-stage.gnn-canvas-checker {
+    background-color: #e2e8f0;
+    background-image: linear-gradient(45deg, #cbd5e1 25%, transparent 25%),
+        linear-gradient(-45deg, #cbd5e1 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #cbd5e1 75%),
+        linear-gradient(-45deg, transparent 75%, #cbd5e1 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+}
+
+.gnn-preview-loading,
+.gnn-preview-empty {
+    text-align: center;
+    padding: 28px 16px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.gnn-canvas-dark .gnn-preview-loading,
+.gnn-canvas-dark .gnn-preview-empty {
+    color: #94a3b8;
 }
 
 /* Universal Button & Dashicon Vertical Centering */
@@ -206,27 +423,27 @@
     margin: 0 !important;
     padding: 0 !important;
     line-height: 1 !important;
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
+    font-size: 17px;
+    width: 17px;
+    height: 17px;
     position: relative;
     top: 0;
 }
 
 .gnn-preset-buttons .button {
-    padding: 6px 14px !important;
+    padding: 6px 12px !important;
     min-height: 32px;
     font-weight: 500;
 }
 
 .gnn-generator-layout {
     display: grid;
-    grid-template-columns: 1fr 420px;
-    gap: 25px;
+    grid-template-columns: 1fr 400px;
+    gap: 24px;
     align-items: start;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1024px) {
     .gnn-generator-layout {
         grid-template-columns: 1fr;
     }
@@ -236,36 +453,42 @@
 .gnn-generator-preview-card {
     background: #ffffff;
     border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    padding: 24px;
+    border-radius: 10px;
+    padding: 22px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .gnn-generator-form-card h2,
 .gnn-generator-preview-card h2 {
     margin-top: 0;
-    font-size: 18px;
+    font-size: 17px;
     border-bottom: 1px solid #e2e8f0;
     padding-bottom: 12px;
     color: #0f172a;
 }
 
 .gnn-form-group {
-    margin-bottom: 18px;
+    margin-bottom: 16px;
 }
 
 .gnn-form-group label {
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
 }
 
 .gnn-form-row {
     display: flex;
-    gap: 15px;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.gnn-subrow {
+    margin-top: 10px;
 }
 
 .gnn-form-col {
     flex: 1;
+    min-width: 140px;
 }
 
 .gnn-form-col label {
@@ -275,8 +498,10 @@
     color: #475569;
 }
 
-.gnn-form-col input {
+.gnn-form-col input,
+.gnn-form-col select {
     width: 100%;
+    max-width: 100%;
 }
 
 .gnn-checkbox-list {
@@ -297,26 +522,26 @@
     gap: 8px;
     cursor: pointer;
     font-size: 13px;
+    margin: 0;
 }
 
-/* Right column preview box */
 .gnn-generator-preview-card {
     position: sticky;
-    top: 50px;
+    top: 46px;
 }
 
 .gnn-code-box {
-    margin: 15px 0;
+    margin: 14px 0;
 }
 
 .gnn-code-box textarea {
     background: #0f172a;
     color: #38bdf8;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.5;
     padding: 14px;
-    border-radius: 6px;
+    border-radius: 8px;
     border: 1px solid #334155;
     resize: vertical;
 }
@@ -330,9 +555,9 @@
 }
 
 #gnn-copy-shortcode-btn .dashicons {
-    font-size: 20px !important;
-    width: 20px !important;
-    height: 20px !important;
+    font-size: 19px !important;
+    width: 19px !important;
+    height: 19px !important;
 }
 
 .gnn-copy-feedback {
@@ -342,15 +567,19 @@
     padding: 6px 12px;
     background: #dcfce7;
     color: #166534;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 600;
+}
+
+.gnn-divider {
+    margin: 22px 0;
 }
 
 .gnn-info-box {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 14px;
     font-size: 13px;
     color: #475569;

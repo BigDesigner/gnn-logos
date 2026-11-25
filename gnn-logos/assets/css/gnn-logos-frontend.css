@@ -1,13 +1,13 @@
 /**
- * GNN Logos - Frontend Styles
- * Ultra-lightweight, zero-dependency, GPU-accelerated.
+ * GNN Logos - AAA Frontend Styles
+ * Zero-dependency, GPU-accelerated, Theme-isolated, Light/Dark/Glass & WCAG 2.1+.
  *
  * @package GNN_Logos
- * @version 1.2.6
+ * @version 2.0.0
  */
 
 /* ==========================================================================
-   1. Base & Reset
+   1. Design Tokens & Base Reset (Light Default)
    ========================================================================== */
 .gnn-logos-wrapper {
     position: relative;
@@ -21,7 +21,92 @@
     --gnn-columns-mobile: 2;
     --gnn-gap: 20px;
     --gnn-aspect-ratio: auto;
+    --gnn-logo-height: auto;
     --gnn-marquee-speed: 25s;
+    --gnn-marquee-item-width: clamp(135px, 15vw, 195px);
+
+    /* Light palette tokens */
+    --gnn-surface: #ffffff;
+    --gnn-surface-hover: #f8fafc;
+    --gnn-border: #e2e8f0;
+    --gnn-border-hover: #cbd5e1;
+    --gnn-text: #0f172a;
+    --gnn-text-muted: #64748b;
+    --gnn-accent: #0284c7;
+    --gnn-badge-bg: #f1f5f9;
+    --gnn-badge-border: #e2e8f0;
+    --gnn-badge-text: #0f172a;
+    --gnn-badge-hover-bg: #e0f2fe;
+    --gnn-badge-hover-text: #0369a1;
+    --gnn-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+    --gnn-shadow-hover: 0 12px 24px -6px rgba(15, 23, 42, 0.12), 0 4px 8px -4px rgba(15, 23, 42, 0.06);
+    --gnn-glass-bg: rgba(255, 255, 255, 0.65);
+    --gnn-glass-border: rgba(15, 23, 42, 0.09);
+    --gnn-arrow-bg: #ffffff;
+    --gnn-arrow-text: #334155;
+    --gnn-arrow-border: #cbd5e1;
+    --gnn-arrow-hover-bg: #0f172a;
+    --gnn-arrow-hover-text: #ffffff;
+    --gnn-dot-bg: #cbd5e1;
+    --gnn-dot-active: #0f172a;
+    --gnn-zoom-bg: rgba(15, 23, 42, 0.72);
+    --gnn-zoom-text: #ffffff;
+}
+
+/* Dark Theme Tokens */
+.gnn-logos-wrapper.gnn-theme-dark {
+    --gnn-surface: #111827;
+    --gnn-surface-hover: #1e293b;
+    --gnn-border: rgba(255, 255, 255, 0.11);
+    --gnn-border-hover: rgba(255, 255, 255, 0.24);
+    --gnn-text: #f8fafc;
+    --gnn-text-muted: #94a3b8;
+    --gnn-accent: #38bdf8;
+    --gnn-badge-bg: rgba(255, 255, 255, 0.08);
+    --gnn-badge-border: rgba(255, 255, 255, 0.14);
+    --gnn-badge-text: #e2e8f0;
+    --gnn-badge-hover-bg: rgba(56, 189, 248, 0.18);
+    --gnn-badge-hover-text: #7dd3fc;
+    --gnn-shadow: 0 2px 6px rgba(0, 0, 0, 0.32);
+    --gnn-shadow-hover: 0 14px 28px -6px rgba(0, 0, 0, 0.5);
+    --gnn-glass-bg: rgba(255, 255, 255, 0.05);
+    --gnn-glass-border: rgba(255, 255, 255, 0.12);
+    --gnn-arrow-bg: rgba(15, 23, 42, 0.85);
+    --gnn-arrow-text: #f1f5f9;
+    --gnn-arrow-border: rgba(255, 255, 255, 0.18);
+    --gnn-arrow-hover-bg: #f8fafc;
+    --gnn-arrow-hover-text: #0f172a;
+    --gnn-dot-bg: rgba(255, 255, 255, 0.25);
+    --gnn-dot-active: #f8fafc;
+}
+
+/* Auto Theme (System Dark Preference) */
+@media (prefers-color-scheme: dark) {
+    .gnn-logos-wrapper.gnn-theme-auto {
+        --gnn-surface: #111827;
+        --gnn-surface-hover: #1e293b;
+        --gnn-border: rgba(255, 255, 255, 0.11);
+        --gnn-border-hover: rgba(255, 255, 255, 0.24);
+        --gnn-text: #f8fafc;
+        --gnn-text-muted: #94a3b8;
+        --gnn-accent: #38bdf8;
+        --gnn-badge-bg: rgba(255, 255, 255, 0.08);
+        --gnn-badge-border: rgba(255, 255, 255, 0.14);
+        --gnn-badge-text: #e2e8f0;
+        --gnn-badge-hover-bg: rgba(56, 189, 248, 0.18);
+        --gnn-badge-hover-text: #7dd3fc;
+        --gnn-shadow: 0 2px 6px rgba(0, 0, 0, 0.32);
+        --gnn-shadow-hover: 0 14px 28px -6px rgba(0, 0, 0, 0.5);
+        --gnn-glass-bg: rgba(255, 255, 255, 0.05);
+        --gnn-glass-border: rgba(255, 255, 255, 0.12);
+        --gnn-arrow-bg: rgba(15, 23, 42, 0.85);
+        --gnn-arrow-text: #f1f5f9;
+        --gnn-arrow-border: rgba(255, 255, 255, 0.18);
+        --gnn-arrow-hover-bg: #f8fafc;
+        --gnn-arrow-hover-text: #0f172a;
+        --gnn-dot-bg: rgba(255, 255, 255, 0.25);
+        --gnn-dot-active: #f8fafc;
+    }
 }
 
 .gnn-logos-wrapper *,
@@ -31,24 +116,31 @@
 }
 
 /* Base item */
-.gnn-logo-item {
+.gnn-logos-wrapper .gnn-logo-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     text-decoration: none;
-    color: inherit;
+    color: var(--gnn-text);
     width: 100%;
     position: relative;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
 }
 
-a.gnn-logo-item {
+.gnn-logos-wrapper a.gnn-logo-item,
+.gnn-logos-wrapper button.gnn-logo-item,
+.gnn-logos-wrapper .gnn-logo-item[data-gnn-lightbox="1"] {
     cursor: pointer;
 }
 
 /* Aspect ratio & image container */
-.gnn-logo-box {
+.gnn-logos-wrapper .gnn-logo-box {
     position: relative;
     width: 100%;
     display: flex;
@@ -57,11 +149,15 @@ a.gnn-logo-item {
     overflow: hidden;
 }
 
-.gnn-has-aspect-ratio .gnn-logo-box {
+.gnn-logos-wrapper.gnn-has-aspect-ratio .gnn-logo-box {
     aspect-ratio: var(--gnn-aspect-ratio, auto);
 }
 
-.gnn-logo-img {
+.gnn-logos-wrapper.gnn-has-logo-height .gnn-logo-box {
+    height: var(--gnn-logo-height);
+}
+
+.gnn-logos-wrapper .gnn-logo-img {
     max-width: 100%;
     max-height: 100%;
     width: auto;
@@ -69,56 +165,123 @@ a.gnn-logo-item {
     object-fit: contain;
     display: block;
     margin: 0 auto;
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+    user-select: none;
+    -webkit-user-drag: none;
     transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
 }
 
+.gnn-logos-wrapper.gnn-has-logo-height .gnn-logo-img {
+    max-height: var(--gnn-logo-height);
+}
+
+/* Subtle lightbox zoom hint icon */
+.gnn-logos-wrapper .gnn-zoom-hint {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--gnn-zoom-bg);
+    color: var(--gnn-zoom-text);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.88);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.gnn-logos-wrapper .gnn-zoom-hint svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+}
+
+.gnn-logos-wrapper .gnn-logo-item:hover .gnn-zoom-hint,
+.gnn-logos-wrapper .gnn-logo-item:focus-visible .gnn-zoom-hint {
+    opacity: 1;
+    transform: scale(1);
+}
+
 /* ==========================================================================
-   2. Card & Presentation Styles (Certificate & Standard Support)
+   2. Presentation Styles (Card, Bordered, Glass, Minimal)
    ========================================================================== */
 
-/* Style: Card (Modern boxed card with soft shadow) */
-.gnn-style-card .gnn-logo-item-inner {
+/* Style: Card */
+.gnn-logos-wrapper.gnn-style-card .gnn-logo-item-inner {
     width: 100%;
     height: 100%;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
+    background: var(--gnn-surface);
+    border: 1px solid var(--gnn-border);
     border-radius: 12px;
     padding: 18px 14px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--gnn-shadow);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
 }
 
-.gnn-style-card .gnn-logo-item:hover .gnn-logo-item-inner {
+.gnn-logos-wrapper.gnn-style-card .gnn-logo-item:hover .gnn-logo-item-inner {
     transform: translateY(-4px);
-    box-shadow: 0 10px 20px -3px rgba(0, 0, 0, 0.08);
-    border-color: #cbd5e1;
+    box-shadow: var(--gnn-shadow-hover);
+    border-color: var(--gnn-border-hover);
 }
 
 /* Style: Bordered */
-.gnn-style-bordered .gnn-logo-item-inner {
+.gnn-logos-wrapper.gnn-style-bordered .gnn-logo-item-inner {
     width: 100%;
     height: 100%;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 12px;
+    background: transparent;
+    border: 1px solid var(--gnn-border);
+    border-radius: 10px;
+    padding: 14px 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
-.gnn-style-bordered .gnn-logo-item:hover .gnn-logo-item-inner {
-    border-color: #94a3b8;
+.gnn-logos-wrapper.gnn-style-bordered .gnn-logo-item:hover .gnn-logo-item-inner {
+    border-color: var(--gnn-border-hover);
+    background: var(--gnn-surface-hover);
 }
 
-/* Style: Minimal (Clean, no background border) */
-.gnn-style-minimal .gnn-logo-item-inner {
+/* Style: Glass (Frosted Glassmorphism) */
+.gnn-logos-wrapper.gnn-style-glass .gnn-logo-item-inner {
     width: 100%;
+    height: 100%;
+    background: var(--gnn-glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--gnn-glass-border);
+    border-radius: 14px;
+    padding: 18px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.gnn-logos-wrapper.gnn-style-glass .gnn-logo-item:hover .gnn-logo-item-inner {
+    transform: translateY(-3px);
+    border-color: var(--gnn-border-hover);
+    box-shadow: var(--gnn-shadow-hover);
+}
+
+/* Style: Minimal */
+.gnn-logos-wrapper.gnn-style-minimal .gnn-logo-item-inner {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -126,165 +289,159 @@ a.gnn-logo-item {
     padding: 6px;
 }
 
-/* Typography & Badges */
-.gnn-cert-badges-wrap {
+/* ==========================================================================
+   3. Badges & Typography
+   ========================================================================== */
+.gnn-logos-wrapper .gnn-cert-badges-wrap {
     margin-top: 12px;
     width: 100%;
 }
 
-/* Layout: Wrap (Yan Yana / Akıcı) */
-.gnn-cert-badges-wrap.gnn-badges-layout-wrap {
+.gnn-logos-wrapper .gnn-cert-badges-wrap.gnn-badges-layout-wrap {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
 }
 
-/* Layout: Stacked (Alt Alta / Dikey) */
-.gnn-cert-badges-wrap.gnn-badges-layout-stacked {
+.gnn-logos-wrapper .gnn-cert-badges-wrap.gnn-badges-layout-stacked {
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
 
-/* Alignment: Center (Ortalı) */
-.gnn-cert-badges-wrap.gnn-badges-align-center {
+.gnn-logos-wrapper .gnn-cert-badges-wrap.gnn-badges-align-center {
     justify-content: center;
     align-items: center;
 }
-.gnn-cert-badges-wrap.gnn-badges-layout-stacked.gnn-badges-align-center .gnn-cert-badge {
+.gnn-logos-wrapper .gnn-cert-badges-wrap.gnn-badges-layout-stacked.gnn-badges-align-center .gnn-cert-badge {
     margin-left: auto;
     margin-right: auto;
 }
 
-/* Alignment: Left (Sola) */
-.gnn-cert-badges-wrap.gnn-badges-align-left {
+.gnn-logos-wrapper .gnn-cert-badges-wrap.gnn-badges-align-left {
     justify-content: flex-start;
     align-items: flex-start;
 }
-.gnn-cert-badges-wrap.gnn-badges-layout-stacked.gnn-badges-align-left .gnn-cert-badge {
+.gnn-logos-wrapper .gnn-cert-badges-wrap.gnn-badges-layout-stacked.gnn-badges-align-left .gnn-cert-badge {
     margin-left: 0;
     margin-right: auto;
 }
 
-/* Alignment: Right (Sağa) */
-.gnn-cert-badges-wrap.gnn-badges-align-right {
+.gnn-logos-wrapper .gnn-cert-badges-wrap.gnn-badges-align-right {
     justify-content: flex-end;
     align-items: flex-end;
 }
-.gnn-cert-badges-wrap.gnn-badges-layout-stacked.gnn-badges-align-right .gnn-cert-badge {
+.gnn-logos-wrapper .gnn-cert-badges-wrap.gnn-badges-layout-stacked.gnn-badges-align-right .gnn-cert-badge {
     margin-left: auto;
     margin-right: 0;
 }
 
-/* Vertical Alignment: Top (Logonun hemen altında başlar, altta boşluk kalır) */
-.gnn-logo-item-inner.gnn-valign-top {
-    justify-content: flex-start !important;
+/* Vertical Alignment (clean specificity, zero !important) */
+.gnn-logos-wrapper .gnn-logo-item .gnn-logo-item-inner.gnn-valign-top {
+    justify-content: flex-start;
 }
-.gnn-logo-item-inner.gnn-valign-top .gnn-cert-badges-wrap {
-    margin-top: 14px !important;
-    margin-bottom: 0 !important;
-}
-
-/* Vertical Alignment: Center (Kartın dikeyinde ortalanır) */
-.gnn-logo-item-inner.gnn-valign-center {
-    justify-content: center !important;
-}
-.gnn-logo-item-inner.gnn-valign-center .gnn-cert-badges-wrap {
-    margin-top: 14px !important;
-    margin-bottom: 0 !important;
+.gnn-logos-wrapper .gnn-logo-item .gnn-logo-item-inner.gnn-valign-top .gnn-cert-badges-wrap {
+    margin-top: 14px;
+    margin-bottom: 0;
 }
 
-/* Vertical Alignment: Bottom (Rozetler kartın en altına sabitlenir) */
-.gnn-logo-item-inner.gnn-valign-bottom {
-    justify-content: space-between !important;
+.gnn-logos-wrapper .gnn-logo-item .gnn-logo-item-inner.gnn-valign-center {
+    justify-content: center;
 }
-.gnn-logo-item-inner.gnn-valign-bottom .gnn-cert-badges-wrap {
-    margin-top: auto !important;
-    margin-bottom: 0 !important;
+.gnn-logos-wrapper .gnn-logo-item .gnn-logo-item-inner.gnn-valign-center .gnn-cert-badges-wrap {
+    margin-top: 14px;
+    margin-bottom: 0;
 }
 
-.gnn-cert-badge {
+.gnn-logos-wrapper .gnn-logo-item .gnn-logo-item-inner.gnn-valign-bottom {
+    justify-content: space-between;
+}
+.gnn-logos-wrapper .gnn-logo-item .gnn-logo-item-inner.gnn-valign-bottom .gnn-cert-badges-wrap {
+    margin-top: auto;
+    padding-top: 12px;
+    margin-bottom: 0;
+}
+
+.gnn-logos-wrapper .gnn-cert-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 3px 8px;
-    background: #f8fafc;
-    color: #0f172a;
+    background: var(--gnn-badge-bg);
+    color: var(--gnn-badge-text);
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.3px;
     text-transform: uppercase;
     border-radius: 6px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    border: 1px solid var(--gnn-badge-border);
     line-height: 1.35;
     text-align: center;
     white-space: nowrap;
     max-width: 100%;
-    box-sizing: border-box;
     text-overflow: ellipsis;
     overflow: hidden;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-.gnn-style-card .gnn-logo-item:hover .gnn-cert-badge,
-.gnn-style-bordered .gnn-logo-item:hover .gnn-cert-badge {
-    background: #f1f5f9;
-    border-color: #cbd5e1;
-    color: #0284c7;
+.gnn-logos-wrapper.gnn-style-card .gnn-logo-item:hover .gnn-cert-badge,
+.gnn-logos-wrapper.gnn-style-bordered .gnn-logo-item:hover .gnn-cert-badge,
+.gnn-logos-wrapper.gnn-style-glass .gnn-logo-item:hover .gnn-cert-badge {
+    background: var(--gnn-badge-hover-bg);
+    border-color: var(--gnn-border-hover);
+    color: var(--gnn-badge-hover-text);
 }
 
-.gnn-cert-code {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 4px 10px;
-    background: #f1f5f9;
-    color: #0f172a;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    border-radius: 6px;
-    border: 1px solid #e2e8f0;
-    text-align: center;
-    max-width: 100%;
-    word-break: break-word;
-}
-
-.gnn-logo-title {
+.gnn-logos-wrapper .gnn-logo-title {
     font-size: 14px;
     font-weight: 600;
-    color: #1e293b;
+    color: var(--gnn-text);
     margin-top: 8px;
     text-align: center;
-    line-height: 1.3;
+    line-height: 1.35;
 }
 
-.gnn-logo-desc {
+.gnn-logos-wrapper .gnn-logo-desc {
     font-size: 12px;
-    color: #64748b;
+    color: var(--gnn-text-muted);
     margin-top: 4px;
     text-align: center;
-    line-height: 1.3;
+    line-height: 1.35;
 }
 
 /* ==========================================================================
-   3. Grayscale Hover Filter Effect
+   4. Logo Visual Filters (Grayscale, Monochrome Light / Dark)
    ========================================================================== */
-.gnn-grayscale-enabled .gnn-logo-img {
+.gnn-logos-wrapper.gnn-filter-grayscale .gnn-logo-img {
     filter: grayscale(100%);
-    opacity: 0.8;
+    opacity: 0.75;
 }
-
-.gnn-grayscale-enabled .gnn-logo-item:hover .gnn-logo-img {
+.gnn-logos-wrapper.gnn-filter-grayscale .gnn-logo-item:hover .gnn-logo-img {
     filter: grayscale(0%);
     opacity: 1;
 }
 
+.gnn-logos-wrapper.gnn-filter-monochrome-white .gnn-logo-img {
+    filter: brightness(0) invert(1);
+    opacity: 0.72;
+}
+.gnn-logos-wrapper.gnn-filter-monochrome-white .gnn-logo-item:hover .gnn-logo-img {
+    filter: brightness(0) invert(1);
+    opacity: 1;
+}
+
+.gnn-logos-wrapper.gnn-filter-monochrome-dark .gnn-logo-img {
+    filter: brightness(0);
+    opacity: 0.65;
+}
+.gnn-logos-wrapper.gnn-filter-monochrome-dark .gnn-logo-item:hover .gnn-logo-img {
+    filter: none;
+    opacity: 1;
+}
+
 /* ==========================================================================
-   4. Layout: Responsive Grid
+   5. Layout: Responsive Grid
    ========================================================================== */
 .gnn-logos-layout-grid .gnn-logos-grid-container {
     display: grid;
@@ -306,15 +463,21 @@ a.gnn-logo-item {
 }
 
 /* ==========================================================================
-   5. Layout: Carousel / Slider (CSS Scroll-Snap + Micro Vanilla JS)
+   6. Layout: Carousel / Slider (CSS Scroll-Snap + Vanilla JS)
    ========================================================================== */
 .gnn-logos-layout-carousel {
     position: relative;
-    padding: 0 45px;
+    padding: 0 46px;
 }
 
-.gnn-no-arrows.gnn-logos-layout-carousel {
+.gnn-no-arrows.gnn-logos-layout-carousel,
+.gnn-carousel-static.gnn-logos-layout-carousel {
     padding: 0;
+}
+
+.gnn-carousel-static .gnn-carousel-arrow,
+.gnn-carousel-static .gnn-carousel-dots {
+    display: none;
 }
 
 .gnn-carousel-viewport {
@@ -326,6 +489,14 @@ a.gnn-logo-item {
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     padding: 8px 2px;
+    cursor: grab;
+}
+
+.gnn-carousel-viewport.is-dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+    user-select: none;
 }
 
 .gnn-carousel-viewport::-webkit-scrollbar {
@@ -347,82 +518,97 @@ a.gnn-logo-item {
 
 @media (max-width: 640px) {
     .gnn-logos-layout-carousel {
-        padding: 0 25px;
+        padding: 0 36px;
+    }
+    .gnn-no-arrows.gnn-logos-layout-carousel,
+    .gnn-carousel-static.gnn-logos-layout-carousel {
+        padding: 0;
     }
     .gnn-carousel-slide {
         flex: 0 0 calc((100% - (var(--gnn-columns-mobile, 2) - 1) * var(--gnn-gap, 20px)) / var(--gnn-columns-mobile, 2));
     }
 }
 
-/* Carousel Navigation Arrows */
-.gnn-carousel-arrow {
+/* Carousel Navigation Arrows (Theme-Isolated) */
+.gnn-logos-wrapper .gnn-carousel-arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     width: 36px;
     height: 36px;
+    min-width: 36px;
+    min-height: 36px;
     border-radius: 50%;
-    background: #ffffff;
-    border: 1px solid #cbd5e1;
-    color: #334155;
+    background: var(--gnn-arrow-bg);
+    border: 1px solid var(--gnn-arrow-border);
+    color: var(--gnn-arrow-text);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 10;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease;
+    box-shadow: var(--gnn-shadow);
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
     padding: 0;
+    margin: 0;
+    line-height: 1;
 }
 
-.gnn-carousel-arrow:hover {
-    background: #0f172a;
-    color: #ffffff;
-    border-color: #0f172a;
+.gnn-logos-wrapper .gnn-carousel-arrow:hover {
+    background: var(--gnn-arrow-hover-bg);
+    color: var(--gnn-arrow-hover-text);
+    border-color: var(--gnn-arrow-hover-bg);
 }
 
-.gnn-carousel-arrow.prev {
+.gnn-logos-wrapper .gnn-carousel-arrow.prev {
     left: 0;
 }
 
-.gnn-carousel-arrow.next {
+.gnn-logos-wrapper .gnn-carousel-arrow.next {
     right: 0;
 }
 
-.gnn-carousel-arrow svg {
+.gnn-logos-wrapper .gnn-carousel-arrow svg {
     width: 18px;
     height: 18px;
     fill: currentColor;
+    display: block;
 }
 
 /* Carousel Pagination Dots */
-.gnn-carousel-dots {
+.gnn-logos-wrapper .gnn-carousel-dots {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    margin-top: 15px;
+    margin-top: 14px;
 }
 
-.gnn-carousel-dot {
+.gnn-logos-wrapper .gnn-carousel-dot {
     width: 8px;
     height: 8px;
-    border-radius: 50%;
-    background: #cbd5e1;
-    border: none;
+    min-width: 8px;
+    min-height: 8px;
+    border-radius: 999px;
+    background: var(--gnn-dot-bg);
+    border: 0;
     padding: 0;
+    margin: 0;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: width 0.25s ease, background-color 0.25s ease;
 }
 
-.gnn-carousel-dot.active {
-    background: #0f172a;
-    width: 22px;
-    border-radius: 4px;
+.gnn-logos-wrapper .gnn-carousel-dot.active {
+    background: var(--gnn-dot-active);
+    width: 24px;
+}
+
+.gnn-logos-wrapper .gnn-carousel-dot[hidden] {
+    display: none;
 }
 
 /* ==========================================================================
-   6. Layout: Continuous Ticker / Marquee (100% Pure CSS Keyframes)
+   7. Layout: Pixel-Perfect Seamless Marquee (Multi-Group GPU Keyframes)
    ========================================================================== */
 .gnn-logos-layout-marquee {
     overflow: hidden;
@@ -430,49 +616,61 @@ a.gnn-logo-item {
     max-width: 100%;
     min-width: 0;
     position: relative;
-    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+}
+
+.gnn-logos-layout-marquee.gnn-marquee-fade {
+    mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
 }
 
 .gnn-marquee-track {
     display: flex;
-    align-items: center;
-    gap: var(--gnn-gap, 20px);
+    flex-wrap: nowrap;
     width: max-content;
+    gap: 0;
+}
+
+.gnn-marquee-group {
+    display: flex;
+    flex-shrink: 0;
+    align-items: stretch;
+    gap: var(--gnn-gap, 20px);
+    padding-right: var(--gnn-gap, 20px);
     will-change: transform;
-    animation: gnn-marquee-scroll-left var(--gnn-marquee-speed, 25s) linear infinite;
+    animation: gnn-marquee-left var(--gnn-marquee-speed, 25s) linear infinite;
 }
 
-.gnn-marquee-direction-right .gnn-marquee-track {
-    animation-name: gnn-marquee-scroll-right;
+.gnn-marquee-direction-right .gnn-marquee-group {
+    animation-name: gnn-marquee-right;
 }
 
-.gnn-logos-layout-marquee:hover .gnn-marquee-track.pause-on-hover {
+.gnn-logos-layout-marquee:hover .gnn-marquee-track.pause-on-hover .gnn-marquee-group,
+.gnn-logos-layout-marquee:focus-within .gnn-marquee-track.pause-on-hover .gnn-marquee-group {
     animation-play-state: paused;
 }
 
 .gnn-marquee-item {
     flex: 0 0 auto;
-    width: clamp(140px, 16vw, 200px);
+    width: var(--gnn-marquee-item-width);
     display: flex;
 }
 
-.gnn-logos-layout-marquee:not(.gnn-has-aspect-ratio) .gnn-logo-box {
-    max-height: 90px;
+.gnn-logos-layout-marquee:not(.gnn-has-aspect-ratio):not(.gnn-has-logo-height) .gnn-logo-box {
+    max-height: 84px;
 }
 
-@keyframes gnn-marquee-scroll-left {
+@keyframes gnn-marquee-left {
     0% {
         transform: translate3d(0, 0, 0);
     }
     100% {
-        transform: translate3d(-50%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
     }
 }
 
-@keyframes gnn-marquee-scroll-right {
+@keyframes gnn-marquee-right {
     0% {
-        transform: translate3d(-50%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
     }
     100% {
         transform: translate3d(0, 0, 0);
@@ -480,33 +678,189 @@ a.gnn-logo-item {
 }
 
 /* ==========================================================================
-   7. Accessibility: Focus Visible & Reduced Motion (WCAG 2.1+)
+   8. Certificate / Logo Lightbox Modal (Zero-Dependency, Accessible)
    ========================================================================== */
-.gnn-carousel-arrow:focus-visible,
-.gnn-carousel-dot:focus-visible,
-a.gnn-logo-item:focus-visible {
-    outline: 2px solid #0284c7;
+.gnn-lightbox {
+    position: fixed;
+    inset: 0;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(2, 6, 23, 0.82);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.22s ease, visibility 0.22s ease;
+    box-sizing: border-box;
+}
+
+.gnn-lightbox.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.gnn-lightbox-dialog {
+    position: relative;
+    width: 100%;
+    max-width: 720px;
+    max-height: 90dvh;
+    max-height: 90vh;
+    background: #ffffff;
+    color: #0f172a;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    transform: scale(0.95);
+    transition: transform 0.22s ease;
+    box-sizing: border-box;
+}
+
+.gnn-lightbox.is-open .gnn-lightbox-dialog {
+    transform: scale(1);
+}
+
+.gnn-lightbox-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    color: #0f172a;
+    font-size: 20px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.gnn-lightbox-close:hover {
+    background: #0f172a;
+    color: #ffffff;
+    border-color: #0f172a;
+}
+
+.gnn-lightbox-media {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 18px;
+}
+
+.gnn-lightbox-img {
+    max-width: 100%;
+    max-height: 55vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.gnn-lightbox-title {
+    margin: 0 0 8px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f172a;
+    text-align: center;
+}
+
+.gnn-lightbox-desc {
+    margin: 0 0 12px;
+    font-size: 14px;
+    color: #475569;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.gnn-lightbox-badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.gnn-lightbox-badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    color: #0f172a;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.gnn-lightbox-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 18px;
+    border-radius: 8px;
+    background: #0f172a;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.gnn-lightbox-link:hover {
+    background: #0284c7;
+    color: #ffffff;
+}
+
+/* ==========================================================================
+   9. Accessibility: Focus Visible & Reduced Motion (WCAG 2.1+)
+   ========================================================================== */
+.gnn-logos-wrapper .gnn-carousel-arrow:focus-visible,
+.gnn-logos-wrapper .gnn-carousel-dot:focus-visible,
+.gnn-logos-wrapper .gnn-logo-item:focus-visible,
+.gnn-lightbox-close:focus-visible,
+.gnn-lightbox-link:focus-visible {
+    outline: 2px solid var(--gnn-accent, #0284c7);
     outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .gnn-marquee-track {
+    .gnn-marquee-group {
         animation: none !important;
         flex-wrap: wrap;
         width: 100%;
         justify-content: center;
+        padding-right: 0;
     }
-    .gnn-marquee-item[aria-hidden="true"] {
-        display: none;
+    .gnn-marquee-track {
+        width: 100%;
+    }
+    .gnn-marquee-group[aria-hidden="true"] {
+        display: none !important;
     }
     .gnn-carousel-viewport {
         scroll-behavior: auto;
     }
-    .gnn-logo-img,
-    .gnn-style-card .gnn-logo-item-inner,
-    .gnn-carousel-arrow,
-    .gnn-carousel-dot,
-    .gnn-cert-badge {
+    .gnn-logos-wrapper *,
+    .gnn-lightbox,
+    .gnn-lightbox-dialog {
         transition: none !important;
     }
 }

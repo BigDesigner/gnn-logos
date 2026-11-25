@@ -2,6 +2,9 @@
 /**
  * Shortcode Engine and HTML Renderer for GNN Logos.
  *
+ * Shared rendering engine consumed by [gnn_logos] shortcode,
+ * Admin Live Preview AJAX, and Native Gutenberg Block.
+ *
  * @package GNN_Logos
  * @since   1.0.0
  */
@@ -19,11 +22,53 @@ class GNN_Logos_Shortcode
     const TAG = 'gnn_logos';
 
     /**
+     * Default shortcode / block attributes.
+     *
+     * @return array
+     */
+    public static function get_defaults()
+    {
+        return array(
+            'group'          => '',
+            'layout'         => 'carousel', // 'grid', 'carousel', 'marquee'
+            'style'          => 'minimal',  // 'minimal', 'card', 'bordered', 'glass'
+            'theme'          => 'light',    // 'light', 'dark', 'auto'
+            'logo_filter'    => 'none',     // 'none', 'grayscale', 'monochrome-white', 'monochrome-dark'
+            'columns'        => 4,
+            'columns_tablet' => 3,
+            'columns_mobile' => 2,
+            'aspect_ratio'   => 'auto',     // 'auto', '16/9', '4/3', '1/1', '3/2', '2/1'
+            'logo_height'    => '',         // e.g. '60px', '80px'
+            'item_width'     => '',         // Marquee item width e.g. '180px'
+            'gap'            => '20px',
+            'autoplay'       => 'true',
+            'autoplay_speed' => 3000,
+            'speed'          => '25s',
+            'direction'      => 'left',     // 'left', 'right'
+            'fade_edges'     => 'true',     // Marquee edge mask
+            'grayscale'      => 'false',    // Legacy alias for logo_filter="grayscale"
+            'arrows'         => 'true',
+            'dots'           => 'false',
+            'pause_on_hover' => 'true',
+            'lightbox'       => 'false',    // Certificate / logo zoom modal
+            'show_code'      => 'true',
+            'badges_layout'  => 'wrap',     // 'wrap', 'stacked'
+            'badges_align'   => 'center',   // 'center', 'left', 'right'
+            'badges_valign'  => 'bottom',   // 'bottom', 'top', 'center'
+            'show_title'     => 'false',
+            'show_desc'      => 'false',
+            'limit'          => -1,
+            'orderby'        => 'menu_order',
+            'order'          => 'ASC',
+        );
+    }
+
+    /**
      * Constructor.
      */
     public function __construct()
     {
-        add_action('init', array($this, 'register_assets'));
+        add_action('init', array($this, 'register_assets'), 5);
         add_shortcode(self::TAG, array($this, 'render_shortcode'));
     }
 
@@ -49,7 +94,7 @@ class GNN_Logos_Shortcode
     }
 
     /**
-     * Render [gnn_logos] shortcode output.
+     * Render [gnn_logos] shortcode / block output.
      *
      * @param array  $atts    User shortcode attributes.
      * @param string $content Enclosed content (unused).
@@ -57,54 +102,31 @@ class GNN_Logos_Shortcode
      */
     public function render_shortcode($atts, $content = '')
     {
-        // Enqueue styles and scripts only when shortcode is executed
         wp_enqueue_style('gnn-logos-frontend');
         wp_enqueue_script('gnn-logos-frontend');
 
-        $atts = shortcode_atts(
-            array(
-                'group'          => '',
-                'layout'         => 'carousel', // 'grid', 'carousel', 'marquee'
-                'style'          => 'minimal',  // 'minimal', 'card', 'bordered'
-                'columns'        => 4,
-                'columns_tablet' => 3,
-                'columns_mobile' => 2,
-                'aspect_ratio'   => 'auto',     // 'auto', '16/9', '4/3', '1/1', '3/2', '2/1'
-                'gap'            => '20px',
-                'autoplay'       => 'true',
-                'autoplay_speed' => 3000,
-                'speed'          => '25s',
-                'direction'      => 'left',     // 'left', 'right'
-                'grayscale'      => 'false',
-                'arrows'         => 'true',
-                'dots'           => 'false',
-                'pause_on_hover' => 'true',
-                'show_code'      => 'true',
-                'badges_layout'  => 'wrap',     // 'wrap' (yan yana), 'stacked' (alt alta)
-                'badges_align'   => 'center',   // 'center' (ortalı), 'left' (sola), 'right' (sağa)
-                'badges_valign'  => 'bottom',   // 'bottom' (altta), 'top' (üstte), 'center' (ortada)
-                'show_title'     => 'false',
-                'show_desc'      => 'false',
-                'limit'          => -1,
-                'orderby'        => 'menu_order',
-                'order'          => 'ASC',
-            ),
-            $atts,
-            self::TAG
-        );
+        $atts = shortcode_atts(self::get_defaults(), (array) $atts, self::TAG);
 
-        // Sanitize attributes
+        // Sanitize enums and booleans
         $layout         = in_array($atts['layout'], array('grid', 'carousel', 'marquee'), true) ? $atts['layout'] : 'carousel';
-        $style          = in_array($atts['style'], array('minimal', 'card', 'bordered'), true) ? $atts['style'] : 'minimal';
-        $columns        = absint($atts['columns']) ?: 4;
-        $columns_tablet = absint($atts['columns_tablet']) ?: 3;
-        $columns_mobile = absint($atts['columns_mobile']) ?: 2;
-        $autoplay       = filter_var($atts['autoplay'], FILTER_VALIDATE_BOOLEAN) ? 'true' : 'false';
-        $autoplay_speed = absint($atts['autoplay_speed']) ?: 3000;
+        $style          = in_array($atts['style'], array('minimal', 'card', 'bordered', 'glass'), true) ? $atts['style'] : 'minimal';
+        $theme          = in_array($atts['theme'], array('light', 'dark', 'auto'), true) ? $atts['theme'] : 'light';
+        $logo_filter    = in_array($atts['logo_filter'], array('none', 'grayscale', 'monochrome-white', 'monochrome-dark'), true) ? $atts['logo_filter'] : 'none';
         $grayscale      = filter_var($atts['grayscale'], FILTER_VALIDATE_BOOLEAN);
+        if ('none' === $logo_filter && $grayscale) {
+            $logo_filter = 'grayscale';
+        }
+
+        $columns        = max(1, min(12, absint($atts['columns']) ?: 4));
+        $columns_tablet = max(1, min(8, absint($atts['columns_tablet']) ?: 3));
+        $columns_mobile = max(1, min(6, absint($atts['columns_mobile']) ?: 2));
+        $autoplay       = filter_var($atts['autoplay'], FILTER_VALIDATE_BOOLEAN) ? 'true' : 'false';
+        $autoplay_speed = max(500, absint($atts['autoplay_speed']) ?: 3000);
         $arrows         = filter_var($atts['arrows'], FILTER_VALIDATE_BOOLEAN);
         $dots           = filter_var($atts['dots'], FILTER_VALIDATE_BOOLEAN);
         $pause_on_hover = filter_var($atts['pause_on_hover'], FILTER_VALIDATE_BOOLEAN) ? 'true' : 'false';
+        $fade_edges     = filter_var($atts['fade_edges'], FILTER_VALIDATE_BOOLEAN);
+        $lightbox       = filter_var($atts['lightbox'], FILTER_VALIDATE_BOOLEAN);
         $show_code      = filter_var($atts['show_code'], FILTER_VALIDATE_BOOLEAN);
         $badges_layout  = in_array($atts['badges_layout'], array('wrap', 'stacked'), true) ? $atts['badges_layout'] : 'wrap';
         $badges_align   = in_array($atts['badges_align'], array('center', 'left', 'right'), true) ? $atts['badges_align'] : 'center';
@@ -113,8 +135,11 @@ class GNN_Logos_Shortcode
         $show_desc      = filter_var($atts['show_desc'], FILTER_VALIDATE_BOOLEAN);
         $direction      = in_array($atts['direction'], array('left', 'right'), true) ? $atts['direction'] : 'left';
         $limit          = intval($atts['limit']);
+        if (0 === $limit) {
+            $limit = -1;
+        }
 
-        // Normalize and strictly validate gap (prevent CSS injection)
+        // Strict CSS value validation (prevents CSS injection)
         $gap = sanitize_text_field($atts['gap']);
         if (is_numeric($gap)) {
             $gap .= 'px';
@@ -123,14 +148,33 @@ class GNN_Logos_Shortcode
             $gap = '20px';
         }
 
-        // Normalize and strictly validate aspect ratio (prevent CSS injection)
         $aspect_ratio = str_replace(':', '/', sanitize_text_field($atts['aspect_ratio']));
         if ('auto' !== $aspect_ratio && !preg_match('/^\d+\/\d+$/', $aspect_ratio)) {
             $aspect_ratio = 'auto';
         }
         $has_aspect_ratio = ('auto' !== $aspect_ratio);
 
-        // Normalize and strictly validate speed (prevent CSS injection)
+        $logo_height = sanitize_text_field($atts['logo_height']);
+        if ('' !== $logo_height) {
+            if (is_numeric($logo_height)) {
+                $logo_height .= 'px';
+            }
+            if (!preg_match('/^\d+(\.\d+)?(px|rem|em)$/', $logo_height)) {
+                $logo_height = '';
+            }
+        }
+        $has_logo_height = ('' !== $logo_height);
+
+        $item_width = sanitize_text_field($atts['item_width']);
+        if ('' !== $item_width) {
+            if (is_numeric($item_width)) {
+                $item_width .= 'px';
+            }
+            if (!preg_match('/^\d+(\.\d+)?(px|rem|em|vw)$/', $item_width)) {
+                $item_width = '';
+            }
+        }
+
         $speed = sanitize_text_field($atts['speed']);
         if (is_numeric($speed)) {
             $speed .= 's';
@@ -139,17 +183,18 @@ class GNN_Logos_Shortcode
             $speed = '25s';
         }
 
-        // Strict whitelist for orderby parameter (defense-in-depth)
+        // Strict whitelist for orderby parameter
         $allowed_orderby = array('none', 'ID', 'author', 'title', 'name', 'type', 'date', 'modified', 'parent', 'rand', 'menu_order');
         $safe_orderby = in_array($atts['orderby'], $allowed_orderby, true) ? $atts['orderby'] : 'menu_order';
 
-        // Build query args
+        // Optimized WP_Query (skips SQL_CALC_FOUND_ROWS)
         $query_args = array(
             'post_type'      => GNN_Logos_CPT::POST_TYPE,
             'post_status'    => 'publish',
             'posts_per_page' => $limit,
             'orderby'        => $safe_orderby,
             'order'          => in_array(strtoupper($atts['order']), array('ASC', 'DESC'), true) ? strtoupper($atts['order']) : 'ASC',
+            'no_found_rows'  => true,
         );
 
         if (!empty($atts['group'])) {
@@ -169,16 +214,16 @@ class GNN_Logos_Shortcode
             return '';
         }
 
-        // Prepare post items
+        // Prepare items
         $items = array();
         while ($query->have_posts()) {
             $query->the_post();
-            $post_id      = get_the_ID();
-            $logo_id      = absint(get_post_meta($post_id, '_gnn_logo_id', true));
-            $description  = get_post_meta($post_id, '_gnn_description', true);
-            $link_url     = get_post_meta($post_id, '_gnn_link_url', true);
-            $link_target  = get_post_meta($post_id, '_gnn_link_target', true) ?: '_blank';
-            $item_ratio   = get_post_meta($post_id, '_gnn_aspect_ratio', true) ?: 'auto';
+            $post_id     = get_the_ID();
+            $logo_id     = absint(get_post_meta($post_id, '_gnn_logo_id', true));
+            $description = get_post_meta($post_id, '_gnn_description', true);
+            $link_url    = get_post_meta($post_id, '_gnn_link_url', true);
+            $link_target = get_post_meta($post_id, '_gnn_link_target', true) ?: '_blank';
+            $item_ratio  = get_post_meta($post_id, '_gnn_aspect_ratio', true) ?: 'auto';
 
             // Support multi-standard codes and split legacy comma/newline strings
             $cert_codes = get_post_meta($post_id, '_gnn_cert_codes', true);
@@ -192,14 +237,25 @@ class GNN_Logos_Shortcode
                 }
             }
 
+            // Skip completely empty entries (no logo image, no badges, and title hidden)
+            if (!$logo_id && empty($cert_codes) && !$show_title) {
+                continue;
+            }
+
             if ('auto' !== $item_ratio) {
                 $item_ratio = str_replace(':', '/', $item_ratio);
+                if (!preg_match('/^\d+\/\d+$/', $item_ratio)) {
+                    $item_ratio = 'auto';
+                }
             }
+
+            $full_img_url = $logo_id ? wp_get_attachment_image_url($logo_id, 'full') : '';
 
             $items[] = array(
                 'id'           => $post_id,
                 'title'        => get_the_title(),
                 'logo_id'      => $logo_id,
+                'full_url'     => $full_img_url ? $full_img_url : '',
                 'cert_codes'   => array_values($cert_codes),
                 'description'  => $description,
                 'link_url'     => $link_url,
@@ -213,36 +269,60 @@ class GNN_Logos_Shortcode
             return '';
         }
 
-        // Classes for wrapper
+        // Wrapper classes
         $wrapper_classes = array(
             'gnn-logos-wrapper',
-            'gnn-logos-layout-' . esc_attr($layout),
-            'gnn-style-' . esc_attr($style),
+            'gnn-logos-layout-' . $layout,
+            'gnn-style-' . $style,
+            'gnn-theme-' . $theme,
         );
 
         if ($has_aspect_ratio) {
             $wrapper_classes[] = 'gnn-has-aspect-ratio';
         }
-        if ($grayscale) {
-            $wrapper_classes[] = 'gnn-grayscale-enabled';
+        if ($has_logo_height) {
+            $wrapper_classes[] = 'gnn-has-logo-height';
+        }
+        if ('none' !== $logo_filter) {
+            $wrapper_classes[] = 'gnn-filter-' . $logo_filter;
         }
         if ('carousel' === $layout && !$arrows) {
             $wrapper_classes[] = 'gnn-no-arrows';
         }
         if ('marquee' === $layout) {
-            $wrapper_classes[] = 'gnn-marquee-direction-' . esc_attr($direction);
+            $wrapper_classes[] = 'gnn-marquee-direction-' . $direction;
+            if ($fade_edges) {
+                $wrapper_classes[] = 'gnn-marquee-fade';
+            }
         }
 
         // Inline CSS variables
         $css_vars = array(
-            '--gnn-columns: ' . intval($columns),
-            '--gnn-columns-tablet: ' . intval($columns_tablet),
-            '--gnn-columns-mobile: ' . intval($columns_mobile),
+            '--gnn-columns: ' . $columns,
+            '--gnn-columns-tablet: ' . $columns_tablet,
+            '--gnn-columns-mobile: ' . $columns_mobile,
             '--gnn-gap: ' . $gap,
             '--gnn-aspect-ratio: ' . $aspect_ratio,
             '--gnn-marquee-speed: ' . $speed,
         );
+        if ($has_logo_height) {
+            $css_vars[] = '--gnn-logo-height: ' . $logo_height;
+        }
+        if ('' !== $item_width) {
+            $css_vars[] = '--gnn-marquee-item-width: ' . $item_width;
+        }
         $style_attr = 'style="' . esc_attr(implode('; ', $css_vars)) . ';"';
+
+        $render_opts = array(
+            'layout'        => $layout,
+            'show_code'     => $show_code,
+            'show_title'    => $show_title,
+            'show_desc'     => $show_desc,
+            'badges_layout' => $badges_layout,
+            'badges_align'  => $badges_align,
+            'badges_valign' => $badges_valign,
+            'lightbox'      => $lightbox,
+        );
 
         ob_start();
         ?>
@@ -257,15 +337,13 @@ class GNN_Logos_Shortcode
             <?php endif; ?>
         >
             <?php if ('grid' === $layout) : ?>
-                <!-- GRID LAYOUT -->
                 <div class="gnn-logos-grid-container">
                     <?php foreach ($items as $item) : ?>
-                        <?php echo $this->render_item_html($item, $show_code, $show_title, $show_desc, $badges_layout, $badges_align, $badges_valign); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                        <?php echo $this->render_item_html($item, $render_opts, false); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                     <?php endforeach; ?>
                 </div>
 
             <?php elseif ('carousel' === $layout) : ?>
-                <!-- CAROUSEL LAYOUT -->
                 <?php if ($arrows) : ?>
                     <button type="button" class="gnn-carousel-arrow prev" aria-label="<?php esc_attr_e('Önceki', 'gnn-logos'); ?>">
                         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
@@ -275,7 +353,7 @@ class GNN_Logos_Shortcode
                 <div class="gnn-carousel-viewport">
                     <?php foreach ($items as $item) : ?>
                         <div class="gnn-carousel-slide">
-                            <?php echo $this->render_item_html($item, $show_code, $show_title, $show_desc, $badges_layout, $badges_align, $badges_valign); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                            <?php echo $this->render_item_html($item, $render_opts, false); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -295,20 +373,21 @@ class GNN_Logos_Shortcode
                 <?php endif; ?>
 
             <?php elseif ('marquee' === $layout) : ?>
-                <!-- CONTINUOUS TICKER / MARQUEE LAYOUT -->
                 <div class="gnn-marquee-track <?php echo 'true' === $pause_on_hover ? 'pause-on-hover' : ''; ?>">
-                    <!-- Primary set -->
-                    <?php foreach ($items as $item) : ?>
-                        <div class="gnn-marquee-item">
-                            <?php echo $this->render_item_html($item, $show_code, $show_title, $show_desc, $badges_layout, $badges_align, $badges_valign); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-                        </div>
-                    <?php endforeach; ?>
-                    <!-- Duplicate set for seamless continuous loop -->
-                    <?php foreach ($items as $item) : ?>
-                        <div class="gnn-marquee-item" aria-hidden="true">
-                            <?php echo $this->render_item_html($item, $show_code, $show_title, $show_desc, $badges_layout, $badges_align, $badges_valign, true); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-                        </div>
-                    <?php endforeach; ?>
+                    <div class="gnn-marquee-group">
+                        <?php foreach ($items as $item) : ?>
+                            <div class="gnn-marquee-item">
+                                <?php echo $this->render_item_html($item, $render_opts, false); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <div class="gnn-marquee-group" aria-hidden="true" data-gnn-clone="1">
+                        <?php foreach ($items as $item) : ?>
+                            <div class="gnn-marquee-item">
+                                <?php echo $this->render_item_html($item, $render_opts, true); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
             <?php endif; ?>
         </div>
@@ -319,24 +398,34 @@ class GNN_Logos_Shortcode
     /**
      * Helper to render single logo item card HTML.
      *
-     * @param array  $item          Logo item data.
-     * @param bool   $show_code     Show certificate standard code.
-     * @param bool   $show_title    Show title.
-     * @param bool   $show_desc     Show description.
-     * @param string $badges_layout Badges layout ('wrap' or 'stacked').
-     * @param string $badges_align  Badges alignment ('center', 'left', 'right').
-     * @param string $badges_valign Badges vertical alignment ('bottom', 'top', 'center').
-     * @param bool   $is_duplicate  Whether this item is rendered inside an aria-hidden duplicate marquee track.
+     * @param array $item         Logo item data.
+     * @param array $opts         Render options.
+     * @param bool  $is_duplicate Whether rendered inside an aria-hidden duplicate marquee group.
      * @return string HTML output.
      */
-    private function render_item_html($item, $show_code, $show_title, $show_desc, $badges_layout = 'wrap', $badges_align = 'center', $badges_valign = 'bottom', $is_duplicate = false)
+    private function render_item_html($item, $opts, $is_duplicate = false)
     {
-        $has_link = !empty($item['link_url']);
-        $tag = $has_link ? 'a' : 'div';
-        $link_attrs = '';
+        $has_link     = !empty($item['link_url']);
+        $use_lightbox = !empty($opts['lightbox']) && (!empty($item['full_url']) || !empty($item['title']));
+        $tag          = 'div';
+        $extra_attrs  = '';
 
-        if ($has_link) {
-            $link_attrs = sprintf(
+        if ($use_lightbox) {
+            $tag = 'button';
+            $extra_attrs = sprintf(
+                'type="button" data-gnn-lightbox="1" data-lb-img="%s" data-lb-title="%s" data-lb-desc="%s" data-lb-codes="%s" data-lb-url="%s" data-lb-target="%s" data-lb-link-label="%s"%s',
+                esc_url($item['full_url']),
+                esc_attr($item['title']),
+                esc_attr($item['description']),
+                esc_attr(implode('||', $item['cert_codes'])),
+                esc_url($item['link_url']),
+                esc_attr($item['link_target']),
+                esc_attr__('Belgeyi / Sayfayı Aç', 'gnn-logos'),
+                $is_duplicate ? ' tabindex="-1"' : ''
+            );
+        } elseif ($has_link) {
+            $tag = 'a';
+            $extra_attrs = sprintf(
                 'href="%s" target="%s" rel="noopener noreferrer"%s',
                 esc_url($item['link_url']),
                 esc_attr($item['link_target']),
@@ -351,40 +440,45 @@ class GNN_Logos_Shortcode
 
         $image_html = '';
         if (!empty($item['logo_id'])) {
-            $image_html = wp_get_attachment_image(
-                $item['logo_id'],
-                'full',
-                false,
-                array(
-                    'class'    => 'gnn-logo-img',
-                    'alt'      => $item['title'],
-                    'loading'  => 'lazy',
-                    'decoding' => 'async',
-                )
+            $img_args = array(
+                'class'     => 'gnn-logo-img',
+                'alt'       => $item['title'],
+                'loading'   => ('marquee' === $opts['layout']) ? 'eager' : 'lazy',
+                'decoding'  => 'async',
+                'draggable' => 'false',
             );
+            $image_html = wp_get_attachment_image($item['logo_id'], 'full', false, $img_args);
         }
 
         ob_start();
         ?>
-        <<?php echo esc_attr($tag); ?> class="gnn-logo-item" <?php echo $link_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-            <div class="gnn-logo-item-inner gnn-valign-<?php echo esc_attr($badges_valign); ?>">
-                <div class="gnn-logo-box" <?php echo $box_style; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-                    <?php echo $image_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-                </div>
+        <<?php echo esc_attr($tag); ?> class="gnn-logo-item" <?php echo $extra_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+            <div class="gnn-logo-item-inner gnn-valign-<?php echo esc_attr($opts['badges_valign']); ?>">
+                <?php if ($use_lightbox) : ?>
+                    <span class="gnn-zoom-hint" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14zm.5-7H9v2H7v1h2v2h1v-2h2V9h-2V7z"/></svg>
+                    </span>
+                <?php endif; ?>
 
-                <?php if ($show_code && !empty($item['cert_codes'])) : ?>
-                    <div class="gnn-cert-badges-wrap gnn-badges-layout-<?php echo esc_attr($badges_layout); ?> gnn-badges-align-<?php echo esc_attr($badges_align); ?> gnn-badges-valign-<?php echo esc_attr($badges_valign); ?>">
+                <?php if (!empty($image_html)) : ?>
+                    <div class="gnn-logo-box" <?php echo $box_style; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+                        <?php echo $image_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ($opts['show_code'] && !empty($item['cert_codes'])) : ?>
+                    <div class="gnn-cert-badges-wrap gnn-badges-layout-<?php echo esc_attr($opts['badges_layout']); ?> gnn-badges-align-<?php echo esc_attr($opts['badges_align']); ?> gnn-badges-valign-<?php echo esc_attr($opts['badges_valign']); ?>">
                         <?php foreach ($item['cert_codes'] as $code) : ?>
                             <span class="gnn-cert-badge"><?php echo esc_html($code); ?></span>
                         <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
 
-                <?php if ($show_title && !empty($item['title'])) : ?>
+                <?php if ($opts['show_title'] && !empty($item['title'])) : ?>
                     <div class="gnn-logo-title"><?php echo esc_html($item['title']); ?></div>
                 <?php endif; ?>
 
-                <?php if ($show_desc && !empty($item['description'])) : ?>
+                <?php if ($opts['show_desc'] && !empty($item['description'])) : ?>
                     <div class="gnn-logo-desc"><?php echo esc_html($item['description']); ?></div>
                 <?php endif; ?>
             </div>

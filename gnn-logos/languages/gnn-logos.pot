@@ -4,495 +4,739 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GNN Logos 1.2.6\n"
 "Report-Msgid-Bugs-To: https://github.com/BigDesigner/gnn-logos/issues\n"
-"POT-Creation-Date: 2026-11-20 03:35+0300\n"
+"POT-Creation-Date: 2026-11-25 16:08+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Domain: gnn-logos\n"
 
-#: gnn-logos.php:124
+#: gnn-logos.php:133
 msgid "Donate"
 msgstr ""
 
-#: gnn-logos.php:125
+#: gnn-logos.php:134
+#: includes/class-gnn-logos-admin.php:80
+#: includes/class-gnn-logos-admin.php:81
 msgid "Shortcode Oluşturucu"
 msgstr ""
 
-#: gnn-logos.php:127
+#: gnn-logos.php:136
 msgid "Check Updates"
 msgstr ""
 
-#: inc/updater.php:301
+#: inc/updater.php:533
 msgid "Güvenlik doğrulaması başarısız oldu."
 msgstr ""
 
-#: inc/updater.php:305
+#: inc/updater.php:537
 msgid "Bu işlem için yetkiniz bulunmuyor."
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:38
-msgid "GNN Logos"
-msgstr ""
-
-#: includes/class-gnn-logos-admin.php:50
+#: includes/class-gnn-logos-admin.php:41
+#: includes/class-gnn-logos-admin.php:53
+#: includes/class-gnn-logos-admin.php:54
+#: includes/class-gnn-logos-cpt.php:92
 msgid "Tüm Logolar & Sertifikalar"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:59
+#: includes/class-gnn-logos-admin.php:42
+msgid "GNN Logos"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:62
+#: includes/class-gnn-logos-admin.php:63
+#: includes/class-gnn-logos-cpt.php:87
 msgid "Yeni Ekle"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:68
+#: includes/class-gnn-logos-admin.php:71
+#: includes/class-gnn-logos-admin.php:72
+#: includes/class-gnn-logos-cpt.php:66
 msgid "Logo Grupları"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:87
-msgid "Güncellemeleri Kontrol Et"
-msgstr ""
-
-#: includes/class-gnn-logos-admin.php:101
-msgid "Bu sayfaya erişim yetkiniz bulunmuyor."
-msgstr ""
-
-#: includes/class-gnn-logos-admin.php:155
+#: includes/class-gnn-logos-admin.php:142
 msgid "Logo Seçin"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:156
+#: includes/class-gnn-logos-admin.php:143
 msgid "Bu Logoyu Kullan"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:157
+#: includes/class-gnn-logos-admin.php:144
+msgid "Toplu Logo Seçin (Çoklu Seçim)"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:145
+msgid "Seçili Logoları Ekle"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:146
+#: includes/class-gnn-logos-cpt.php:176
 msgid "Görsel seçilmedi"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:158
+#: includes/class-gnn-logos-admin.php:147
 msgid "Shortcode Kopyalandı!"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:180
-msgid "GNN Logos - Shortcode Oluşturucu & Sihirbaz"
+#: includes/class-gnn-logos-admin.php:148
+msgid "Sıralama kaydediliyor..."
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:183
-msgid "İstediğiniz vitrin ayarlarını belirleyin, canlı olarak oluşturulan shortcode'u kopyalayıp dilediğiniz sayfaya veya yazıya ekleyin."
+#: includes/class-gnn-logos-admin.php:149
+msgid "Logolar ekleniyor..."
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:189
-msgid "Hızlı Şablonlar:"
+#: includes/class-gnn-logos-admin.php:150
+msgid "Bu filtreye uygun yayımlanmış logo bulunamadı. Önce logo ekleyin."
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:193
-msgid "Sertifikalar (TS EN Kart Düzeni)"
+#: includes/class-gnn-logos-admin.php:151
+msgid "Önizleme yüklenirken bir hata oluştu."
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:197
-msgid "Referanslar (Sonsuz Kayan Şerit)"
+#: includes/class-gnn-logos-admin.php:163
+#: includes/class-gnn-logos-cpt.php:542
+msgid "Yetkiniz bulunmuyor."
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:190
+msgid "Bu sayfaya erişim yetkiniz bulunmuyor."
 msgstr ""
 
 #: includes/class-gnn-logos-admin.php:201
-msgid "Çözüm Ortakları (Karusel Kaydırıcı)"
+msgid "GNN Logos - Shortcode Oluşturucu & Canlı Önizleme"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:205
-msgid "Standart Izgara (Grid)"
+#: includes/class-gnn-logos-admin.php:204
+msgid "Vitrin ayarlarını belirleyin, canlı önizlemede açık/koyu arka planda test edin ve oluşturulan shortcode'u tek tıkla kopyalayın."
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:213
-msgid "Vitrin Parametreleri"
+#: includes/class-gnn-logos-admin.php:210
+msgid "Hızlı Şablonlar:"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:214
+msgid "Sertifikalar (Kart + Lightbox)"
 msgstr ""
 
 #: includes/class-gnn-logos-admin.php:218
-msgid "Logo Grubu / Kategori:"
+msgid "Referanslar (Kayan Şerit)"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:220
-msgid "-- Tüm Gruplar --"
+#: includes/class-gnn-logos-admin.php:222
+msgid "Koyu Footer Bandı (Beyaz Logo)"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:231
-msgid "Vitrin / Animasyon Modu:"
+#: includes/class-gnn-logos-admin.php:226
+msgid "Çözüm Ortakları (Karusel)"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:233
-msgid "Carousel / Slider (Sağa-Sola Kaydırıcı)"
+#: includes/class-gnn-logos-admin.php:230
+msgid "Glassmorphism Vitrin (Dark)"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:234
-msgid "Continuous Ticker / Marquee (Sonsuz Akan Şerit)"
+#: includes/class-gnn-logos-admin.php:238
+msgid "Canlı Görsel Önizleme"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:235
-msgid "Responsive Grid (Statik Izgara)"
+#: includes/class-gnn-logos-admin.php:239
+msgid "Önizleme arka planı"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:240
+msgid "Açık Tuval"
 msgstr ""
 
 #: includes/class-gnn-logos-admin.php:241
-msgid "Kart & Çerçeve Stili:"
+msgid "Koyu Tuval"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:243
-msgid "Modern Kart (Gölge & Çerçeve - Sertifikalar İçin Önerilir)"
+#: includes/class-gnn-logos-admin.php:242
+msgid "Şeffaf Izgara"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:244
-msgid "İnce Çerçeveli (Bordered)"
-msgstr ""
-
-#: includes/class-gnn-logos-admin.php:245
-msgid "Minimal / Sade (Çerçevesiz, Şeffaf)"
-msgstr ""
-
-#: includes/class-gnn-logos-admin.php:251
-msgid "En-Boy Oranı (Aspect Ratio):"
+#: includes/class-gnn-logos-admin.php:246
+msgid "Önizleme yükleniyor..."
 msgstr ""
 
 #: includes/class-gnn-logos-admin.php:253
-msgid "Otomatik (Görselin Kendi Oranı)"
+msgid "Vitrin Parametreleri"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:265
-msgid "Masaüstü Sütun:"
+#: includes/class-gnn-logos-admin.php:259
+msgid "Logo Grubu:"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:269
-msgid "Tablet Sütun:"
+#: includes/class-gnn-logos-admin.php:261
+msgid "-- Tüm Gruplar --"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:270
+msgid "Vitrin Modu:"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:272
+msgid "Carousel / Slider (Kaydırıcı)"
 msgstr ""
 
 #: includes/class-gnn-logos-admin.php:273
-msgid "Mobil Sütun:"
+msgid "Continuous Marquee (Sonsuz Şerit)"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:280
-msgid "Logolar Arası Boşluk:"
+#: includes/class-gnn-logos-admin.php:274
+msgid "Responsive Grid (Izgara)"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:282
+msgid "Kart Stili:"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:284
+msgid "Minimal (Çerçevesiz)"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:285
+msgid "Modern Kart (Gölge & Çerçeve)"
 msgstr ""
 
 #: includes/class-gnn-logos-admin.php:286
-msgid "Metin ve Rozet Seçenekleri:"
+msgid "İnce Çerçeveli (Bordered)"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:290
-msgid "Sertifika / Standart Kodunu Göster (TS EN 12201-2 vb. Rozet)"
+#: includes/class-gnn-logos-admin.php:287
+msgid "Glassmorphism (Buzlu Cam)"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:291
+msgid "Renk Teması:"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:293
+msgid "Açık (Light)"
 msgstr ""
 
 #: includes/class-gnn-logos-admin.php:294
-msgid "Logo / Firma Başlığını Göster"
+msgid "Koyu (Dark)"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:298
-msgid "Açıklama / Kurum Adını Göster"
+#: includes/class-gnn-logos-admin.php:295
+msgid "Otomatik (Sistem Teması)"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:299
+msgid "Logo Renk Filtresi:"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:301
+msgid "Orijinal Renkler"
 msgstr ""
 
 #: includes/class-gnn-logos-admin.php:302
-msgid "Siyah-Beyaz Başlat (Fareyle Üzerine Gelince Renklensin)"
+msgid "Gri Ton (Hover Renkli)"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:310
-msgid "Rozet Dizilimi:"
+#: includes/class-gnn-logos-admin.php:303
+msgid "Monokrom Beyaz (Koyu Zemin)"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:304
+msgid "Monokrom Siyah (Açık Zemin)"
 msgstr ""
 
 #: includes/class-gnn-logos-admin.php:312
-msgid "Yan Yana (Akıcı / Wrap)"
+msgid "En-Boy Oranı:"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:313
-msgid "Alt Alta (Dikey Sıralı)"
+#: includes/class-gnn-logos-admin.php:314
+msgid "Otomatik"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:317
-msgid "Yatay Hizalama:"
-msgstr ""
-
-#: includes/class-gnn-logos-admin.php:319
-msgid "Ortalı (Center)"
-msgstr ""
-
-#: includes/class-gnn-logos-admin.php:320
-msgid "Sola Hizalı (Left)"
-msgstr ""
-
-#: includes/class-gnn-logos-admin.php:321
-msgid "Sağa Hizalı (Right)"
-msgstr ""
-
-#: includes/class-gnn-logos-admin.php:325
-msgid "Dikey Hizalama:"
+#: includes/class-gnn-logos-admin.php:323
+msgid "Logo Yüksekliği:"
 msgstr ""
 
 #: includes/class-gnn-logos-admin.php:327
-msgid "Altta (Kart Altına Sabitli - Bottom)"
+msgid "Boşluk (Gap):"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:328
-msgid "Üstte (Logonun Hemen Altında - Top)"
+#: includes/class-gnn-logos-admin.php:335
+msgid "Masaüstü Sütun:"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:329
-msgid "Ortada (Dikey Ortalı - Center)"
+#: includes/class-gnn-logos-admin.php:339
+msgid "Tablet Sütun:"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:336
-msgid "Karusel / Marquee Ayarları:"
+#: includes/class-gnn-logos-admin.php:343
+msgid "Mobil Sütun:"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:340
+#: includes/class-gnn-logos-admin.php:350
+msgid "Görünüm & Etkileşim Seçenekleri:"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:354
+msgid "Sertifika / Standart Rozetlerini Göster"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:358
+msgid "Logo / Firma Başlığını Göster"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:362
+msgid "Açıklama / Kurum Adını Göster"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:366
+msgid "Sertifika / Logo Lightbox Modalını Etkinleştir (Tıklayınca Büyük Görünüm)"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:374
+msgid "Rozet Dizilimi:"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:376
+msgid "Yan Yana (Wrap)"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:377
+msgid "Alt Alta (Stacked)"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:381
+msgid "Yatay Hizalama:"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:383
+msgid "Ortalı"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:384
+msgid "Sola"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:385
+msgid "Sağa"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:389
+msgid "Dikey Hizalama:"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:391
+msgid "Altta (Bottom)"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:392
+msgid "Üstte (Top)"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:393
+msgid "Ortada (Center)"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:400
+msgid "Karusel Ayarları:"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:404
 msgid "Otomatik Kaydır (Autoplay)"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:344
-msgid "Karusel İleri/Geri Ok Butonlarını Göster"
+#: includes/class-gnn-logos-admin.php:408
+msgid "İleri / Geri Ok Butonlarını Göster"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:348
+#: includes/class-gnn-logos-admin.php:412
 msgid "Sayfalama Noktalarını (Dots) Göster"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:352
-msgid "Fare Üzerine Gelince Kaymayı Duraklat"
+#: includes/class-gnn-logos-admin.php:416
+#: includes/class-gnn-logos-admin.php:454
+msgid "Fare Üzerine Gelince Duraklat"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:357
-msgid "Karusel Hızı (ms):"
+#: includes/class-gnn-logos-admin.php:421
+msgid "Geçiş Aralığı (ms):"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:361
-msgid "Marquee Akış Süresi:"
+#: includes/class-gnn-logos-admin.php:429
+msgid "Sonsuz Şerit (Marquee) Ayarları:"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:371
+#: includes/class-gnn-logos-admin.php:432
+msgid "Döngü Süresi:"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:436
+msgid "Akış Yönü:"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:438
+msgid "Sola Doğru (Left)"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:439
+msgid "Sağa Doğru (Right)"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:443
+msgid "Kutu Genişliği:"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:450
+msgid "Kenarlarda Yumuşak Geçiş Maskesi (Fade Edges)"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:462
+msgid "Sıralama Ölçütü:"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:464
+msgid "Özel Sıra (Sürükle-Bırak)"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:465
+msgid "Başlık (A-Z)"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:466
+msgid "Eklenme Tarihi"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:467
+msgid "Rastgele"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:471
+msgid "Yön:"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:473
+msgid "Artan (ASC)"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:474
+msgid "Azalan (DESC)"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:478
+msgid "Limit (-1 = Tümü):"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:487
 msgid "Oluşturulan Shortcode"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:372
-msgid "Bu kodu kopyalayıp Gutenberg veya klasik editörde dilediğiniz sayfaya yapıştırın:"
+#: includes/class-gnn-logos-admin.php:488
+msgid "Kodu kopyalayıp herhangi bir sayfaya yapıştırın veya Gutenberg blok ekle menüsünden \"GNN Logos\" bloğunu doğrudan kullanın:"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:380
+#: includes/class-gnn-logos-admin.php:496
 msgid "Shortcode'u Kopyala"
 msgstr ""
 
-#: includes/class-gnn-logos-admin.php:387
-msgid "İpuçları & Standartlar"
+#: includes/class-gnn-logos-admin.php:503
+msgid "AAA İpuçları"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:47
+#: includes/class-gnn-logos-admin.php:505
+msgid "Koyu Footerlar için:"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:506
+msgid "Sertifikalar için:"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:507
+msgid "Gutenberg Bloğu:"
+msgstr ""
+
+#: includes/class-gnn-logos-admin.php:507
+msgid "Blok Editör ve FSE Footer içinde doğrudan \"GNN Logos\" bloğunu arayarak ekleyebilirsiniz."
+msgstr ""
+
+#: includes/class-gnn-logos-block.php:94
+msgid "GNN Logos: Seçili grupta yayımlanmış logo bulunamadı."
+msgstr ""
+
+#: includes/class-gnn-logos-cpt.php:56
 msgctxt "taxonomy general name"
 msgid "Logo Grupları"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:48
+#: includes/class-gnn-logos-cpt.php:57
 msgctxt "taxonomy singular name"
 msgid "Logo Grubu"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:49
+#: includes/class-gnn-logos-cpt.php:58
 msgid "Gruplarda Ara"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:50
+#: includes/class-gnn-logos-cpt.php:59
+#: includes/class-gnn-logos-cpt.php:418
 msgid "Tüm Logo Grupları"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:51
+#: includes/class-gnn-logos-cpt.php:60
 msgid "Üst Grup"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:52
+#: includes/class-gnn-logos-cpt.php:61
 msgid "Üst Grup:"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:53
+#: includes/class-gnn-logos-cpt.php:62
 msgid "Grubu Düzenle"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:54
+#: includes/class-gnn-logos-cpt.php:63
 msgid "Grubu Güncelle"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:55
+#: includes/class-gnn-logos-cpt.php:64
 msgid "Yeni Logo Grubu Ekle"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:56
+#: includes/class-gnn-logos-cpt.php:65
 msgid "Yeni Grup Adı"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:74
+#: includes/class-gnn-logos-cpt.php:83
 msgctxt "Post type general name"
 msgid "Logolar & Sertifikalar"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:75
+#: includes/class-gnn-logos-cpt.php:84
 msgctxt "Post type singular name"
 msgid "Logo / Sertifika"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:76
+#: includes/class-gnn-logos-cpt.php:85
 msgctxt "Admin Menu text"
 msgid "GNN Logos"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:77
+#: includes/class-gnn-logos-cpt.php:86
 msgctxt "Add New on Toolbar"
 msgid "Logo / Sertifika"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:79
+#: includes/class-gnn-logos-cpt.php:88
 msgid "Yeni Logo / Sertifika Ekle"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:80
+#: includes/class-gnn-logos-cpt.php:89
 msgid "Yeni Logo"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:81
+#: includes/class-gnn-logos-cpt.php:90
 msgid "Logoyu Düzenle"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:82
+#: includes/class-gnn-logos-cpt.php:91
 msgid "Logoyu Görüntüle"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:84
+#: includes/class-gnn-logos-cpt.php:93
 msgid "Logolarda Ara"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:85
+#: includes/class-gnn-logos-cpt.php:94
 msgid "Kayıtlı logo veya sertifika bulunamadı."
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:86
+#: includes/class-gnn-logos-cpt.php:95
 msgid "Çöp kutusunda logo bulunamadı."
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:115
+#: includes/class-gnn-logos-cpt.php:124
 msgid "Logo & Sertifika Bilgileri"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:158
+#: includes/class-gnn-logos-cpt.php:166
 msgid "Logo / Sertifika Görseli:"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:159
+#: includes/class-gnn-logos-cpt.php:167
 msgid "(PNG, SVG, JPG, WebP, AVIF formatları önerilir)"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:166
+#: includes/class-gnn-logos-cpt.php:174
 msgid "Logo Önizleme"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:175
+#: includes/class-gnn-logos-cpt.php:183
 msgid "Gözat / Logo Seç"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:178
+#: includes/class-gnn-logos-cpt.php:186
 msgid "Görseli Kaldır"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:187
+#: includes/class-gnn-logos-cpt.php:195
 msgid "Sertifika / Standart Kodları (Rozetler):"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:188
+#: includes/class-gnn-logos-cpt.php:196
 msgid "Bu sertifika/logo için 1 veya birden fazla standart kodu ekleyebilirsiniz (Örn: TS EN 12201-2, TS EN ISO 1452-2, TS EN 1555-2). Her biri frontend'de ayrı ve şık bir rozet olarak gösterilir."
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:212
+#: includes/class-gnn-logos-cpt.php:219
+#: includes/class-gnn-logos-cpt.php:219
 msgid "Kaldır"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:219
+#: includes/class-gnn-logos-cpt.php:226
 msgid "Örn: TS EN 12201-2"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:222
+#: includes/class-gnn-logos-cpt.php:229
 msgid "Standart Ekle"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:226
+#: includes/class-gnn-logos-cpt.php:233
 msgid "İpucu: Teker teker yazıp Enter tuşuna basabilir veya birden fazla kodu virgülle ayırarak (örn: TS EN 12201-2, TS EN ISO 1452-2) tek seferde ekleyebilirsiniz."
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:234
+#: includes/class-gnn-logos-cpt.php:241
 msgid "Ek Açıklama / Kurum Adı (Opsiyonel):"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:235
+#: includes/class-gnn-logos-cpt.php:242
 msgid "Rozetin hemen altında küçük puntolu açıklama metni."
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:243
+#: includes/class-gnn-logos-cpt.php:244
+msgid "Örn: TSE Onaylı Kalite Belgesi"
+msgstr ""
+
+#: includes/class-gnn-logos-cpt.php:250
 msgid "Yönlendirme Linki (URL):"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:244
+#: includes/class-gnn-logos-cpt.php:251
 msgid "Logoya veya sertifika kartına tıklandığında gidilecek web adresi veya PDF belgesi linki (Opsiyonel)."
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:252
+#: includes/class-gnn-logos-cpt.php:259
 msgid "Bağlantı Açılış Şekli:"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:255
+#: includes/class-gnn-logos-cpt.php:262
 msgid "Yeni Sekmede Aç (_blank)"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:256
+#: includes/class-gnn-logos-cpt.php:263
 msgid "Aynı Sayfada Aç (_self)"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:263
+#: includes/class-gnn-logos-cpt.php:270
 msgid "Özel En / Boy Oranı (Aspect Ratio):"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:264
+#: includes/class-gnn-logos-cpt.php:271
 msgid "Bu logo için özel bir en/boy çerçevesi belirleyin (varsayılan: shortcode ayarını devralır)."
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:267
+#: includes/class-gnn-logos-cpt.php:274
 msgid "Otomatik / Shortcode Ayarını Kullan"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:367
+#: includes/class-gnn-logos-cpt.php:364
+msgid "Sürükleyip Sırala"
+msgstr ""
+
+#: includes/class-gnn-logos-cpt.php:365
 msgid "Görsel"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:368
+#: includes/class-gnn-logos-cpt.php:366
 msgid "Başlık / Firma"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:369
+#: includes/class-gnn-logos-cpt.php:367
 msgid "Standart / Sertifika Kodu"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:370
+#: includes/class-gnn-logos-cpt.php:368
 msgid "Logo Grubu"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:371
+#: includes/class-gnn-logos-cpt.php:369
 msgid "Hedef Link"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:372
+#: includes/class-gnn-logos-cpt.php:370
 msgid "Sıra"
 msgstr ""
 
-#: includes/class-gnn-logos-cpt.php:395
+#: includes/class-gnn-logos-cpt.php:456
+msgid "Toplu yükleme hedef grubu"
+msgstr ""
+
+#: includes/class-gnn-logos-cpt.php:457
+msgid "Grup Seç (Opsiyonel)"
+msgstr ""
+
+#: includes/class-gnn-logos-cpt.php:466
+msgid "Toplu Logo Yükle"
+msgstr ""
+
+#: includes/class-gnn-logos-cpt.php:483
+msgid "Sürükleyip sıralayın"
+msgstr ""
+
+#: includes/class-gnn-logos-cpt.php:494
 msgid "Yok"
 msgstr ""
 
-#: includes/class-gnn-logos-shortcode.php:253
+#: includes/class-gnn-logos-cpt.php:549
+msgid "Geçersiz sıralama verisi."
+msgstr ""
+
+#: includes/class-gnn-logos-cpt.php:573
+msgid "Sıralama kaydedildi."
+msgstr ""
+
+#: includes/class-gnn-logos-cpt.php:586
+msgid "Logo oluşturma yetkiniz bulunmuyor."
+msgstr ""
+
+#: includes/class-gnn-logos-cpt.php:593
+msgid "Görsel seçilmedi."
+msgstr ""
+
+#: includes/class-gnn-logos-cpt.php:612
+#, php-format
+msgid "Logo #%d"
+msgstr ""
+
+#: includes/class-gnn-logos-cpt.php:636
+#, php-format
+msgid "%d adet logo başarıyla eklendi."
+msgstr ""
+
+#: includes/class-gnn-logos-shortcode.php:333
 msgid "Logo ve Sertifika Karuseli"
 msgstr ""
 
-#: includes/class-gnn-logos-shortcode.php:270
+#: includes/class-gnn-logos-shortcode.php:348
 msgid "Önceki"
 msgstr ""
 
-#: includes/class-gnn-logos-shortcode.php:284
+#: includes/class-gnn-logos-shortcode.php:362
 msgid "Sonraki"
 msgstr ""
 
-#: includes/class-gnn-logos-shortcode.php:292
+#: includes/class-gnn-logos-shortcode.php:370
 #, php-format
 msgid "Slayt %d"
+msgstr ""
+
+#: includes/class-gnn-logos-shortcode.php:423
+msgid "Belgeyi / Sayfayı Aç"
 msgstr ""

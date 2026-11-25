@@ -1,6 +1,7 @@
 <?php
 /**
- * Custom Post Type, Taxonomy, and Meta Box Engine for GNN Logos.
+ * Custom Post Type, Taxonomy, Meta Box, Drag-and-Drop Reordering,
+ * Group Filter, and Bulk Upload Engine for GNN Logos.
  *
  * @package GNN_Logos
  * @since   1.0.0
@@ -32,9 +33,17 @@ class GNN_Logos_CPT
         add_action('add_meta_boxes', array($this, 'register_meta_boxes'));
         add_action('save_post_' . self::POST_TYPE, array($this, 'save_meta_boxes'), 10, 2);
 
-        // Admin column customizers
+        // Admin table customizers, sorting & filtering
         add_filter('manage_' . self::POST_TYPE . '_posts_columns', array($this, 'set_custom_columns'));
         add_action('manage_' . self::POST_TYPE . '_posts_custom_column', array($this, 'render_custom_column'), 10, 2);
+        add_filter('manage_edit-' . self::POST_TYPE . '_sortable_columns', array($this, 'set_sortable_columns'));
+        add_action('pre_get_posts', array($this, 'default_admin_order'));
+        add_action('restrict_manage_posts', array($this, 'render_group_filter'));
+        add_action('manage_posts_extra_tablenav', array($this, 'render_bulk_upload_toolbar'));
+
+        // AJAX handlers for Drag-and-Drop Reordering & Bulk Upload
+        add_action('wp_ajax_gnn_logos_reorder', array($this, 'ajax_reorder_logos'));
+        add_action('wp_ajax_gnn_logos_bulk_create', array($this, 'ajax_bulk_create_logos'));
     }
 
     /**
@@ -71,19 +80,19 @@ class GNN_Logos_CPT
 
         // 2. Register CPT: gnn_logo
         $cpt_labels = array(
-            'name'                  => _x('Logolar & Sertifikalar', 'Post type general name', 'gnn-logos'),
-            'singular_name'         => _x('Logo / Sertifika', 'Post type singular name', 'gnn-logos'),
-            'menu_name'             => _x('GNN Logos', 'Admin Menu text', 'gnn-logos'),
-            'name_admin_bar'        => _x('Logo / Sertifika', 'Add New on Toolbar', 'gnn-logos'),
-            'add_new'               => __('Yeni Ekle', 'gnn-logos'),
-            'add_new_item'          => __('Yeni Logo / Sertifika Ekle', 'gnn-logos'),
-            'new_item'              => __('Yeni Logo', 'gnn-logos'),
-            'edit_item'             => __('Logoyu Düzenle', 'gnn-logos'),
-            'view_item'             => __('Logoyu Görüntüle', 'gnn-logos'),
-            'all_items'             => __('Tüm Logolar & Sertifikalar', 'gnn-logos'),
-            'search_items'          => __('Logolarda Ara', 'gnn-logos'),
-            'not_found'             => __('Kayıtlı logo veya sertifika bulunamadı.', 'gnn-logos'),
-            'not_found_in_trash'    => __('Çöp kutusunda logo bulunamadı.', 'gnn-logos'),
+            'name'               => _x('Logolar & Sertifikalar', 'Post type general name', 'gnn-logos'),
+            'singular_name'      => _x('Logo / Sertifika', 'Post type singular name', 'gnn-logos'),
+            'menu_name'          => _x('GNN Logos', 'Admin Menu text', 'gnn-logos'),
+            'name_admin_bar'     => _x('Logo / Sertifika', 'Add New on Toolbar', 'gnn-logos'),
+            'add_new'            => __('Yeni Ekle', 'gnn-logos'),
+            'add_new_item'       => __('Yeni Logo / Sertifika Ekle', 'gnn-logos'),
+            'new_item'           => __('Yeni Logo', 'gnn-logos'),
+            'edit_item'          => __('Logoyu Düzenle', 'gnn-logos'),
+            'view_item'          => __('Logoyu Görüntüle', 'gnn-logos'),
+            'all_items'          => __('Tüm Logolar & Sertifikalar', 'gnn-logos'),
+            'search_items'       => __('Logolarda Ara', 'gnn-logos'),
+            'not_found'          => __('Kayıtlı logo veya sertifika bulunamadı.', 'gnn-logos'),
+            'not_found_in_trash' => __('Çöp kutusunda logo bulunamadı.', 'gnn-logos'),
         );
 
         $cpt_args = array(
@@ -98,7 +107,7 @@ class GNN_Logos_CPT
             'has_archive'        => false,
             'hierarchical'       => false,
             'menu_position'      => null,
-            'supports'           => array('title', 'page-attributes'), // page-attributes allows menu_order
+            'supports'           => array('title', 'page-attributes'),
             'show_in_rest'       => false,
         );
 
@@ -130,7 +139,6 @@ class GNN_Logos_CPT
         wp_nonce_field('gnn_logos_save_meta', 'gnn_logos_meta_nonce');
 
         $logo_id      = absint(get_post_meta($post->ID, '_gnn_logo_id', true));
-        $cert_code    = get_post_meta($post->ID, '_gnn_cert_code', true);
         $description  = get_post_meta($post->ID, '_gnn_description', true);
         $link_url     = get_post_meta($post->ID, '_gnn_link_url', true);
         $link_target  = get_post_meta($post->ID, '_gnn_link_target', true);
@@ -152,7 +160,7 @@ class GNN_Logos_CPT
         }
         ?>
         <div class="gnn-meta-box-wrap">
-            <!-- 1. Logo Seçimi (WordPress Ortam Kütüphanesi) -->
+            <!-- 1. Logo Seçimi -->
             <div class="gnn-meta-row">
                 <label class="gnn-meta-label">
                     <strong><?php esc_html_e('Logo / Sertifika Görseli:', 'gnn-logos'); ?></strong>
@@ -160,7 +168,7 @@ class GNN_Logos_CPT
                 </label>
                 <div class="gnn-media-upload-area">
                     <input type="hidden" name="gnn_logo_id" id="gnn_logo_id" value="<?php echo esc_attr($logo_id); ?>">
-                    
+
                     <div id="gnn-logo-preview" class="gnn-logo-preview <?php echo $logo_url ? 'has-image' : ''; ?>">
                         <?php if ($logo_url) : ?>
                             <img src="<?php echo esc_url($logo_url); ?>" alt="<?php esc_attr_e('Logo Önizleme', 'gnn-logos'); ?>">
@@ -181,7 +189,7 @@ class GNN_Logos_CPT
                 </div>
             </div>
 
-            <!-- 2. Sertifika / Standart Kodları (Çoklu Standart Desteği) -->
+            <!-- 2. Sertifika / Standart Kodları -->
             <div class="gnn-meta-row">
                 <label class="gnn-meta-label">
                     <strong><?php esc_html_e('Sertifika / Standart Kodları (Rozetler):', 'gnn-logos'); ?></strong>
@@ -189,7 +197,6 @@ class GNN_Logos_CPT
                 </label>
 
                 <?php
-                // Fetch existing codes (array or split legacy string)
                 $cert_codes = get_post_meta($post->ID, '_gnn_cert_codes', true);
                 if (!is_array($cert_codes) || empty($cert_codes)) {
                     $legacy_code = get_post_meta($post->ID, '_gnn_cert_code', true);
@@ -218,11 +225,11 @@ class GNN_Logos_CPT
                     <div class="gnn-standards-input-group">
                         <input type="text" id="gnn-new-standard-input" class="regular-text" placeholder="<?php esc_attr_e('Örn: TS EN 12201-2', 'gnn-logos'); ?>">
                         <button type="button" class="button button-secondary" id="gnn-add-standard-btn">
-                            <span class="dashicons dashicons-plus-alt2" style="vertical-align:middle; margin-top:-2px;"></span>
+                            <span class="dashicons dashicons-plus-alt2"></span>
                             <?php esc_html_e('Standart Ekle', 'gnn-logos'); ?>
                         </button>
                     </div>
-                    <span class="description" style="margin-top:6px; display:block;">
+                    <span class="description gnn-standards-hint">
                         <?php esc_html_e('İpucu: Teker teker yazıp Enter tuşuna basabilir veya birden fazla kodu virgülle ayırarak (örn: TS EN 12201-2, TS EN ISO 1452-2) tek seferde ekleyebilirsiniz.', 'gnn-logos'); ?>
                     </span>
                 </div>
@@ -234,7 +241,7 @@ class GNN_Logos_CPT
                     <strong><?php esc_html_e('Ek Açıklama / Kurum Adı (Opsiyonel):', 'gnn-logos'); ?></strong>
                     <span class="description"><?php esc_html_e('Rozetin hemen altında küçük puntolu açıklama metni.', 'gnn-logos'); ?></span>
                 </label>
-                <input type="text" name="gnn_description" id="gnn_description" class="widefat" value="<?php echo esc_attr($description); ?>" placeholder="Örn: TSE Onaylı Kalite Belgesi">
+                <input type="text" name="gnn_description" id="gnn_description" class="widefat" value="<?php echo esc_attr($description); ?>" placeholder="<?php esc_attr_e('Örn: TSE Onaylı Kalite Belgesi', 'gnn-logos'); ?>">
             </div>
 
             <!-- 4. Yönlendirme Linki (URL) -->
@@ -257,7 +264,7 @@ class GNN_Logos_CPT
                 </select>
             </div>
 
-            <!-- 6. Özel En/Boy Oranı (Aspect Ratio) -->
+            <!-- 6. Özel En/Boy Oranı -->
             <div class="gnn-meta-row">
                 <label for="gnn_aspect_ratio" class="gnn-meta-label">
                     <strong><?php esc_html_e('Özel En / Boy Oranı (Aspect Ratio):', 'gnn-logos'); ?></strong>
@@ -284,28 +291,23 @@ class GNN_Logos_CPT
      */
     public function save_meta_boxes($post_id, $post)
     {
-        // 1. Verify Nonce
         if (!isset($_POST['gnn_logos_meta_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['gnn_logos_meta_nonce'])), 'gnn_logos_save_meta')) {
             return;
         }
 
-        // 2. Check Autosave
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return;
         }
 
-        // 3. Check User Capabilities
         if (!current_user_can('edit_post', $post_id)) {
             return;
         }
 
-        // 4. Sanitize and save _gnn_logo_id
         if (isset($_POST['gnn_logo_id'])) {
             $logo_id = absint($_POST['gnn_logo_id']);
             update_post_meta($post_id, '_gnn_logo_id', $logo_id);
         }
 
-        // 5. Sanitize and save _gnn_cert_codes and legacy _gnn_cert_code
         if (isset($_POST['gnn_cert_codes']) && is_array($_POST['gnn_cert_codes'])) {
             $clean_codes = array();
             foreach ($_POST['gnn_cert_codes'] as $raw_code) {
@@ -323,30 +325,25 @@ class GNN_Logos_CPT
             $clean_codes = array_filter(array_map('trim', $parts));
             update_post_meta($post_id, '_gnn_cert_codes', array_values($clean_codes));
         } else {
-            // Field was cleared
             delete_post_meta($post_id, '_gnn_cert_codes');
             delete_post_meta($post_id, '_gnn_cert_code');
         }
 
-        // 6. Sanitize and save _gnn_description
         if (isset($_POST['gnn_description'])) {
             $desc = sanitize_text_field(wp_unslash($_POST['gnn_description']));
             update_post_meta($post_id, '_gnn_description', $desc);
         }
 
-        // 7. Sanitize and save _gnn_link_url
         if (isset($_POST['gnn_link_url'])) {
             $link = esc_url_raw(wp_unslash($_POST['gnn_link_url']));
             update_post_meta($post_id, '_gnn_link_url', $link);
         }
 
-        // 8. Sanitize and save _gnn_link_target
         if (isset($_POST['gnn_link_target'])) {
             $target = in_array(wp_unslash($_POST['gnn_link_target']), array('_self', '_blank'), true) ? sanitize_text_field(wp_unslash($_POST['gnn_link_target'])) : '_blank';
             update_post_meta($post_id, '_gnn_link_target', $target);
         }
 
-        // 9. Sanitize and save _gnn_aspect_ratio
         if (isset($_POST['gnn_aspect_ratio'])) {
             $allowed_ratios = array('auto', '16:9', '4:3', '1:1', '3:2', '2:1');
             $ratio = in_array(wp_unslash($_POST['gnn_aspect_ratio']), $allowed_ratios, true) ? sanitize_text_field(wp_unslash($_POST['gnn_aspect_ratio'])) : 'auto';
@@ -355,7 +352,7 @@ class GNN_Logos_CPT
     }
 
     /**
-     * Add custom columns to admin list table.
+     * Add custom columns to admin list table (including drag-and-drop handle).
      *
      * @param array $columns Existing columns.
      * @return array
@@ -363,16 +360,114 @@ class GNN_Logos_CPT
     public function set_custom_columns($columns)
     {
         $new_columns = array();
-        $new_columns['cb']          = $columns['cb'];
-        $new_columns['gnn_preview'] = __('Görsel', 'gnn-logos');
-        $new_columns['title']       = __('Başlık / Firma', 'gnn-logos');
-        $new_columns['gnn_code']    = __('Standart / Sertifika Kodu', 'gnn-logos');
-        $new_columns['taxonomy-' . self::TAXONOMY] = __('Logo Grubu', 'gnn-logos');
-        $new_columns['gnn_link']    = __('Hedef Link', 'gnn-logos');
-        $new_columns['gnn_order']   = __('Sıra', 'gnn-logos');
-        $new_columns['date']        = $columns['date'];
+        $new_columns['cb']                          = $columns['cb'];
+        $new_columns['gnn_drag']                    = '<span class="dashicons dashicons-sort" title="' . esc_attr__('Sürükleyip Sırala', 'gnn-logos') . '"></span>';
+        $new_columns['gnn_preview']                 = __('Görsel', 'gnn-logos');
+        $new_columns['title']                       = __('Başlık / Firma', 'gnn-logos');
+        $new_columns['gnn_code']                    = __('Standart / Sertifika Kodu', 'gnn-logos');
+        $new_columns['taxonomy-' . self::TAXONOMY]  = __('Logo Grubu', 'gnn-logos');
+        $new_columns['gnn_link']                    = __('Hedef Link', 'gnn-logos');
+        $new_columns['gnn_order']                   = __('Sıra', 'gnn-logos');
+        $new_columns['date']                        = $columns['date'];
 
         return $new_columns;
+    }
+
+    /**
+     * Register sortable admin columns.
+     *
+     * @param array $columns Sortable columns.
+     * @return array
+     */
+    public function set_sortable_columns($columns)
+    {
+        $columns['gnn_order'] = 'menu_order';
+        return $columns;
+    }
+
+    /**
+     * Default admin list order to menu_order ASC so drag-and-drop matches frontend.
+     *
+     * @param WP_Query $query Current query.
+     */
+    public function default_admin_order($query)
+    {
+        if (!is_admin() || !$query->is_main_query()) {
+            return;
+        }
+        if (self::POST_TYPE === $query->get('post_type') && !$query->get('orderby')) {
+            $query->set('orderby', 'menu_order');
+            $query->set('order', 'ASC');
+        }
+    }
+
+    /**
+     * Render Logo Group dropdown filter on All Logos list table.
+     *
+     * @param string $post_type Current post type.
+     */
+    public function render_group_filter($post_type)
+    {
+        if (self::POST_TYPE !== $post_type) {
+            return;
+        }
+
+        $selected = isset($_GET[self::TAXONOMY]) ? sanitize_title(wp_unslash($_GET[self::TAXONOMY])) : '';
+
+        wp_dropdown_categories(array(
+            'show_option_all' => __('Tüm Logo Grupları', 'gnn-logos'),
+            'taxonomy'        => self::TAXONOMY,
+            'name'            => self::TAXONOMY,
+            'orderby'         => 'name',
+            'selected'        => $selected,
+            'value_field'     => 'slug',
+            'hierarchical'    => true,
+            'show_count'      => true,
+            'hide_empty'      => false,
+        ));
+    }
+
+    /**
+     * Render Bulk Upload toolbar inside the top tablenav of All Logos screen.
+     *
+     * @param string $which Top or bottom tablenav.
+     */
+    public function render_bulk_upload_toolbar($which)
+    {
+        if ('top' !== $which) {
+            return;
+        }
+
+        $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+        if (!$screen || 'edit-' . self::POST_TYPE !== $screen->id) {
+            return;
+        }
+
+        if (!current_user_can('publish_posts')) {
+            return;
+        }
+
+        $terms = get_terms(array(
+            'taxonomy'   => self::TAXONOMY,
+            'hide_empty' => false,
+        ));
+        ?>
+        <div class="alignleft actions gnn-bulk-toolbar">
+            <select id="gnn-bulk-group" aria-label="<?php esc_attr_e('Toplu yükleme hedef grubu', 'gnn-logos'); ?>">
+                <option value=""><?php esc_html_e('Grup Seç (Opsiyonel)', 'gnn-logos'); ?></option>
+                <?php if (!empty($terms) && !is_wp_error($terms)) : ?>
+                    <?php foreach ($terms as $term) : ?>
+                        <option value="<?php echo esc_attr($term->slug); ?>"><?php echo esc_html($term->name); ?></option>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </select>
+            <button type="button" class="button button-primary" id="gnn-bulk-upload-btn">
+                <span class="dashicons dashicons-upload"></span>
+                <?php esc_html_e('Toplu Logo Yükle', 'gnn-logos'); ?>
+            </button>
+            <span id="gnn-table-status" class="gnn-table-status" role="status" aria-live="polite"></span>
+        </div>
+        <?php
     }
 
     /**
@@ -384,15 +479,19 @@ class GNN_Logos_CPT
     public function render_custom_column($column, $post_id)
     {
         switch ($column) {
+            case 'gnn_drag':
+                echo '<span class="dashicons dashicons-menu gnn-drag-handle" title="' . esc_attr__('Sürükleyip sıralayın', 'gnn-logos') . '" aria-hidden="true"></span>';
+                break;
+
             case 'gnn_preview':
                 $logo_id = absint(get_post_meta($post_id, '_gnn_logo_id', true));
                 if ($logo_id) {
                     $thumb = wp_get_attachment_image($logo_id, array(60, 60), false, array(
-                        'style' => 'max-width:60px; max-height:45px; object-fit:contain; border:1px solid #e2e8f0; border-radius:4px; padding:2px; background:#fff;',
+                        'class' => 'gnn-col-thumb',
                     ));
-                    echo $thumb ? $thumb : '<span style="color:#94a3b8;">&mdash;</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                    echo $thumb ? $thumb : '<span class="gnn-col-muted">&mdash;</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 } else {
-                    echo '<span style="color:#94a3b8;">' . esc_html__('Yok', 'gnn-logos') . '</span>';
+                    echo '<span class="gnn-col-muted">' . esc_html__('Yok', 'gnn-logos') . '</span>';
                 }
                 break;
 
@@ -406,29 +505,135 @@ class GNN_Logos_CPT
                     }
                 }
                 if (!empty($codes)) {
-                    echo '<div style="display:flex; flex-wrap:wrap; gap:4px;">';
+                    echo '<div class="gnn-col-badges">';
                     foreach ($codes as $c) {
-                        echo '<span style="display:inline-block; padding:2px 7px; font-weight:600; font-size:11px; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:4px; color:#0f172a; white-space:nowrap;">' . esc_html($c) . '</span>';
+                        echo '<span class="gnn-col-badge">' . esc_html($c) . '</span>';
                     }
                     echo '</div>';
                 } else {
-                    echo '<span style="color:#94a3b8;">&mdash;</span>';
+                    echo '<span class="gnn-col-muted">&mdash;</span>';
                 }
                 break;
 
             case 'gnn_link':
                 $url = get_post_meta($post_id, '_gnn_link_url', true);
                 if (!empty($url)) {
-                    echo '<a href="' . esc_url($url) . '" target="_blank" rel="noopener noreferrer" style="font-size:12px;">' . esc_html(wp_trim_words($url, 4, '...')) . '</a>';
+                    echo '<a href="' . esc_url($url) . '" target="_blank" rel="noopener noreferrer" class="gnn-col-link">' . esc_html(wp_trim_words($url, 4, '...')) . '</a>';
                 } else {
-                    echo '<span style="color:#94a3b8;">&mdash;</span>';
+                    echo '<span class="gnn-col-muted">&mdash;</span>';
                 }
                 break;
 
             case 'gnn_order':
                 $post = get_post($post_id);
-                echo $post ? esc_html($post->menu_order) : '&mdash;';
+                echo $post ? '<span class="gnn-order-num">' . esc_html($post->menu_order) . '</span>' : '<span class="gnn-col-muted">&mdash;</span>';
                 break;
         }
+    }
+
+    /**
+     * AJAX: Save drag-and-drop logo order (menu_order).
+     */
+    public function ajax_reorder_logos()
+    {
+        check_ajax_referer('gnn_logos_admin_nonce', 'nonce');
+
+        if (!current_user_can('edit_others_posts') && !current_user_can('manage_options')) {
+            wp_send_json_error(array('message' => __('Yetkiniz bulunmuyor.', 'gnn-logos')), 403);
+        }
+
+        $raw_order = isset($_POST['order']) && is_array($_POST['order']) ? $_POST['order'] : array();
+        $offset    = isset($_POST['offset']) ? absint($_POST['offset']) : 0;
+
+        if (empty($raw_order)) {
+            wp_send_json_error(array('message' => __('Geçersiz sıralama verisi.', 'gnn-logos')), 400);
+        }
+
+        global $wpdb;
+        $updated = array();
+
+        foreach ($raw_order as $index => $raw_id) {
+            $pid = absint($raw_id);
+            if ($pid <= 0) {
+                continue;
+            }
+            $new_order = $offset + absint($index);
+            $wpdb->update(
+                $wpdb->posts,
+                array('menu_order' => $new_order),
+                array('ID' => $pid, 'post_type' => self::POST_TYPE),
+                array('%d'),
+                array('%d', '%s')
+            );
+            clean_post_cache($pid);
+            $updated[$pid] = $new_order;
+        }
+
+        wp_send_json_success(array(
+            'message' => __('Sıralama kaydedildi.', 'gnn-logos'),
+            'orders'  => $updated,
+        ));
+    }
+
+    /**
+     * AJAX: Bulk create gnn_logo items from WordPress Media Library selection.
+     */
+    public function ajax_bulk_create_logos()
+    {
+        check_ajax_referer('gnn_logos_admin_nonce', 'nonce');
+
+        if (!current_user_can('publish_posts')) {
+            wp_send_json_error(array('message' => __('Logo oluşturma yetkiniz bulunmuyor.', 'gnn-logos')), 403);
+        }
+
+        $raw_ids    = isset($_POST['attachment_ids']) && is_array($_POST['attachment_ids']) ? $_POST['attachment_ids'] : array();
+        $group_slug = isset($_POST['group']) ? sanitize_title(wp_unslash($_POST['group'])) : '';
+
+        if (empty($raw_ids)) {
+            wp_send_json_error(array('message' => __('Görsel seçilmedi.', 'gnn-logos')), 400);
+        }
+
+        global $wpdb;
+        $max_order = (int) $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT MAX(menu_order) FROM {$wpdb->posts} WHERE post_type = %s AND post_status != 'trash'",
+                self::POST_TYPE
+            )
+        );
+
+        $created = 0;
+        foreach ($raw_ids as $raw_att_id) {
+            $att_id = absint($raw_att_id);
+            if ($att_id <= 0 || 'attachment' !== get_post_type($att_id)) {
+                continue;
+            }
+
+            $att_post = get_post($att_id);
+            $title    = ($att_post && '' !== trim($att_post->post_title)) ? $att_post->post_title : sprintf(__('Logo #%d', 'gnn-logos'), $att_id);
+
+            $max_order++;
+            $new_post_id = wp_insert_post(array(
+                'post_type'   => self::POST_TYPE,
+                'post_status' => 'publish',
+                'post_title'  => sanitize_text_field($title),
+                'menu_order'  => $max_order,
+            ), true);
+
+            if (!is_wp_error($new_post_id) && $new_post_id > 0) {
+                update_post_meta($new_post_id, '_gnn_logo_id', $att_id);
+                update_post_meta($new_post_id, '_gnn_link_target', '_blank');
+                update_post_meta($new_post_id, '_gnn_aspect_ratio', 'auto');
+
+                if ('' !== $group_slug) {
+                    wp_set_object_terms($new_post_id, array($group_slug), self::TAXONOMY, false);
+                }
+                $created++;
+            }
+        }
+
+        wp_send_json_success(array(
+            'created' => $created,
+            'message' => sprintf(__('%d adet logo başarıyla eklendi.', 'gnn-logos'), $created),
+        ));
     }
 }
